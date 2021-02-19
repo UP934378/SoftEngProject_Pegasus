@@ -70,7 +70,11 @@ WiFi_creds get_wifi_creds(){
   snprintf(key, 9, "%08X", key_raw);
   Serial.println(SSID);
   Serial.println(key);
-  WiFi.softAP(SSID.c_str(), "2DFD7BFB");
+  #ifdef DEV_PSK
+  WiFi.softAP(SSID.c_str(), DEV_PSK);
+  #else
+  WiFi.softAP(SSID.c_str(), key);
+  #endif
   web_server.on("/", []() {
     web_server.send(200, "text/html", wifi_form_html);
   });
