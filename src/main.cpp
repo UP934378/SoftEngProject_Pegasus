@@ -10,7 +10,8 @@
 // #include <BLEDevice.h>
 
 SSD1306Wire display(0x3c, SDA, SCL);
-WebServer web_server(80);
+
+// HTML source code c-string built into program
 extern const char wifi_form_html[] asm("_binary_src_wifi_form_html_start");
 
 struct WiFi_creds{
@@ -52,12 +53,20 @@ void setup() {
 }
 
 void loop() {
-  web_server.handleClient();
+  // web_server.handleClient();
 }
 
 
 WiFi_creds get_wifi_creds(){
+  // WiFi SSID of hotspot
   String SSID;
+  // WebServer used to serve form for user to provide new WiFi credentials
+  WebServer web_server(80);
+
+  // WiFi SSID to connect to
+  String new_SSID = "";
+  // WiFi PSK to connect with
+  String new_PSK = "";
 
   unsigned char mac[6];
   WiFi.macAddress(mac);
@@ -75,10 +84,10 @@ WiFi_creds get_wifi_creds(){
   #else
   WiFi.softAP(SSID.c_str(), key);
   #endif
-  web_server.on("/", []() {
+  web_server.on("/", [&web_server]() {
     web_server.send(200, "text/html", wifi_form_html);
   });
-  web_server.on("/form", [](){
+  web_server.on("/form", [&web_server](){
     Serial.println(web_server.args());
     for (int i = 0; i < web_server.args(); ++i){
       Serial.print(web_server.argName(i));
@@ -88,5 +97,12 @@ WiFi_creds get_wifi_creds(){
     web_server.send(200, "text/html", "");
   });
   web_server.begin();
+  while (new_SSID.length() == 0 || new_PSK.length() < 8){
+    web_server.handleClient();
+  }
+  WiFi_creds creds;
+  creds.SSID = new_SSID;
+  creds.PSK = new_PSK;
+  return creds;
 }
 
