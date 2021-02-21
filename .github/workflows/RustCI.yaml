@@ -1,0 +1,22 @@
+name: Rust CI
+
+on:
+  push:
+    branches:
+      - aggregator-release
+      - aggregator-dev
+  pull_request:
+    branches:
+      - aggregator-release
+      - aggregator-dev
+
+jobs:
+  test:
+    name: Rust Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo test
