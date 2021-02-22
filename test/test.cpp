@@ -10,9 +10,9 @@ void test_display(){
     display.init();
     display.flipScreenVertically();
     display.setFont(ArialMT_Plain_10);
-    display.drawString(0,0,"Test");
+    display.drawString(0,0,"Hello!");
     display.display();
-    delay(1000);
+    delay(2000);
     UNITY_TEST_ASSERT(true, 15, "fail");
 }
 
