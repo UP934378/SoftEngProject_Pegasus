@@ -6,45 +6,14 @@
 #include <WebServer.h>
 #include <WiFiAP.h>
 #include <Wire.h>               // Only needed for Arduino 1.6.5 and earlier
-#include "SSD1306Wire.h"   
+#include "SSD1306Wire.h"
+#include "scroll_text.hpp"
 // #include <BLEDevice.h>
 
 SSD1306Wire display(0x3c, SDA, SCL, GEOMETRY_128_32);
 
 // HTML source code c-string built into program
 extern const char wifi_form_html[] asm("_binary_src_wifi_form_html_start");
-
-class Scroll_Text{
-  const char *str;
-  int16_t x, y, text_width, offset ;
-  uint8_t wait = 4;
-
-
-
-  public:
-    Scroll_Text(const char *str, int16_t x, int16_t y){
-      this->str = str;
-      this->x = x;
-      this->y = y;
-      text_width = display.getStringWidth(str, strlen(str));
-    }
-
-    void draw(){
-      if (wait){
-        --wait;
-      }else if (x + text_width - offset > display.width()){
-        ++offset;
-        if(x + text_width - offset == display.width()){
-          wait = 4;
-        }
-      }else{
-        offset = 0;
-        wait = 4;
-      }
-      display.drawString(x - offset, y, str);
-    }
-};
-
 
 struct WiFi_creds{
     String SSID;
@@ -142,7 +111,7 @@ WiFi_creds get_wifi_creds(){
   unsigned long draw_time = millis();
   const int16_t DRAW_INTERVAL = 200;
   const int16_t SSID_OFFSET = display.getStringWidth("SSID: ", 6);
-  Scroll_Text ssid_scroll = Scroll_Text(SSID.c_str(), SSID_OFFSET, 0);
+  Scroll_Text ssid_scroll = Scroll_Text(&display, SSID.c_str(), SSID_OFFSET, 0);
   while (new_SSID.length() == 0 || new_PSK.length() < 8){
     web_server.handleClient();
     unsigned long current_time = millis();
