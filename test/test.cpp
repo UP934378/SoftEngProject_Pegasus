@@ -23,6 +23,7 @@ void setup(){
     RUN_TEST(test_display);
     
     UNITY_END();
+    display.displayOff();
 }
 
 void loop(){
