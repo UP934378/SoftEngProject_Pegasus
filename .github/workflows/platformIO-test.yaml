@@ -31,4 +31,4 @@ jobs:
     - name: Install PlatformIO
       run: pip3 install --upgrade platformio
     - name: Run PlatformIO
-      run: pio test -e esp32dev
+      run: pio test -e esp32dev --test-port /dev/esp32
