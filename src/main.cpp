@@ -24,6 +24,7 @@ WiFi_creds get_wifi_creds();
 void save_wifi_creds(WiFi_creds creds);
 
 void setup() {
+  EEPROM.begin(512);
   Serial.begin(115200);
   display.init();
   display.flipScreenVertically();
@@ -105,6 +106,7 @@ WiFi_creds get_wifi_creds(){
   web_server.on("/form", [&web_server, &new_SSID, &new_PSK](){
     new_SSID = web_server.arg("SSID");
     new_PSK = web_server.arg("PSK");
+    web_server.send(200, "text/plain", "");
   });
   web_server.begin();
   unsigned long draw_time = millis();
@@ -136,7 +138,7 @@ WiFi_creds get_wifi_creds(){
 void save_wifi_creds(WiFi_creds creds) {
     //Serial.println("save function");
     const char* cSSID = creds.SSID.c_str();
-    EEPROM.begin(512);
+    // EEPROM.begin(512);
     EEPROM.write(0, 1);
     int addr = 1;
     for (int i = 0; i < 512; i++) {
