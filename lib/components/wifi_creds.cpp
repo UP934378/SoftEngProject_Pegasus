@@ -94,5 +94,4 @@ void save_wifi_creds(WiFi_creds creds) {
       addr += 1;
     }
     EEPROM.commit();
-    ESP.restart();
 }
