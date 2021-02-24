@@ -51,6 +51,7 @@ void setup() {
   if (hasWiFi){
     display.clear();
     display.drawString(0, 0, SSID);
+    display.display();
   }else{
     WiFi_creds creds = get_wifi_creds();
     //Serial.println(creds.SSID);
