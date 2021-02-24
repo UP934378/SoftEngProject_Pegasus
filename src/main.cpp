@@ -102,14 +102,9 @@ WiFi_creds get_wifi_creds(){
   web_server.on("/", [&web_server]() {
     web_server.send(200, "text/html", wifi_form_html);
   });
-  web_server.on("/form", [&web_server](){
-    Serial.println(web_server.args());
-    for (int i = 0; i < web_server.args(); ++i){
-      Serial.print(web_server.argName(i));
-      Serial.print(": ");
-      Serial.println(web_server.arg(i));
-    }
-    web_server.send(200, "text/html", "");
+  web_server.on("/form", [&web_server, &new_SSID, &new_PSK](){
+    new_SSID = web_server.arg("SSID");
+    new_PSK = web_server.arg("PSK");
   });
   web_server.begin();
   unsigned long draw_time = millis();
