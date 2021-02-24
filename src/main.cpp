@@ -21,7 +21,7 @@ struct WiFi_creds{
 };
 
 WiFi_creds get_wifi_creds();
-void save_wifi_creds();
+void save_wifi_creds(WiFi_creds creds);
 
 void setup() {
   Serial.begin(115200);
@@ -53,7 +53,7 @@ void setup() {
   }else{
     WiFi_creds creds = get_wifi_creds();
     //Serial.println(creds.SSID);
-    save_wifi_creds();
+    save_wifi_creds(creds);
   }
 }
 
@@ -133,9 +133,8 @@ WiFi_creds get_wifi_creds(){
   return creds;
 }
 
-void save_wifi_creds() {
+void save_wifi_creds(WiFi_creds creds) {
     //Serial.println("save function");
-    WiFi_creds creds;
     const char* cSSID = creds.SSID.c_str();
     EEPROM.begin(512);
     EEPROM.write(0, 1);
