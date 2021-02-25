@@ -77,23 +77,23 @@ WiFi_creds get_wifi_creds(SSD1306Wire &display){
   return creds;
 }
 
+// Saves wifi credentials to EEPROM
 void save_wifi_creds(WiFi_creds creds) {
-    const char* cSSID = creds.SSID.c_str();
-    const char* cPSK = creds.PSK.c_str();
 
     EEPROM.write(0, 1);
 
     int addr = 1;
-    for (int i = 0; i < strlen(cSSID); i++) {
-      EEPROM.write(addr, cSSID[i]);
+
+    for (const char c : creds.SSID){
+      EEPROM.write(addr, c);
       addr += 1;
     }
 
     EEPROM.write(addr, 0);
     ++addr;
 
-    for (int i = 0; i < strlen(cPSK); i++) {
-      EEPROM.write(addr, cPSK[i]);
+    for (const char c : creds.PSK) {
+      EEPROM.write(addr, c);
       addr += 1;
     }
     EEPROM.write(addr, 0);
