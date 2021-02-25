@@ -78,20 +78,25 @@ WiFi_creds get_wifi_creds(SSD1306Wire &display){
 }
 
 void save_wifi_creds(WiFi_creds creds) {
-    //Serial.println("save function");
     const char* cSSID = creds.SSID.c_str();
-    // EEPROM.begin(512);
+    const char* cPSK = creds.PSK.c_str();
+
     EEPROM.write(0, 1);
+
     int addr = 1;
-    for (int i = 0; i < 512; i++) {
+    for (int i = 0; i < strlen(cSSID); i++) {
       EEPROM.write(addr, cSSID[i]);
       addr += 1;
     }
+
+    EEPROM.write(addr, 0);
     ++addr;
-    const char* cPSK = creds.PSK.c_str();
-    for (int i = 0; i < 512; i++) {
+
+    for (int i = 0; i < strlen(cPSK); i++) {
       EEPROM.write(addr, cPSK[i]);
       addr += 1;
     }
+    EEPROM.write(addr, 0);
+    
     EEPROM.commit();
 }
