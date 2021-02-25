@@ -79,7 +79,12 @@ WiFi_creds get_wifi_creds(SSD1306Wire &display){
 
 // Saves wifi credentials to EEPROM
 void save_wifi_creds(WiFi_creds creds) {
-
+    if (creds.SSID.length() == 0 || creds.PSK.length() < 8){
+      EEPROM.write(0,0);
+      EEPROM.write(1,0);
+      EEPROM.write(2,0);
+      return;
+    }
     EEPROM.write(0, 1);
 
     int addr = 1;

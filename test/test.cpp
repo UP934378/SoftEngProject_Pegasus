@@ -48,6 +48,19 @@ void test_wifi_creds(){
                       "Stored SSID did not match expected value.");
     UNITY_TEST_ASSERT(compare_EEPROM(creds.PSK, 2 + creds.SSID.length()), 49,
                       "Stored PSK did not match expected value.");
+
+    creds = {
+        "",
+        ""
+    };
+    save_wifi_creds(creds);
+    UNITY_TEST_ASSERT(EEPROM.read(0) == 0, 57, 
+                      "save_wifi_creds didn't set the EEPROM byte "
+                      "to indicate wifi credentials are saved.");
+    UNITY_TEST_ASSERT(compare_EEPROM(creds.SSID, 1), 60,
+                      "Stored SSID did not match expected value.");
+    UNITY_TEST_ASSERT(compare_EEPROM(creds.PSK, 2 + creds.SSID.length()), 62,
+                      "Stored PSK did not match expected value.");
 }
 
 void setup(){
