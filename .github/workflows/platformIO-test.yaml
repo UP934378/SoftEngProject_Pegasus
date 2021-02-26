@@ -17,6 +17,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
     - name: Cache pip
       uses: actions/cache@v2
       with:
@@ -31,4 +33,4 @@ jobs:
     - name: Install PlatformIO
       run: pip3 install --upgrade platformio
     - name: Run PlatformIO
-      run: pio test -e esp32dev --test-port /dev/esp32
+      run: pio test -e esp32test --test-port /dev/esp32
