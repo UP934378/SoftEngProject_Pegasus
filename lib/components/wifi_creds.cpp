@@ -71,6 +71,9 @@ WiFi_creds get_wifi_creds(SSD1306Wire &display){
       display.display();
     }
   }
+  
+  WiFi.softAPdisconnect();
+
   WiFi_creds creds;
   creds.SSID = new_SSID;
   creds.PSK = new_PSK;
