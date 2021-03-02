@@ -45,6 +45,14 @@ void setup()
 
   if (hasWiFi)
   {
+    //**Needs to be moved to separate component file** 
+    unsigned char mac[6];
+    WiFi.macAddress(mac);
+    String deviceName;
+    deviceName = "Pegassas-Probe-";
+    char id[7] = {0};
+    snprintf(id, 7, "%02X%02X%02X", mac[3], mac[4], mac[5]);
+    deviceName += id; 
     WiFi.begin(SSID.c_str(), PSK.c_str());
     while (WiFi.status() != WL_CONNECTED)
     {
@@ -56,11 +64,8 @@ void setup()
     display.drawString(0, 0, SSID);
     display.drawString(0, 10, localIp);
     display.display();
-    // if (!MDNS.begin("esp3211"))
-    // { // Start the mDNS responder for esp8266.local
-    //   Serial.println("Error setting up MDNS responder!");
-    // }
-    MDNS.begin("esp3211");
+    MDNS.begin(deviceName.c_str());
+    MDNS.addService("pegassas", "tcp", 23);
     Serial.println("mDNS responder started");
   }
   else
