@@ -25,22 +25,12 @@ void setup()
   display.display();
   // put your setup code here, to run once:
   bool hasWiFi = EEPROM.read(0) == 1;
-  String SSID = "";
-  String PSK = "";
+  WiFi_creds creds;
 
   // Read SSID and PSK from EEPROM if wifi credentials are stored
   if (hasWiFi)
   {
-    int i = 1;
-    for (; EEPROM.read(i) && i < 512; ++i)
-    {
-      SSID += (char)EEPROM.read(i);
-    }
-    ++i;
-    for (; EEPROM.read(i) && i < 512; ++i)
-    {
-      PSK += (char)EEPROM.read(i);
-    }
+    creds = load_wifi_creds();
   }
 
   if (hasWiFi)
@@ -53,7 +43,7 @@ void setup()
     char id[7] = {0};
     snprintf(id, 7, "%02X%02X%02X", mac[3], mac[4], mac[5]);
     deviceName += id; 
-    WiFi.begin(SSID.c_str(), PSK.c_str());
+    WiFi.begin(creds.SSID.c_str(), creds.PSK.c_str());
     while (WiFi.status() != WL_CONNECTED)
     {
       delay(500);
@@ -61,7 +51,7 @@ void setup()
     }
     String localIp = WiFi.localIP().toString();
     display.clear();
-    display.drawString(0, 0, SSID);
+    display.drawString(0, 0, creds.SSID);
     display.drawString(0, 10, localIp);
     display.display();
     MDNS.begin(deviceName.c_str());

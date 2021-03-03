@@ -125,3 +125,31 @@ void save_wifi_creds(WiFi_creds creds) {
     
     EEPROM.commit();
 }
+
+WiFi_creds load_wifi_creds(){
+  // If nothing is stored, just return empty strings for both SSID and PSK
+  if (!EEPROM.read(0)){
+    return {
+      "",
+      ""
+    };
+  }
+
+  WiFi_creds creds;
+  // Begin from address 1
+  int i = 1;
+  // Read until null terminator into SSID
+  for (; EEPROM.read(i) && i < 512; ++i)
+  {
+    creds.SSID += (char)EEPROM.read(i);
+  }
+  // Skip null terminator
+  ++i;
+  // Read until null terminator into PSK
+  for (; EEPROM.read(i) && i < 512; ++i)
+  {
+    creds.PSK += (char)EEPROM.read(i);
+  }
+
+  return creds;
+}
