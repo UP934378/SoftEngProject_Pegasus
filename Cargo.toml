@@ -7,6 +7,6 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-mdns = "3.0.0"
 tokio = {version ="1.2.0", features = ["full"]}
 futures-util = "0.3.13"
+ssdp-client = "1.0.0"
