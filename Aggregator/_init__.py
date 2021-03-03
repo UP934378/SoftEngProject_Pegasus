@@ -37,18 +37,18 @@ class Data_Probe(threading.Thread):
                     protocol = "http://"
                 else:
                     protocol = "https://"
-                schema_response = requests.get(protocol + ip_address + "/" + location)
+                schema_response = requests.get(protocol + ip_address + "/" + location) ##Location = URL
                 if schema_response.ok:
                     schema = defusedxml.ElementTree.fromstring(schema_response.text)
                 else:
                     self.stop_event.wait(timeout=WORKER_RETRY_PERIOD)
                     continue
 
-                data_url = protocol + ip_address + "/" + schema[2][2].text
+                data_url = protocol + ip_address + "/" + schema[2][2].text ## Added through checking 
                 data_response = requests.get(data_url)
                 if data_response.ok and data_response.headers.get("Content-type", "").startswith("application/json"):
                     with print_lock:
-                        print(usn, data_response.json())
+                        print(usn, data_response.json()) ## USN - Service Identifier for SSDP
                     cur = self.conn.cursor()
                     for table, data in data_response.json().items():
                         columns = [column["name"] for column in data["columns"]]
