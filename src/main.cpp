@@ -11,6 +11,7 @@
 #include "wifi_creds.hpp"
 #include "ESPmDNS.h"
 #include <ESP32SSDP.h>
+#include "network_discovery.hpp"
 // #include <BLEDevice.h>
 
 SSD1306Wire display(0x3c, SDA, SCL, GEOMETRY_128_32);
@@ -36,48 +37,7 @@ void setup()
 
   if (hasWiFi)
   {
-
-    //**Needs to be moved to separate component file**
-    unsigned char mac[6];
-    WiFi.macAddress(mac);
-    String deviceName;
-    deviceName = "Pegassas-Probe-";
-    char id[7] = {0};
-    snprintf(id, 7, "%02X%02X%02X", mac[3], mac[4], mac[5]);
-    deviceName += id;
-
-    WiFi.begin(creds.SSID.c_str(), creds.PSK.c_str());
-    while (WiFi.status() != WL_CONNECTED)
-    {
-      delay(500);
-      Serial.print(".");
-    }
-    String localIp = WiFi.localIP().toString();
-    display.clear();
-    display.drawString(0, 0, creds.SSID);
-    display.drawString(0, 10, localIp);
-    display.display();
-
-    // MDNS.begin(deviceName.c_str());
-    // MDNS.addService("pegassas", "tcp", 23);
-    // Serial.println("mDNS responder started");
-
-    
-    HTTP.on("/description.xml", HTTP_GET, []() {
-      SSDP.schema(HTTP.client());
-    });
-    HTTP.on("/data.json", HTTP_GET, []() {
-      HTTP.send(200, "application/json", "{\"name\" : \"cell_id\"}");
-    });
-    HTTP.begin();
-    SSDP.setSchemaURL("description.xml");
-    SSDP.setHTTPPort(80);
-    SSDP.setName(deviceName);
-    SSDP.setURL("data.json");
-    SSDP.setDeviceType("urn:pegassas:service:data-probe:1");
-    SSDP.begin();
-
-
+    setUpSSDP(&HTTP, &display, creds);
   }
   else
   {
