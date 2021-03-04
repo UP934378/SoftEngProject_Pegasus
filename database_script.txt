@@ -1,0 +1,35 @@
+CREATE DATABASE pegassas
+USE pegassas
+
+-- to create table I will manually generate dummy data
+
+INSERT cell,cell_id=1,batt_id=1 cell_balance=20
+INSERT cell,cell_id=2,batt_id=2 cell_balance=30
+INSERT cell,cell_id=3,batt_id=1 cell_balance=18
+INSERT cell,cell_id=1,batt_id=1 cell_balance=40
+INSERT cell,cell_id=2,batt_id=2 cell_balance=45
+INSERT cell,cell_id=3,batt_id=1 cell_balance=25
+INSERT battery,batt_id=1,prob_id=500 batt_charge=90,batt_capacity=20,batt_temp=20
+INSERT battery,batt_id=2,prob_id=600 batt_charge=80,batt_capacity=20,batt_temp=30
+INSERT battery,batt_id=1,prob_id=500 batt_charge=75,batt_capacity=20,batt_temp=15
+INSERT battery,batt_id=2,prob_id=600 batt_charge=90,batt_capacity=30,batt_temp=30
+INSERT battery,batt_id=1,prob_id=500 batt_charge=95,batt_capacity=40,batt_temp=18
+INSERT battery,batt_id=2,prob_id=600 batt_charge=85,batt_capacity=60,batt_temp=30
+INSERT inverter,inv_id=1,inv_serial=abcdefg inv_temp=20,inv_freq=50,inv_power_Achannel=50,inv_power_Bchannel=50
+INSERT inverter,inv_id=2,inv_serial=hijklmn inv_temp=30,inv_freq=30,inv_power_Achannel=60,inv_power_Bchannel=50
+INSERT inverter,inv_id=1,inv_serial=abcdefg inv_temp=25,inv_freq=50,inv_power_Achannel=50,inv_power_Bchannel=30
+INSERT inverter,inv_id=2,inv_serial=hijklmn inv_temp=22,inv_freq=30,inv_power_Achannel=40,inv_power_Bchannel=50
+INSERT inverter,inv_id=1,inv_serial=abcdefg inv_temp=24,inv_freq=25,inv_power_Achannel=30,inv_power_Bchannel=50
+INSERT inverter,inv_id=2,inv_serial=hijklmn inv_temp=40,inv_freq=50,inv_power_Achannel=50,inv_power_Bchannel=80
+INSERT power_controller,controller_id=1 grid_power=100,household_power=100
+INSERT power_controller,controller_id=1 grid_power=120,household_power=80
+INSERT power_controller,controller_id=1 grid_power=80,household_power=70
+INSERT power_controller,controller_id=1 grid_power=90,household_power=120
+
+-- query example, uncomment to test it
+-- reference for queries https://docs.influxdata.com/influxdb/v1.8/query_language/explore-data/
+
+-- SELECT * FROM cell WHERE batt_id='1'
+-- SELECT cell_id, cell_balance FROM cell GROUP BY batt_id
+-- SELECT * FROM battery WHERE batt_temp>=20
+-- SELECT * FROM inverter
