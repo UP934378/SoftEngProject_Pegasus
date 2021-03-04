@@ -8,7 +8,7 @@ const PROBE_URN : URN = URN::Service(std::borrow::Cow::Borrowed(DOMAIN),
 const ST : SearchTarget = SearchTarget::URN(PROBE_URN);
 
 pub async fn discover_probes() -> Result<std::vec::Vec<SearchResponse>, Error>{
-    let mut response_stream = search(&SearchTarget::All, std::time::Duration::from_secs(5), 4).await?;
+    let mut response_stream = search(&ST, std::time::Duration::from_secs(5), 4).await?;
     let mut responses = std::vec::Vec::new();
     while let Some(response) = response_stream.next().await{
         responses.push(response?);
