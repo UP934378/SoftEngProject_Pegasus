@@ -1,5 +1,5 @@
 #include "network_discovery.hpp"
-
+#include "data.hpp"
 
 void setUpSSDP(WebServer* server, SSD1306Wire* display, WiFi_creds creds){
     unsigned char mac[6];
@@ -25,8 +25,11 @@ void setUpSSDP(WebServer* server, SSD1306Wire* display, WiFi_creds creds){
     server->on("/description.xml", HTTP_GET, [server]() {
       SSDP.schema(server->client());
     });
-    server->on("/data.json", HTTP_GET, [server]() {
-      server->send(200, "application/json", "{\"name\" : \"cell_id\"}");
+
+    char* data = dataString();
+
+    server->on("/data.json", HTTP_GET, [server, data]() {
+      server->send(200, "application/json", data);
     });
     server->begin();
     SSDP.setSchemaURL("description.xml");
