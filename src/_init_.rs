@@ -1,13 +1,24 @@
-struct data_probe 
+struct Probe_URL{
+    ip_address: std::net::IpAddr,
+    port: u16,
+    location: String,
+}
+
+
+struct Data_probe 
 {
-    ip_address: ip_address,
-    port: port,
-    location: location,
-    usn: usn,
-    ttl: ttl,
+    
+    usn: String,
+    ttl: std::time::Instant,
     stop_event: stop_event,
     lock: lock,
     connnection_database: connnection_database, //Unsure if needed due to influx pointers?
+}
+
+impl data_probe {
+    fn new(ip_address : String) -> data_probe {
+
+    }
 }
 
 fn build_data_probe(ip_address: String, port: u16, location: String, usn: String, 

@@ -10,3 +10,6 @@ edition = "2018"
 tokio = {version ="1.2.0", features = ["full"]}
 futures-util = "0.3.13"
 ssdp-client = "1.0.0"
+reqwest = {version = "0.11.1", features = ["json"]}
+serde_json = "1.0.64"
+influx_db_client = "0.5.0"
