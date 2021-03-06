@@ -564,6 +564,7 @@ dependencies = [
  "futures-util",
  "influx_db_client",
  "reqwest",
+ "serde",
  "serde_json",
  "ssdp-client",
  "tokio",
