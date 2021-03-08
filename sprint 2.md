@@ -43,4 +43,4 @@ but also about introducing encryption to the aggregation layer.
 
 - Look at how the code can be organised to make it more testable
 - Write tests (look at using [proptest](https://docs.rs/proptest/0.9.4/proptest/))
-- Once I've finished add code coverage reports, try to maximise test coverage.
+- Once I've finished adding code coverage reports, try to maximise test coverage.
