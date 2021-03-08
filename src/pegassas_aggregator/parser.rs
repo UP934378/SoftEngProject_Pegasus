@@ -140,7 +140,7 @@ pub struct Solar {
 /// Top level structure to store deserialised data from probes
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Data {
-    probe_id : u64,
+    probe_id : i64,
     cell : Option<Cell>,
     battery : Option<Battery>,
     solar : Option<Solar>,
@@ -151,12 +151,12 @@ pub struct Data {
 pub fn parse_data(data: Data) -> influx_db_client::Points {
     let mut points_vector = std::vec::Vec::new();
     if let Some(cell) = data.cell {
-        for data in cell.data {
+        for cell_data in cell.data {
             let point = influx_db_client::Point::new("cell")
-                        .add_tag("id", i64::from(data.id))
-                        .add_tag("batt_id", i64::from(data.battery_id))
-                        .add_field("cell_voltage", i64::from(data.voltage.voltage))
-                        .add_field("balance_current", i64::from(data.balance_current.current));
+                        .add_tag("cell_id", i64::from(cell_data.id))
+                        .add_tag("probe_id", data.probe_id)
+                        .add_field("cell_voltage", i64::from(cell_data.voltage.voltage))
+                        .add_field("balance_current", i64::from(cell_data.balance_current.current));
             points_vector.push(point);
         }
     }
