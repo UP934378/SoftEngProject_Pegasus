@@ -1,0 +1,69 @@
+{
+    "probe_id": 1, // unique hardware id of probe
+    "cell": {
+      "data": [
+        {
+          "id": 0,
+          "voltage": {
+            "voltage": 0,
+            "unit": "mV"
+          },
+          "ballance_current": {
+            "current": 0,
+            "unit": "mA"
+          }
+        }
+      ]
+    },
+    "battery": {
+      "data": {
+        "battery_current": { 
+          "current": 0,
+          "unit": "mA"
+        },
+        "state_charge": {
+          "charge": 0,
+          "unit": "Wh"
+        },
+        "charge_perc": {
+          "charge": 0,
+          "unit": "%"
+        },
+        "battery_temp": {
+          "temp": 0,
+          "unit": "c"
+        }
+      }
+    },
+    "BMS_temp": {
+      "temp": 0,
+      "unit": "C"
+    },
+    "inverter": {
+      "data": [
+        {
+          "id": 0,
+          "inv_voltage": {
+            "voltage": 0,
+            "unit": "V"
+          },
+          "inv_power": {
+            "power": 0,
+            "unit": "W"
+          },
+          "inv_frequency": {
+            "frequency": 0,
+            "unit": "Hz"
+          }
+        }
+      ]
+    },
+    "grid_power": {
+      "power": 0,
+      "unit": "W"
+    },
+    "house_power": {
+      "power": 0,
+      "unit": "W"
+    }
+  }
