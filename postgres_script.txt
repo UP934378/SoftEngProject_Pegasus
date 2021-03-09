@@ -1,0 +1,64 @@
+/* Postgres database for Pegassas */
+
+CREATE DATABASE pegassas;
+
+\c pegassas;
+
+/* create data type for probe type */
+
+CREATE TYPE PROBE_TYPE AS ENUM ('BMS', 'BALANCER', 'SOLAR_INVERTER');
+
+/* probe table */
+
+CREATE TABLE probe_config(
+		mac_address MACADDR PRIMARY KEY,
+		tls_certificate BYTEA,
+		request_interval INT NOT NULL,
+		probe_cat PROBE_TYPE NOT NULL,
+		firmware_v VARCHAR(10) NOT NULL,
+		ip_address VARCHAR(20) NOT NULL
+		);
+
+/* user table, as user is a reserved word I have extended the name of the table */
+
+CREATE TABLE user_account(
+		userID SERIAL PRIMARY KEY,
+		username VARCHAR(20) NOT NULL,
+		password_hash VARCHAR(60) NOT NULL,
+		email VARCHAR(100) NOT NULL
+		);
+
+/* group table, as group is a reserved word I uses a different name for the table */
+
+CREATE TABLE sys_group(
+		group_id SERIAL PRIMARY KEY,
+		group_name VARCHAR(15) NOT NULL
+		);
+	
+/* joining table between user and group */
+
+CREATE TABLE user_group(
+		userID INT REFERENCES user_account(userID),
+		group_id  INT REFERENCES sys_group(group_id)
+		);
+
+/* notification rule table */
+
+CREATE TABLE notification_rule(
+		rule_id SERIAL PRIMARY KEY,
+		metric VARCHAR(20),
+		threshold_min INT,
+		threshold_max INT
+		);
+
+/* create data type for notification user's preference */
+
+CREATE TYPE NOTIFICATION_TYPE AS ENUM ('EMAIL', 'PUSH');
+
+/* table to list all user interest on notification rule, for each */
+
+CREATE TABLE notify_user(
+		rule_id INT REFERENCES notification_rule(rule_id),
+		userID INT REFERENCES user_account(userID),
+		destination NOTIFICATION_TYPE
+		);
