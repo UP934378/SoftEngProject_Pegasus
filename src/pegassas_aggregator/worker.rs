@@ -45,6 +45,8 @@ impl ProbeWorker {
                     None
                 }
             };
+            let tunnel = 
+
             let response = match request_url {
                 Some(r) => Some(http_client.get(r).send().await),
                 None => None
