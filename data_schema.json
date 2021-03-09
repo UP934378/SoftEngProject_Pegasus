@@ -35,11 +35,7 @@
         }
       }
     },
-    "BMS_temp": {
-      "temp": 0,
-      "unit": "C"
-    },
-    "inverter": {
+    "solar": {
       "data": [
         {
           "id": 0,
