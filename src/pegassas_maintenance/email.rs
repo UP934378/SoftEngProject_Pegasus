@@ -34,7 +34,7 @@ impl Email {
 
     pub fn sendEmail(&Email, creds) {
         // Open a remote connection to email server
-        let mailer = SmtpTransport::relay("") //local server Address
+        let mailer = SmtpTransport::relay("pegassass_email.com") //local server Address
             .unwrap()
             .credentials(creds)
             .build();
