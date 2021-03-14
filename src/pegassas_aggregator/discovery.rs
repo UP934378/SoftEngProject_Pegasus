@@ -1,5 +1,5 @@
 use ssdp_client::{URN, SearchTarget, search, Error, SearchResponse};
-use futures_util::{stream::StreamExt};
+use futures::{stream::StreamExt};
 
 const DOMAIN : &'static str = "pegassas";
 const TYPE : &'static str = "data-probe";

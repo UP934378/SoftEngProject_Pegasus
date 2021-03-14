@@ -650,7 +650,7 @@ dependencies = [
 name = "pegassas-aggregator"
 version = "0.1.0"
 dependencies = [
- "futures-util",
+ "futures",
  "influx_db_client",
  "postgres",
  "reqwest",
