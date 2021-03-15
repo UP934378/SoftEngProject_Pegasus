@@ -69,16 +69,18 @@ impl ProbeWorker {
         };
 
         match schema_tree {
-            Some(ref st) => {
-                match st.get_child("device") {
-                    Some(device) => {
-                        match device.get_child("presentationURL") {
-                            Some(presentation_url) => match presentation_url.get_text() {
-                                Some(url) => Some(url.into_owned()),
-                                None => None
-                            },
-                            None => None
-                        }
+            Some(ref st) => parse_presentation_url(st),
+            None => None
+        }
+    }
+
+    fn parse_presentation_url(schema: xmltree::Element) -> Option<String> {
+        match schema.get_child("device") {
+            Some(device) => {
+                match device.get_child("presentationURL") {
+                    Some(presentation_url) => match presentation_url.get_text() {
+                        Some(url) => Some(url.into_owned()),
+                        None => None
                     },
                     None => None
                 }
@@ -86,6 +88,7 @@ impl ProbeWorker {
             None => None
         }
     }
+    
 
     pub fn update(&self, response: ssdp_client::SearchResponse) {
         match self.url.lock() {
