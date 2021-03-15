@@ -192,10 +192,11 @@ mod test {
         let case2 = xmltree::Element::parse("<root><notdevice><child1></child1><presentationURL>sometext</presentationURL></notdevice></root>".as_bytes())?;
         let case3 = xmltree::Element::parse("<root><device><child1></child1><child2>sometext</child2></device></root>".as_bytes())?;
         let case4 = xmltree::Element::parse("<root><device><child1></child1><presentationURL>sometext</presentationURL></device></root>".as_bytes())?;
+        let text: Option<String> = Some("sometext".to_string());
         assert_eq!(None, ProbeWorker::parse_presentation_url(&case1));
         assert_eq!(None, ProbeWorker::parse_presentation_url(&case2));
         assert_eq!(None, ProbeWorker::parse_presentation_url(&case3));
-        assert_eq!("sometext", ProbeWorker::parse_presentation_url(&case4));
+        assert_eq!(text, ProbeWorker::parse_presentation_url(&case4));
         Ok(())
     }
 }
