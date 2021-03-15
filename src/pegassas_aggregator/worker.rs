@@ -69,7 +69,7 @@ impl ProbeWorker {
         };
 
         match schema_tree {
-            Some(ref st) => parse_presentation_url(st),
+            Some(ref st) => ProbeWorker::parse_presentation_url(st),
             None => None
         }
     }
