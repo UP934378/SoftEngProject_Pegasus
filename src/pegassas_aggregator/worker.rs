@@ -74,7 +74,7 @@ impl ProbeWorker {
         }
     }
 
-    fn parse_presentation_url(schema: xmltree::Element) -> Option<String> {
+    fn parse_presentation_url(&schema: xmltree::Element) -> Option<String> {
         match schema.get_child("device") {
             Some(device) => {
                 match device.get_child("presentationURL") {
