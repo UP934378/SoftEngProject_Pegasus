@@ -1,5 +1,5 @@
 [package]
-name = "pegassas-aggregator"
+name = "pegassas_aggregator"
 version = "0.1.0"
 authors = ["ZacJW <11651573+ZacJW@users.noreply.github.com>"]
 edition = "2018"

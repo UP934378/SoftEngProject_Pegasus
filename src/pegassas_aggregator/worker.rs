@@ -182,3 +182,14 @@ impl ProbeWorker {
 
     
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn test_parse_presentation_url() -> Result<(), xmltree::ParseError> {
+        let tree = xmltree::Element::parse("<root></root>".as_bytes())?;
+        assert_eq!(None, ProbeWorker::parse_presentation_url(&tree));
+        Ok(())
+    }
+}
