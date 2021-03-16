@@ -1,0 +1,26 @@
+from: markdown
+output-file: ProgressReports/ProgressReportsCW3.pdf 
+pdf-engine: xelatex 
+input-files:
+- ProgressReports/2021-01-05-17-15.md
+- ProgressReports/2021-01-12-17-05.md
+- ProgressReports/2021-01-15-18-00.md
+- ProgressReports/2021-01-19-17-00.md
+- ProgressReports/2021-01-28-13-30.md
+- ProgressReports/2021-02-06-16-30.md
+- ProgressReports/2021-02-08-10-40.md
+- ProgressReports/2021-02-09-11-00.md
+- ProgressReports/2021-02-11-14-50.md
+- ProgressReports/2021-02-12-15-00.md
+- ProgressReports/2021-02-15-11-00.md
+- ProgressReports/2021-02-16-10-15.md
+- ProgressReports/2021-02-16-10-18.md
+- ProgressReports/2021-02-19-12-00.md
+- ProgressReports/2021-02-22-11-00.md
+- ProgressReports/2021-02-25-10-00.md
+- ProgressReports/2021-03-01-11-30.md
+- ProgressReports/2021-03-04-12-00.md
+- ProgressReports/2021-03-07-15-30.md
+- ProgressReports/2021-03-08-11-00.md
+- ProgressReports/2021-03-11-11-00.md
+- ProgressReports/2021-03-15-11-00.md
