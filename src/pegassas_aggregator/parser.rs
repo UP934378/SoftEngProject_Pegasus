@@ -87,7 +87,7 @@ pub struct CellData {
     id : u16,
     battery_id : u16,
     voltage : Voltage,
-    balance_current : Current
+    balance_current : Option<Current>
 }
 
 
@@ -134,7 +134,7 @@ pub struct Solar {
 /// Top level structure to store deserialised data from probes
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Data {
-    probe_id : i64,
+    probe_id : String,
     cell : Option<Cell>,
     battery : Option<Battery>,
     solar : Option<Solar>,
@@ -147,18 +147,21 @@ pub fn parse_data(data: Data) -> influx_db_client::Points {
     // Cell Data - pointers to InfluxDB - Uses data_schema.json
     if let Some(cell) = data.cell {
         for cell_data in cell.data {
-            let point = influx_db_client::Point::new("cell")
+            let mut point = influx_db_client::Point::new("cell")
                         .add_tag("cell_id", i64::from(cell_data.id))
-                        .add_tag("probe_id", data.probe_id)
-                        .add_field("cell_voltage", i64::from(cell_data.voltage.voltage))
-                        .add_field("balance_current", i64::from(cell_data.balance_current.current));
+                        .add_tag("probe_id", data.probe_id.clone())
+                        .add_field("cell_voltage", i64::from(cell_data.voltage.voltage));
+            if let Some(balance_current) = cell_data.balance_current {
+                point = point.add_field("balance_current", i64::from(balance_current.current));
+            }
+                        
             points_vector.push(point);
         }
     }
     // Battery Data - pointers to InfluxDB - Uses data_schema.json
     if let Some(battery) = data.battery {
         let point = influx_db_client::Point::new("battery")
-            .add_tag("probe_id", data.probe_id)
+            .add_tag("probe_id", data.probe_id.clone())
             .add_field("battery_current", i64::from(battery.data.balance_current.current))
             .add_field("state_charge", i64::from(battery.data.state_charge.charge))
             .add_field("charge_perc", i64::from(battery.data.charge_perc.charge));
@@ -174,7 +177,7 @@ pub fn parse_data(data: Data) -> influx_db_client::Points {
         for solar_data in solar.data {
             let point = influx_db_client::Point::new("inverter")
                         .add_tag("solar_data", solar_data.id)
-                        .add_tag("probe_id", data.probe_id)
+                        .add_tag("probe_id", data.probe_id.clone())
                         .add_field("sol_inv_voltage", i64::from(solar_data.sol_inv_voltage.voltage))
                         .add_field("sol_inv_power", i64::from(solar_data.sol_inv_power.power))
                         .add_field("sol_inv_frequency", i64::from(solar_data.sol_inv_frequency.frequency));
