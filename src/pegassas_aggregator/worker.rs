@@ -6,6 +6,11 @@ use std::sync::{Arc, Mutex};
 use tokio::runtime::Runtime;
 use crate::pegassas_aggregator::parser::{Data, parse_data};
 
+/**
+ * Worker structure that handles connecting to a data probe
+ * and parsing the returned data and inserting it into the
+ * database.
+ */
 pub struct ProbeWorker {
     pub url : std::sync::Mutex<String>,
     usn: String,
