@@ -21,6 +21,12 @@ jobs:
           toolchain: stable
       - name: Install Clippy
         run: rustup component add clippy
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ./target
+            !./target/doc
+          key: ${{ runner.os }}-agg-lint-${{ hashFiles('./Cargo.lock', './Cargo.toml') }}
       - name: Run Clippy
         run: cargo clippy
   test:
