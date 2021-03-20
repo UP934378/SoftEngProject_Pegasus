@@ -1,0 +1,26 @@
+name: Rust Doc
+
+on:
+  push:
+    branches:
+      - aggregator-dev
+
+jobs:
+  test:
+    name: Rust Doc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo doc --no-deps --target-dir /tmp/pegassas_aggregator_docs/
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+      - run: cp -r /tmp/pegassas_aggregator_docs/docs/ ./docs/code_docs/
+      - uses: EndBug/add-and-commit@v5
+        with:
+          add: ./docs/
+          message: Regenerated aggregator-docs
+          branch: gh-pages
