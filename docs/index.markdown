@@ -1,6 +1,6 @@
 ---
 ---
 
-[Aggregator Rust Docs](/code_docs/doc/pegassas_aggregator/)
+[Aggregator Rust Docs](/cw-code-t1/code_docs/doc/pegassas_aggregator/)
 
-[WebApp Rust Docs](/code_docs/doc/pegassas_webapp/)
+[WebApp Rust Docs](/cw-code-t1/code_docs/doc/pegassas_webapp/)
