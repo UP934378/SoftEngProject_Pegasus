@@ -19,7 +19,7 @@ jobs:
           path: |
             ./target
             !./target/doc
-          key: ${{ runner.os }}-agg-${{ GITHUB_SHA }}
+          key: ${{ runner.os }}-agg-${{ github.sha }}
       - run: cargo doc --no-deps
       - run: mkdir -p /tmp/pegassas_aggregator_docs/
       - run: cp -r ./target/doc/ /tmp/pegassas_aggregator_docs/
