@@ -24,5 +24,5 @@ jobs:
           path: |
             ./target
             !./target/doc
-          key: ${{ runner.os }}-agg-${{ hashFiles('./Cargo.lock', './Cargo.toml') }}
+          key: ${{ runner.os }}-agg-test-${{ hashFiles('./Cargo.lock', './Cargo.toml') }}
       - run: cargo test
