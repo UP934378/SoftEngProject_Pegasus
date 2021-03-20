@@ -21,6 +21,8 @@ pub struct ProbeWorker {
 }
 
 impl ProbeWorker {
+
+    /// Build a new Worker 
     pub fn new(usn: String, rt: Arc<Runtime>) -> ProbeWorker {
         ProbeWorker {
             url: std::sync::Mutex::new("".to_string()),
@@ -46,6 +48,7 @@ impl ProbeWorker {
         }
     }
 
+    /// Read data url from ssdp client response
     fn get_data_url(&self, response: ssdp_client::SearchResponse) -> Option<String> {
         let http_client = reqwest::Client::new();
         // Request schema from probe
@@ -79,6 +82,7 @@ impl ProbeWorker {
         }
     }
 
+    /// Extract data url from XML tree
     fn parse_presentation_url(schema: &xmltree::Element) -> Option<String> {
         match schema.get_child("device") {
             Some(device) => {
@@ -94,7 +98,7 @@ impl ProbeWorker {
         }
     }
     
-
+    /// Update Worker informations
     pub fn update(&self, response: ssdp_client::SearchResponse) {
         match self.url.lock() {
             Ok(mut url) => *url = match self.get_data_url(response){
