@@ -203,6 +203,11 @@
 <span id="200">200</span>
 <span id="201">201</span>
 <span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::{<span class="ident">Duration</span>, <span class="ident">Instant</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">string</span>::<span class="ident">String</span>;
@@ -212,6 +217,11 @@
 <span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">runtime</span>::<span class="ident">Runtime</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">pegassas_aggregator</span>::<span class="ident">parser</span>::{<span class="ident">Data</span>, <span class="ident">parse_data</span>};
 
+<span class="doccomment">/**
+ * Worker structure that handles connecting to a data probe
+ * and parsing the returned data and inserting it into the
+ * database.
+ */</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ProbeWorker</span> {
     <span class="kw">pub</span> <span class="ident">url</span> : <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="ident">usn</span>: <span class="ident">String</span>,
