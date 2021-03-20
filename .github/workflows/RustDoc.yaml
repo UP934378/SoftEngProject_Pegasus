@@ -14,7 +14,15 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - run: cargo doc --no-deps --target-dir /tmp/pegassas_aggregator_docs/
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ./target
+            !./target/doc
+          key: ${{ runner.os }}-aggregator-docs-${{ hashFiles('**/lockfiles') }}
+      - run: cargo doc --no-deps
+      - run: mkdir -p /tmp/pegassas_aggregator_docs/doc/
+      - run: cp -r ./target/doc/ /tmp/pegassas_aggregator_docs/doc/
       - uses: actions/checkout@v2
         with:
           ref: gh-pages
@@ -24,3 +32,8 @@ jobs:
           add: ./docs/
           message: Regenerated aggregator-docs
           branch: gh-pages
+      - name: Clean-up temporary files
+        run: rm -rf /tmp/pegassas_aggregator_docs/
+      - uses: actions/checkout@v2
+        with:
+          ref: aggregator-dev
