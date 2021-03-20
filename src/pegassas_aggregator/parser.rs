@@ -3,33 +3,39 @@ use std::fmt::Debug;
 
 // Unit enums
 
+/// Voltage metric
 #[derive(Serialize, Deserialize, Debug)]
 pub enum VoltageUnit {
     mV,
     V
 }
 
+/// Current metric 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum CurrentUnit {
     mA
 }
 
+/// Charge metric 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum ChargeUnit {
     Percentage,
     Wh
 }
 
+/// Temperature metric
 #[derive(Serialize, Deserialize, Debug)]
 pub enum TemperatureUnit {
     C
 }
 
+/// Power unit metric
 #[derive(Serialize, Deserialize, Debug)]
 pub enum PowerUnit {
     W
 }
 
+/// Frequency metric
 #[derive(Serialize, Deserialize, Debug)]
 pub enum FrequencyUnit {
     Hz
@@ -81,7 +87,7 @@ pub struct Frequency {
 
 // Probe reading structs
 
-
+/// Cell probe information structure
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CellData {
     id : u16,
@@ -90,7 +96,7 @@ pub struct CellData {
     balance_current : Option<Current>
 }
 
-
+/// Battery probe information structure
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BatteryData {
     id : u16,
@@ -100,7 +106,7 @@ pub struct BatteryData {
     battery_temp : Option<Temperature>
 }
 
-
+/// Solar Panel information structure
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SolarData {
     id: String,
@@ -109,29 +115,25 @@ pub struct SolarData {
     sol_inv_frequency : Frequency
 }
 
+/// Container structure for cell informations
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Cell {
     data : std::vec::Vec<CellData>
 }
 
-
+/// Container structure for battery informations
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Battery {
     data : BatteryData
 }
 
-
+/// Container structure for Solar panel informations
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Solar {
     data : std::vec::Vec<SolarData>
 }
 
-
-
-
-
-
-/// Top level structure to store deserialised data from probes
+/// Top level structure to store deserialized data from probes
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Data {
     probe_id : String,
@@ -142,6 +144,7 @@ pub struct Data {
     house_power : Option<Power>
 }
 
+/// Parse information from data probe and generate point to be added to Influx database
 pub fn parse_data(data: Data) -> influx_db_client::Points {
     let mut points_vector = std::vec::Vec::new();
     // Cell Data - pointers to InfluxDB - Uses data_schema.json
@@ -198,11 +201,6 @@ pub fn parse_data(data: Data) -> influx_db_client::Points {
             .add_tag("house_power", i64::from(house_power.power));
         points_vector.push(point);
     }
-    // TODO: add point creation for:
-    // - data.battery
-    // - data.solar
-    // - data.grid_power
-    // - data.house_power
 
     influx_db_client::Points::create_new(points_vector)
 }
