@@ -286,6 +286,7 @@
 <span id="283">283</span>
 <span id="284">284</span>
 <span id="285">285</span>
+<span id="286">286</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">get</span>, <span class="ident">web</span>, <span class="ident">App</span>, <span class="ident">HttpRequest</span>, <span class="ident">HttpServer</span>, <span class="ident">Responder</span>, <span class="ident">web</span>::<span class="ident">Query</span>, <span class="ident">HttpResponse</span>, <span class="prelude-ty">Result</span>, <span class="ident">http</span>::<span class="ident">header</span>::{<span class="ident">CONTENT_TYPE</span>, <span class="ident">LOCATION</span>}, };
 <span class="kw">use</span> <span class="ident">influx_db_client</span>::{<span class="ident">Client</span> <span class="kw">as</span> <span class="ident">InfluxClient</span>, <span class="ident">Point</span>, <span class="ident">Points</span>, <span class="ident">Value</span>, <span class="ident">Precision</span>, };
@@ -435,6 +436,7 @@
 }
 
 <span class="doccomment">/// Request data from database and return it in a Json format</span>
+<span class="doccomment">/// </span>
 <span class="doccomment">/// Parameters:</span>
 <span class="doccomment">/// - Table = Database entity where information are stored</span>
 <span class="doccomment">/// - column_selector = information required from database entity</span>
