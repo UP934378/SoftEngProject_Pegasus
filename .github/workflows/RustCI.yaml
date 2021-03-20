@@ -11,6 +11,18 @@ on:
       - aggregator-dev
 
 jobs:
+  lint:
+    name: Rust Clippy Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Install Clippy
+        run: rustup component add clippy
+      - name: Run Clippy
+        run: cargo clippy
   test:
     name: Rust Test
     runs-on: ubuntu-latest
