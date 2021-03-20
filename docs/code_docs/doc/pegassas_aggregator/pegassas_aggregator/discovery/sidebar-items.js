@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["DOMAIN",""],["PROBE_URN",""],["ST",""],["TYPE",""]],"fn":[["discover_probes",""]]});
+initSidebarItems({"constant":[["DOMAIN","SSDP service domain"],["PROBE_URN","SSDP service Uniform Resource Name (URN)"],["ST","SSDP search target"],["TYPE","SSDP service type"]],"fn":[["discover_probes","Finds all the data probes connected to the network in the same subnet"]]});
