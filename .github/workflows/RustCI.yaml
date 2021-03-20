@@ -28,7 +28,7 @@ jobs:
             !./target/doc
           key: ${{ runner.os }}-agg-lint-${{ hashFiles('./Cargo.lock', './Cargo.toml') }}
       - name: Run Clippy
-        run: cargo clippy
+        run: cargo clippy -- -D "clippy::style"
   test:
     name: Rust Test
     runs-on: ubuntu-latest
