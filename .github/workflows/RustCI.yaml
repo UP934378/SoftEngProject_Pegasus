@@ -28,7 +28,7 @@ jobs:
             !./target/doc
           key: ${{ runner.os }}-agg-lint-${{ hashFiles('./Cargo.lock', './Cargo.toml') }}
       - name: Run Clippy
-        run: cargo clippy -- -D "clippy::style"
+        run: cargo clippy --package pegassas_aggregator -- -D "clippy::style"
   test:
     name: Rust Test
     runs-on: ubuntu-latest
