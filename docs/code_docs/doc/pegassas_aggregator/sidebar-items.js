@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main",""]],"mod":[["discovery",""],["parser",""],["worker",""]]});
+initSidebarItems({"fn":[["main",""]],"mod":[["discovery",""],["parser",""],["worker",""]],"struct":[["ProbeConfig",""]]});
