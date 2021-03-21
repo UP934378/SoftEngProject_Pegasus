@@ -58,10 +58,12 @@
 <span id="55">55</span>
 <span id="56">56</span>
 <span id="57">57</span>
+<span id="58">58</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">mod</span> <span class="ident">pegassas_aggregator</span>;
-<span class="kw">use</span> <span class="ident">pegassas_aggregator</span>::<span class="ident">discovery</span>;
-<span class="kw">use</span> <span class="ident">pegassas_aggregator</span>::<span class="ident">worker</span>::<span class="ident">ProbeWorker</span>;
+<span class="kw">mod</span> <span class="ident">discovery</span>;
+<span class="kw">mod</span> <span class="ident">worker</span>;
+<span class="kw">mod</span> <span class="ident">parser</span>;
+<span class="kw">use</span> <span class="ident">worker</span>::<span class="ident">ProbeWorker</span>;
 
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">hash_map</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">runtime</span>::<span class="ident">Runtime</span>;

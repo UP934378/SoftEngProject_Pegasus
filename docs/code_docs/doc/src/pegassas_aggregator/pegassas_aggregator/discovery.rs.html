@@ -18,26 +18,16 @@
 <span id="15">15</span>
 <span id="16">16</span>
 <span id="17">17</span>
-<span id="18">18</span>
-<span id="19">19</span>
-<span id="20">20</span>
-<span id="21">21</span>
-<span id="22">22</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">ssdp_client</span>::{<span class="ident">URN</span>, <span class="ident">SearchTarget</span>, <span class="ident">search</span>, <span class="ident">Error</span>, <span class="ident">SearchResponse</span>};
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">stream</span>::<span class="ident">StreamExt</span>};
 
-<span class="doccomment">/// SSDP service domain</span>
 <span class="kw">const</span> <span class="ident">DOMAIN</span> : <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;pegassas&quot;</span>;
-<span class="doccomment">/// SSDP service type</span>
 <span class="kw">const</span> <span class="ident">TYPE</span> : <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;data-probe&quot;</span>;
-<span class="doccomment">/// SSDP service Uniform Resource Name (URN)</span>
 <span class="kw">const</span> <span class="ident">PROBE_URN</span> : <span class="ident">URN</span> <span class="op">=</span> <span class="ident">URN</span>::<span class="ident">Service</span>(<span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="ident">DOMAIN</span>),
                                         <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="ident">TYPE</span>), <span class="number">1</span>);
-<span class="doccomment">/// SSDP search target</span>
 <span class="kw">const</span> <span class="ident">ST</span> : <span class="ident">SearchTarget</span> <span class="op">=</span> <span class="ident">SearchTarget</span>::<span class="ident">URN</span>(<span class="ident">PROBE_URN</span>);
 
-<span class="doccomment">/// Finds all the data probes connected to the network in the same subnet</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">discover_probes</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">vec</span>::<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SearchResponse</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>{
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response_stream</span> <span class="op">=</span> <span class="ident">search</span>(<span class="kw-2">&amp;</span><span class="ident">ST</span>, <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">5</span>), <span class="number">4</span>).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">responses</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>::<span class="ident">new</span>();

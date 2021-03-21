@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main",""]],"mod":[["pegassas_aggregator",""]]});
+initSidebarItems({"fn":[["main",""]],"mod":[["discovery",""],["parser",""],["worker",""]]});

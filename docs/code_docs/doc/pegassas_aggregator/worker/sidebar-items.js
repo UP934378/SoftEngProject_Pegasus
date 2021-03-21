@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ProbeWorker","Worker structure that handles connecting to a data probe and parsing the returned data and inserting it into the database."]]});
