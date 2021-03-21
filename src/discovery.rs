@@ -2,9 +2,9 @@ use ssdp_client::{URN, SearchTarget, search, Error, SearchResponse};
 use futures::{stream::StreamExt};
 
 /// SSDP service domain
-const DOMAIN : &'static str = "pegassas";
+const DOMAIN : &str = "pegassas";
 /// SSDP service type
-const TYPE : &'static str = "data-probe";
+const TYPE : &str = "data-probe";
 /// SSDP service Uniform Resource Name (URN)
 const PROBE_URN : URN = URN::Service(std::borrow::Cow::Borrowed(DOMAIN),
                                         std::borrow::Cow::Borrowed(TYPE), 1);
