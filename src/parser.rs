@@ -191,14 +191,16 @@ pub fn parse_data(data: Data) -> influx_db_client::Points {
     // Grid Power Data - pointers to InfluxDB - Uses data_schema.json
      if let Some(grid_power) = data.grid_power {
         let point = influx_db_client::Point::new("grid_power")
-            .add_tag("grid_power", i64::from(grid_power.power));
+            .add_tag("probe_id", data.probe_id.clone())
+            .add_field("grid_power", i64::from(grid_power.power));
         points_vector.push(point);
     }
 
     // House Power Data - pointers to InfluxDB - Uses data_schema.json
     if let Some(house_power) = data.house_power {
         let point = influx_db_client::Point::new("house_power")
-            .add_tag("house_power", i64::from(house_power.power));
+            .add_tag("probe_id", data.probe_id.clone())
+            .add_field("house_power", i64::from(house_power.power));
         points_vector.push(point);
     }
 
