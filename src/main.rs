@@ -33,7 +33,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     let host = "localhost";
     let user = "aggregator";
     let dbname = "pegassas";
-    let mut postgres_client = match postgres::Client::connect(format!("host={} user={} dbname={}", host, user, dbname), postgres::NoTls){
+    let mut postgres_client = match postgres::Client::connect(format!("host={} user={} dbname={}", host, user, dbname).as_str(), postgres::NoTls){
         Ok(c) => {
             info!("Connection to postgres database successful. host: {}, user: {}, dbname: {}", host, user, dbname);
             c
