@@ -4,7 +4,7 @@ use serde_json::Deserializer;
 use std::ops::Deref;
 use std::sync::{Arc, Mutex};
 use tokio::runtime::Runtime;
-use crate::pegassas_aggregator::parser::{Data, parse_data};
+use crate::parser::{Data, parse_data};
 
 /**
  * Worker structure that handles connecting to a data probe

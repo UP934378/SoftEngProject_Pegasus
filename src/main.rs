@@ -1,6 +1,7 @@
-mod pegassas_aggregator;
-use pegassas_aggregator::discovery;
-use pegassas_aggregator::worker::ProbeWorker;
+mod discovery;
+mod worker;
+mod parser;
+use worker::ProbeWorker;
 
 use std::collections::hash_map::HashMap;
 use tokio::runtime::Runtime;
