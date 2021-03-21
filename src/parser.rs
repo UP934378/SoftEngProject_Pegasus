@@ -179,7 +179,7 @@ pub fn parse_data(data: Data) -> influx_db_client::Points {
     if let Some(solar) = data.solar {
         for solar_data in solar.data {
             let point = influx_db_client::Point::new("inverter")
-                        .add_tag("solar_data", solar_data.id)
+                        .add_tag("solar_id", solar_data.id)
                         .add_tag("probe_id", data.probe_id.clone())
                         .add_field("sol_inv_voltage", i64::from(solar_data.sol_inv_voltage.voltage))
                         .add_field("sol_inv_power", i64::from(solar_data.sol_inv_power.power))
