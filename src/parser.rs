@@ -1,3 +1,6 @@
+/**
+ * This section of code is used to translate the raw data given by the probes inserting it into the top level InfluxDB database.
+ */
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 
@@ -99,10 +102,9 @@ pub struct CellData {
 /// Battery probe information structure
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BatteryData {
-    id : u16,
     state_charge : Charge,
     charge_perc : Charge,
-    balance_current : Current,
+    battery_current : Current,
     battery_temp : Option<Temperature>
 }
 
@@ -165,7 +167,7 @@ pub fn parse_data(data: Data) -> influx_db_client::Points {
     if let Some(battery) = data.battery {
         let point = influx_db_client::Point::new("battery")
             .add_tag("probe_id", data.probe_id.clone())
-            .add_field("battery_current", i64::from(battery.data.balance_current.current))
+            .add_field("battery_current", i64::from(battery.data.battery_current.current))
             .add_field("state_charge", i64::from(battery.data.state_charge.charge))
             .add_field("charge_perc", i64::from(battery.data.charge_perc.charge));
         let point = match battery.data.battery_temp { //Temp here = temperature of battery
@@ -205,4 +207,201 @@ pub fn parse_data(data: Data) -> influx_db_client::Points {
     }
 
     influx_db_client::Points::create_new(points_vector)
+}
+
+#[cfg(test)]
+mod test {
+    use serde_json::Deserializer;
+    use influx_db_client::Value;
+    #[test]
+    // First test -> Tests  to insure that parser can read a JSON string provided to it and provides InfluxDB points
+    // Expected Result = Pass
+    fn parser_test_cell() -> Result<(), Box<dyn std::error::Error>>{
+        let json_string = "{
+                                \"probe_id\":\"2\",
+                                \"cell\": {
+                                    \"data\": [{
+                                        \"id\": 2, 
+                                        \"battery_id\": 31,
+                                        \"voltage\":{
+                                            \"voltage\": 40,
+                                            \"unit\": \"mV\"
+                                        },
+                                        \"balance_current\":{
+                                            \"current\": 20,
+                                            \"unit\": \"mA\"
+                                        }
+                                    }]
+                                }
+                            }";
+        for data in Deserializer::from_str(json_string).into_iter::<super::Data>() {
+            match data {
+                Ok(data) => {
+                    for point in super::parse_data(data){
+                        if let Some(Value::String(probe_id)) = point.tags.get("probe_id") {
+                            assert_eq!(probe_id, "2");
+                        }
+                        if let Some(Value::String(cell_id)) = point.tags.get("cell_id") {
+                            assert_eq!(cell_id, "2");
+                        }
+                        if let Some(Value::Integer(cell_voltage)) = point.tags.get("cell_voltage") {
+                            assert_eq!(cell_voltage, &(40 as i64));
+                        }
+                        if let Some(Value::Integer(balance_current)) = point.tags.get("balance_current") {
+                            assert_eq!(balance_current, &(20 as i64));
+                        }  
+                    }
+                },
+                Err(e) => return Err(Box::new(e))
+            }
+            
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn parser_test_battery() -> Result<(), Box<dyn std::error::Error>>{
+        let json_string = "{
+                                \"probe_id\": \"1\",
+                                \"battery\": {
+                                    \"data\": {
+                                        \"battery_current\": { 
+                                            \"current\": 0,
+                                            \"unit\": \"mA\"
+                                        },
+                                        \"state_charge\": {
+                                            \"charge\": 0,
+                                            \"unit\": \"Wh\"
+                                        },
+                                        \"charge_perc\": {
+                                            \"charge\": 0,
+                                            \"unit\": \"Percentage\"
+                                        },
+                                        \"battery_temp\": {
+                                            \"temp\": 0,
+                                            \"unit\": \"C\"
+                                        }
+                                    }
+                                }
+                            }";
+        for data in Deserializer::from_str(json_string).into_iter::<super::Data>() {
+            match data {
+                Ok(data) => for point in super::parse_data(data){
+                    if let Some(Value::String(probe_id)) = point.tags.get("probe_id") {
+                        assert_eq!(probe_id, "1");
+                    }
+                    if let Some(Value::String(charge_perc)) = point.tags.get("charge_perc") {
+                        assert_eq!(charge_perc, "0");
+                    }
+                    if let Some(Value::Integer(state_charge)) = point.tags.get("state_charge") {
+                        assert_eq!(state_charge, &(0 as i64));
+                    }
+                    if let Some(Value::Integer(battery_current)) = point.tags.get("battery_current") {
+                        assert_eq!(battery_current, &(0 as i64));
+                    }  
+                },
+                Err(e) => return Err(Box::new(e))
+            }
+            
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn parser_test_solar() -> Result<(), Box<dyn std::error::Error>>{
+        let json_string = "{
+                                \"probe_id\":\"2\",
+                                \"solar\":{
+                                    \"data\": [{
+                                        \"id\": \"2\",
+                                         \"sol_inv_voltage\":{
+                                             \"voltage\": 0,
+                                             \"unit\": \"mV\"
+                                        },
+                                         \"sol_inv_power\": {
+                                             \"power\": 0,
+                                             \"unit\": \"W\"
+                                        },
+                                        \"sol_inv_frequency\":{
+                                            \"frequency\":0,
+                                            \"unit\": \"Hz\"
+                                        }
+                                    }]
+                                }
+                            }";
+        for data in Deserializer::from_str(json_string).into_iter::<super::Data>() {
+            match data {
+                Ok(data) => for point in super::parse_data(data){
+                    if let Some(Value::String(probe_id)) = point.tags.get("probe_id") {
+                        assert_eq!(probe_id, "2");
+                    }
+                    if let Some(Value::String(solar_id)) = point.tags.get("solar_id") {
+                        assert_eq!(solar_id, "2");
+                    }
+                    if let Some(Value::String(sol_inv_voltage)) = point.tags.get("charge_perc") {
+                        assert_eq!(sol_inv_voltage, "0");
+                    }
+                    if let Some(Value::Integer(sol_inv_power)) = point.tags.get("sol_inv_power") {
+                        assert_eq!(sol_inv_power, &(0 as i64));
+                    }
+                    if let Some(Value::Integer(sol_inv_frequency)) = point.tags.get("sol_inv_frequency") {
+                        assert_eq!(sol_inv_frequency, &(0 as i64));
+                    }  
+                },
+                Err(e) => return Err(Box::new(e))
+            }
+        }
+        Ok(())    
+    }
+
+    #[test]
+    fn parser_test_grid_power() -> Result<(), Box<dyn std::error::Error>>{
+        let json_string = "{
+                                \"probe_id\":\"2\",
+                                \"grid_power\": {
+                                    \"power\": 0,
+                                    \"unit\": \"W\"
+                                }
+                           }";
+        for data in Deserializer::from_str(json_string).into_iter::<super::Data>() {
+            match data {
+                Ok(data) => for point in super::parse_data(data){
+                    if let Some(Value::String(probe_id)) = point.tags.get("probe_id") {
+                        assert_eq!(probe_id, "2");
+                    }
+                    if let Some(Value::String(grid_power)) = point.tags.get("grid_power") {
+                        assert_eq!(grid_power, "0");
+                    }  
+                },
+                Err(e) => return Err(Box::new(e))
+            }            
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn parser_test_house() -> Result<(), Box<dyn std::error::Error>>{
+        let json_string = "{
+                                \"probe_id\":\"2\",
+                                    \"house_power\": {
+                                            \"power\": 0,
+                                            \"unit\": \"W\"
+                                    }
+                            }";        
+       for data in Deserializer::from_str(json_string).into_iter::<super::Data>() {
+            match data {
+                Ok(data) => for point in super::parse_data(data){
+                    if let Some(Value::String(probe_id)) = point.tags.get("probe_id") {
+                        assert_eq!(probe_id, "2");
+                    }
+                    if let Some(Value::String(house_power)) = point.tags.get("house_power") {
+                        assert_eq!(house_power, "0");
+                    }  
+                },
+                Err(e) => return Err(Box::new(e))
+            }
+            
+        }
+        Ok(())
+    }
 }

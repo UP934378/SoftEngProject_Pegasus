@@ -1,9 +1,9 @@
 {
-    "probe_id": 1, // unique hardware id of probe
+    "probe_id": "1", // unique hardware id of probe
     "cell": {
       "data": [
         {
-          "id": 0,
+          "id": "0",
           "voltage": {
             "voltage": 0,
             "unit": "mV"
@@ -31,23 +31,23 @@
         },
         "battery_temp": {
           "temp": 0,
-          "unit": "c"
+          "unit": "C"
         }
       }
     },
     "solar": {
       "data": [
         {
-          "id": 0,
-          "inv_voltage": {
+          "id": "0",
+          "sol_inv_voltage": {
             "voltage": 0,
             "unit": "V"
           },
-          "inv_power": {
+          "sol_inv_power": {
             "power": 0,
             "unit": "W"
           },
-          "inv_frequency": {
+          "sol_inv_frequency": {
             "frequency": 0,
             "unit": "Hz"
           }
