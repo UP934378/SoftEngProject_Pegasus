@@ -1,3 +1,6 @@
+/** 
+ * This section of code is for discovery of new probes on a given network - see below for further details. 
+ */
 use ssdp_client::{URN, SearchTarget, search, Error, SearchResponse};
 use futures::{stream::StreamExt};
 
@@ -12,8 +15,9 @@ const PROBE_URN : URN = URN::Service(std::borrow::Cow::Borrowed(DOMAIN),
 const ST : SearchTarget = SearchTarget::URN(PROBE_URN);
 
 /// Finds all the data probes connected to the network in the same subnet
+// Cannot test this function due to nature of code.
 pub async fn discover_probes() -> Result<std::vec::Vec<SearchResponse>, Error>{
-    let mut response_stream = search(&ST, std::time::Duration::from_secs(5), 4).await?;
+    let mut response_stream = search(&ST, std::time::Duration::from_secs(5), 4).await?; //  Wait for response from target for max 5 seconds.
     let mut responses = std::vec::Vec::new();
     while let Some(response) = response_stream.next().await{
         responses.push(response?);
