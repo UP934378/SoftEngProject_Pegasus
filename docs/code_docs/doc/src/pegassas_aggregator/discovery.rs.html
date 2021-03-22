@@ -23,7 +23,14 @@
 <span id="20">20</span>
 <span id="21">21</span>
 <span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="doccomment">/** 
+ * This section of code is for discovery of new probes on a given network - see below for further details. 
+ */</span>
 <span class="kw">use</span> <span class="ident">ssdp_client</span>::{<span class="ident">URN</span>, <span class="ident">SearchTarget</span>, <span class="ident">search</span>, <span class="ident">Error</span>, <span class="ident">SearchResponse</span>};
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">stream</span>::<span class="ident">StreamExt</span>};
 
@@ -38,8 +45,9 @@
 <span class="kw">const</span> <span class="ident">ST</span> : <span class="ident">SearchTarget</span> <span class="op">=</span> <span class="ident">SearchTarget</span>::<span class="ident">URN</span>(<span class="ident">PROBE_URN</span>);
 
 <span class="doccomment">/// Finds all the data probes connected to the network in the same subnet</span>
+<span class="comment">// Cannot test this function due to nature of code.</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">discover_probes</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">vec</span>::<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SearchResponse</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>{
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response_stream</span> <span class="op">=</span> <span class="ident">search</span>(<span class="kw-2">&amp;</span><span class="ident">ST</span>, <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">5</span>), <span class="number">4</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response_stream</span> <span class="op">=</span> <span class="ident">search</span>(<span class="kw-2">&amp;</span><span class="ident">ST</span>, <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">5</span>), <span class="number">4</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">//  Wait for response from target for max 5 seconds.</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">responses</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>::<span class="ident">new</span>();
     <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">response</span>) <span class="op">=</span> <span class="ident">response_stream</span>.<span class="ident">next</span>().<span class="kw">await</span>{
         <span class="ident">responses</span>.<span class="ident">push</span>(<span class="ident">response</span><span class="question-mark">?</span>);
