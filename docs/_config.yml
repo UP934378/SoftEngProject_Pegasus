@@ -28,8 +28,8 @@ baseurl: "/cw-code-t1" # the subpath of your site, e.g. /blog
 url: "https://m30819-2020.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
 # github_username:  jekyll
-# # Build settings
-# theme: jekyll-theme-midnight
+# Build settings
+theme: jekyll-theme-midnight
 # plugins:
 #   - jekyll-feed
 
