@@ -29,7 +29,7 @@ url: "https://m30819-2020.github.io" # the base hostname & protocol for your sit
 # twitter_username: jekyllrb
 # github_username:  jekyll
 # # Build settings
-# theme: minima
+# theme: jekyll-theme-midnight
 # plugins:
 #   - jekyll-feed
 
