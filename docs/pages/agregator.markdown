@@ -3,7 +3,7 @@
 
 # Agregator
 
-[Home]({% link /cw-code-t1/docs/index.markdown %})
+[Home]({% link /cw-code-t1/docs/pages/index.markdown %})
 
 ## Agregator Code Documents
 
