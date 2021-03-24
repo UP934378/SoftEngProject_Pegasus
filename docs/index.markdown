@@ -13,11 +13,12 @@ The Pegassas EMS is a standalone system designed to enable the management of sol
 
 ### Pegassas EMS Software/Hardware
 
-[Aggregator](/cw-code-t1/docs/agregator.markdown)
+[Aggregator](https://m30819-2020.github.io/cw-code-t1/agregator.markdown)
 
-[Web Application](/cw-code-t1/docs/webapp.markdown)
+[Web Application](https://m30819-2020.github.io/cw-code-t1/webapp.markdown)
 
 ### Supporting Docuentation
 
 [User Guide](/cw-code-t1/docs/userguides.markdown)
+
 [Testing](/cw-code-t1/docs/testing.markdown)
