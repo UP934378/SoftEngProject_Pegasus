@@ -3,11 +3,21 @@
 
 # Pegassas Energy Management System
 
-## Rust Code Documents
+![Pegasssas Logo](docs\images\pegasus_image.jpg)
 
-- The below links lead to the standard doc.rs webpages that have been constructed for this project.
-- All functions, structs and other rust objects have been labled and explained within.
+The Pegassas EMS is a standalone system designed to enable the management of solar based home engery system through the use of an intuative web application.
 
-[Aggregator Rust Docs](/cw-code-t1/code_docs/doc/pegassas_aggregator/)
+## Documentation
 
-[WebApp Rust Docs](/cw-code-t1/code_docs/doc/pegassas_webapp/)
+- The below links lead to the information for any section of this project.
+
+### Pegassas EMS Software/Hardware
+
+[Aggregator](/cw-code-t1/docs/agregator.markdown)
+
+[Web Application](/cw-code-t1/docs/webapp.markdown)
+
+### Supporting Docuentation
+
+[User Guide](/cw-code-t1/docs/userguides.markdown)
+[Testing](/cw-code-t1/docs/testing.markdown)
