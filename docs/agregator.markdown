@@ -3,7 +3,7 @@
 
 # Agregator
 
-[Home](https://m30819-2020.github.io/cw-code-t1/index.markdown)
+[Home]({% links /docs/index.markdown})
 
 ## Agregator Code Documents
 
