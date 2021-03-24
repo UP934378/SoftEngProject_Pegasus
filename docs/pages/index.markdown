@@ -1,4 +1,7 @@
 ---
+layout: page
+title: "Home Page"
+permalink: /Home
 ---
 
 # Pegassas Energy Management System
@@ -13,7 +16,9 @@ The Pegassas EMS is a standalone system designed to enable the management of sol
 
 ### Pegassas EMS Software/Hardware
 
-[Aggregator]({% link /cw-code-t1/docs/pages/agregator.markdown %})
+{{page.path}}
+
+[Aggregator](https://m30819-2020.github.io/cw-code-t1/Agregator)
 
 [Web Application](https://m30819-2020.github.io/cw-code-t1/webapp.markdown)
 

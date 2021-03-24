@@ -1,9 +1,12 @@
 ---
+layout: page
+title: "Agregator"
+permalink: /Agregator
 ---
 
 # Agregator
 
-[Home]({% link /cw-code-t1/docs/pages/index.markdown %})
+[Home](https://m30819-2020.github.io/cw-code-t1/Home)
 
 ## Agregator Code Documents
 
