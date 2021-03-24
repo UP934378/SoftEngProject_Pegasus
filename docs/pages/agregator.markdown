@@ -1,10 +1,10 @@
 ---
 layout: page
-title: "Agregator"
-permalink: /Agregator
+title: "Aggregator"
+permalink: /Aggregator
 ---
 
-# Agregator
+# Aggregator
 
 [Home](https://m30819-2020.github.io/cw-code-t1/Home)
 
