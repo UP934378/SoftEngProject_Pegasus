@@ -5,7 +5,7 @@ permalink: /Aggregator
 
 # Aggregator
 
-[Home](https://m30819-2020.github.io/cw-code-t1/Home)
+[Home](https://m30819-2020.github.io/cw-code-t1)
 
 ## Agregator Code Documents
 
