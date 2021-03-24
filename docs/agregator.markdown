@@ -3,7 +3,7 @@
 
 # Agregator
 
-[Home]({% links /docs/index.markdown})
+[Home]({% links /docs/index.markdown %})
 
 ## Agregator Code Documents
 
