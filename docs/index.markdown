@@ -1,6 +1,5 @@
 ---
 title: "Home Page"
-permalink: /Home
 ---
 
 # Pegassas Energy Management System
