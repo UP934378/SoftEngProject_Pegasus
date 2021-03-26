@@ -1,9 +1,11 @@
 ---
+title: "User Guides"
+permalink: /UserGuide
 ---
 
 # User Guides
 
-[Home](/cw-code-t1/docs/index.markdown)
+[Home](https://m30819-2020.github.io/cw-code-t1)
 
 ## Video User Guide
 

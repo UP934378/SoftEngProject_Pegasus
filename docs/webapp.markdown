@@ -1,9 +1,11 @@
 ---
+title: "Web Application"
+permalink: /WebApp
 ---
 
 # Web Application
 
-[Home](/cw-code-t1/docs/index.markdown)
+[Home](https://m30819-2020.github.io/cw-code-t1)
 
 ## Web Application Code Documents
 
@@ -12,3 +14,5 @@
 - Any issues found please inform your local admin ASAP.
 
 [WebApp Rust Docs](/cw-code-t1/code_docs/doc/pegassas_webapp/)
+
+[Place Holder for JS Docs]()
