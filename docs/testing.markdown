@@ -16,6 +16,9 @@ permalink: /Testing
 
 #### parser.rs
 
+<details>
+<summary> Test 1 - JSON to InfluxDB reading </summary>
+<br>
 ``` Rust
 #[cfg(test)]
 mod test {
@@ -66,7 +69,10 @@ mod test {
         }
         Ok(())
     }
+```
+</details>
 
+```Rust
     #[test]
     fn parser_test_battery() -> Result<(), Box<dyn std::error::Error>>{
         let json_string = "{
