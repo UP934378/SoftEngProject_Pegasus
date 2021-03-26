@@ -19,6 +19,7 @@ permalink: /Testing
 <details>
 <summary> Test 1 - JSON to InfluxDB reading </summary>
 <br>
+
 ``` Rust
 #[cfg(test)]
 mod test {
@@ -70,7 +71,12 @@ mod test {
         Ok(())
     }
 ```
+
 </details>
+
+<details>
+<summary> Test 2 - Test Battery Parser </summary>
+<br>
 
 ```Rust
     #[test]
@@ -120,7 +126,15 @@ mod test {
         }
         Ok(())
     }
+```
 
+</details>
+
+<details>
+<summary> Test 3 - Test Solar Parser </summary>
+<br>
+
+``` Rust
     #[test]
     fn parser_test_solar() -> Result<(), Box<dyn std::error::Error>>{
         let json_string = "{
@@ -168,6 +182,15 @@ mod test {
         Ok(())    
     }
 
+```
+
+</details>
+
+<details>
+<summary> Test 4 - Test Grid Power Parser </summary>
+<br>
+
+``` Rust
     #[test]
     fn parser_test_grid_power() -> Result<(), Box<dyn std::error::Error>>{
         let json_string = "{
@@ -193,6 +216,14 @@ mod test {
         Ok(())
     }
 
+```
+</details>
+
+<details>
+<summary> Test 5 - Test House power Parser </summary>
+<br>
+
+``` Rust
     #[test]
     fn parser_test_house() -> Result<(), Box<dyn std::error::Error>>{
         let json_string = "{
