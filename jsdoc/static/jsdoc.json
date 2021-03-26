@@ -1,0 +1,10 @@
+{
+    "source": {
+        "include": ["./static/scripts/test_for_doc.js"]
+    },
+    "plugins": ["plugins/markdown"],
+    "opts": {
+        "destination": "./static/docs", 
+        "template": "doc-template"
+    }    
+}
