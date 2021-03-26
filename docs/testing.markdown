@@ -73,7 +73,7 @@ mod test {
 ```
 
 </details>
-
+<br>
 <details>
 <summary> Test 2 - Test Battery Parser </summary>
 <br>
@@ -129,7 +129,7 @@ mod test {
 ```
 
 </details>
-
+<br>
 <details>
 <summary> Test 3 - Test Solar Parser </summary>
 <br>
@@ -185,7 +185,7 @@ mod test {
 ```
 
 </details>
-
+<br>
 <details>
 <summary> Test 4 - Test Grid Power Parser </summary>
 <br>
@@ -218,7 +218,7 @@ mod test {
 
 ```
 </details>
-
+<br>
 <details>
 <summary> Test 5 - Test House power Parser </summary>
 <br>
@@ -251,5 +251,7 @@ mod test {
     }
 }
 ```
+
+</details>
 
 ## Implementation tests
