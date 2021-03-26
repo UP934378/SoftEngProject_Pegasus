@@ -282,4 +282,28 @@ mod test {
 
 </details>
 
+### Rust - Web Application
+
+#### main.rs
+
+<details>
+<summary> Test 1 - Test password </summary>
+<br>
+
+``` Rust
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn test_pass_verify() -> Result<()>{
+        let db_pass = String::from("testpassword");
+        let hashed_pass = String::from("$2y$12$WXve5HUUGI19etxKGAh5q.DuMlgANQc13qTXbL/xG8041kTM/TovO");        
+        assert_eq!(false,pass_verify(db_pass,hashed_pass));
+        Ok(())
+    }
+}
+```
+
+</details>
+
 ## Implementation tests
