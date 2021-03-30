@@ -167,6 +167,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "eui48"
+version = "0.4.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8c4cf866e4d3e5e773691f5f61615a224a7b0b72b7daf994fc56d1b82dab0b6b"
+dependencies = [
+ "rustc-serialize",
+]
+
+[[package]]
 name = "fallible-iterator"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -714,6 +723,7 @@ name = "pegassas_aggregator"
 version = "0.1.0"
 dependencies = [
  "env_logger",
+ "eui48",
  "futures",
  "influx_db_client",
  "log",
@@ -830,6 +840,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5493d9d4613b88b12433aa12890e74e74cd93fdc1e08b7c2aed4768aaae8414c"
 dependencies = [
  "bytes",
+ "eui48",
  "fallible-iterator",
  "postgres-protocol",
 ]
@@ -1064,6 +1075,12 @@ dependencies = [
  "web-sys",
  "winapi",
 ]
+
+[[package]]
+name = "rustc-serialize"
+version = "0.3.24"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dcf128d1287d2ea9d80910b5f1120d0b8eede3fbf1abe91c40d39ea7d51e6fda"
 
 [[package]]
 name = "rustls"
