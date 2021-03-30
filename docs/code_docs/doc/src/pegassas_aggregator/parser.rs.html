@@ -549,7 +549,7 @@
 <span class="doccomment">/// Top level structure to store deserialized data from probes</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Data</span> {
-    <span class="ident">probe_id</span> : <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">probe_id</span> : <span class="ident">String</span>,
     <span class="ident">cell</span> : <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Cell</span><span class="op">&gt;</span>,
     <span class="ident">battery</span> : <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Battery</span><span class="op">&gt;</span>,
     <span class="ident">solar</span> : <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Solar</span><span class="op">&gt;</span>,
@@ -816,4 +816,5 @@
         <span class="prelude-val">Ok</span>(())
     }
 }</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "pegassas_aggregator";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pegassas_aggregator"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
