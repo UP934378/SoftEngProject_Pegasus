@@ -138,7 +138,7 @@ pub struct Solar {
 /// Top level structure to store deserialized data from probes
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Data {
-    probe_id : String,
+    pub probe_id : String,
     cell : Option<Cell>,
     battery : Option<Battery>,
     solar : Option<Solar>,
