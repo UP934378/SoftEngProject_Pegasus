@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: script.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: script.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// https://github.com/M30819-2020/cw2-t1/blob/master/visualisations.md - visualisation list
+// https://github.com/M30819-2020/cw3-t1/blob/master/build/CW3DesignDocument.pdf - ERD
+// https://github.com/M30819-2020/cw-code-t1/blob/main/database_script.txt - dummy data
+
+// https://www.w3schools.com/howto/howto_js_popup_form.asp - pop up form (use this in cell with overflow scroll)
+
+// Every user can have different config
+// UserID, ViewID, Index, X value, Y value, Where, Start date/Start time, End date/End time, type
+
+/**
+ * @overview Javascript documentation for User front end of Pegassas
+ * @author Max Beebe for Software Engineer project Team 1
+ * @see &lt;a href="https://m30819-2020.github.io/cw-code-t1/">Pegassas system Documentation Homepage&lt;/a>
+ */
+
+/**
+ * Main class that generate and manage all the graphs in the website
+ */
+class Graph {
+
+  /**
+   * Initialize graph details
+   * @param {number} cellid Graph container cell
+   * @param {string} y Y axis parameter
+   * @param {string} table Database source
+   * @param {datetime} start Date range start
+   * @param {datetime} end Date range end
+   * @param {string} type Graph type
+   * @param {string} where Probe or Cell
+   * @param {number} equals Probe or cell Id number
+   * @param {Boolean} form Generate form to get info from API
+   */
+  constructor(cellid, y, table, start, end, type, where, equals, form=true) {
+
+    /**
+     * All the possible y values
+     */
+    this.yvalues = {
+      'cell': ['cell_voltage', 'balance_current'],
+      'battery': ['battery_current', 'state_charge', 'charge_perc', 'batt_temperature'],
+      'inverter': ['sol_inv_voltage', 'sol_inv_power', 'sol_inv_frequency'],
+      'grid_power': ['grid_power'],
+      'house_power': ['house_power'],
+    }
+
+    /**
+     * Set table tags
+     */
+    this.tags = {
+      'cell': ['cell_id', 'probe_id'],
+      'battery': ['probe_id'],
+      'inverter': ['solar_id', 'probe_id'],
+      'grid_power': ['probe_id'],
+      'house_power': ['probe_id'],
+    }
+
+    /**
+     * Build list of variable for database query
+     */
+    this.allvalues = {}
+    Object.entries(this.yvalues).forEach(([key, value]) => {
+      this.allvalues[key] = this.tags[key].concat(value)
+    })
+
+    /**
+     * Set the graph type available
+     */
+    this.types = {
+      'scatter': {
+        'name': 'scatter',
+        'type': 'scatter',
+        'mode': 'markers'
+      },
+      'line': {
+        'name': 'line',
+        'type': 'scatter',
+        'mode': 'lines'
+      },
+      'bar': {
+        'name': 'bar',
+        'type': 'bar'
+      }
+    }
+    
+    /**
+     * Request from for database query
+     */
+    this.values = {
+      'y': y,
+      'table': table,
+      'start': start,
+      'end': end,
+      'type' : this.types[type],
+      'where': where,
+      'equals': equals
+    }
+
+    this.createForm = form
+
+    /**
+     * Create graph container cell
+     */
+    this.cell = this.createCell(cellid)
+
+    /**
+     * Get data information from API and update graph in the web page
+     */
+    const getdata = async () => {
+      // Get response from url, wait for response before continuing
+      await this.fetchData()
+      
+      // Format response data
+      this.formatResponse()
+
+      // Plot the graph
+      this.plotData()
+    }
+    getdata()
+  }
+
+  /**
+   * Create and manage container for graph
+   * @param {int} id Cell container position
+   * @returns Graph
+   */
+  createCell(id) {
+    // Create empty cell
+    const cell = document.createElement('div')
+    cell.id = id
+    cell.className = "container-cell"
+    cell.draggable = "true"
+
+    // Create config form
+    const configfrm = document.createElement('form')
+    configfrm.classList.add("config-form")
+    configfrm.classList.add("hide")
+    configfrm.onsubmit="graphs[" + "'" + cell.id + "'" + "].formSubmit(this)"
+    configfrm.id = id + "-config-form"
+    // configfrm.action = "/view_config"
+    // configfrm.method = "POST"
+
+
+    // When submit, call function
+    configfrm.addEventListener('submit', (e) => {
+      e.preventDefault()
+      this.formSubmit()
+    })
+
+    if (this.createForm) {
+
+      // Create form header
+      var header = document.createElement('h2')
+      header.textContent = cell.id
+      header.classList.add("form-header")
+      header.style.gridColumn = "span 2"
+
+      configfrm.appendChild(header)
+      // grid-column: col-start / span 12;
+      
+      const yinput = document.createElement('select')
+      yinput.id = id + "-yinput"
+      yinput.name = "y_value"
+      yinput.classList.add("form-input")
+      yinput.setAttribute('form', configfrm.id)
+
+      // Onchange listener to disable same option selection
+      yinput.addEventListener('change', () => {
+        this.yopt.disabled = false
+        this.yopt = yinput.options[yinput.selectedIndex]
+        this.yopt.disabled = true
+      })
+
+      const ylabel = document.createElement("label")
+      ylabel.htmlFor = yinput.id
+      ylabel.classList.add("form-label")
+      ylabel.innerHTML="Y value: " 
+      
+      // Add options to x &amp; y input boxes
+      for (var key in this.yvalues) {
+        
+        // Create breaks between options
+        if (key != Object.keys(this.yvalues)[0]) {
+          var opthead = document.createElement('optgroup')
+          opthead.label = ""
+
+          yinput.appendChild(opthead)
+        }
+
+        // Add option headers
+        var opthead = document.createElement('optgroup')
+        opthead.label = key
+        
+        yinput.appendChild(opthead)
+
+        for (var value of this.yvalues[key]) {
+          // Add options
+          var opt = document.createElement('option')
+          opt.value = value
+          opt.innerHTML = value
+          opt.setAttribute('table', key)
+
+          yinput.appendChild(opt)
+        }
+      }
+
+      // Set selected x/y values
+      yinput.value = this.values.y
+      // whereinput.value = 'cell_id'
+
+      // Initialize onchange event listener
+      this.yopt = yinput.options[yinput.selectedIndex]
+      
+      // Trigger event at start
+      var event = new Event('change')
+
+      yinput.dispatchEvent(event)
+
+      // Append labels &amp; inputs to config form
+      configfrm.appendChild(ylabel)
+      configfrm.appendChild(yinput)
+
+
+      // Create where input
+
+      const whereinput = document.createElement('select')
+      whereinput.id = id + "-whereinput"
+      whereinput.name = "whereinput"
+      whereinput.classList.add("form-input")
+      whereinput.setAttribute('form', configfrm.id)
+
+      const wherelabel = document.createElement("label")
+      wherelabel.htmlFor = wherelabel.id
+      wherelabel.classList.add("form-label")
+      wherelabel.innerHTML="Where: " 
+
+      // Add options to x &amp; y input boxes
+      for (var key in this.allvalues) {
+        
+        // Create breaks between options
+        if (key != Object.keys(this.allvalues)[0]) {
+          var opthead = document.createElement('optgroup')
+          opthead.label = ""
+
+          whereinput.appendChild(opthead)
+        }
+
+        // Add option headers
+        var opthead = document.createElement('optgroup')
+        opthead.label = key
+        
+        whereinput.appendChild(opthead)
+
+        for (var value of this.allvalues[key]) {
+          // Add options
+          var opt = document.createElement('option')
+          opt.value = value
+          opt.innerHTML = value
+          opt.setAttribute('table', key)
+
+          whereinput.appendChild(opt)
+        }
+      }
+
+      whereinput.value = this.values.where
+
+      configfrm.appendChild(wherelabel)
+      configfrm.appendChild(whereinput)
+      
+
+      // Create Equals input
+
+      var equalsinput = document.createElement('input')
+      equalsinput.type = 'text'
+      equalsinput.placeholder = '>5 or =6'
+      equalsinput.value = this.values.equals
+      equalsinput.id = id + "-equalsinput"
+      equalsinput.name = "equalsinput"
+      equalsinput.classList.add("form-input")
+      equalsinput.setAttribute('form', configfrm.id)
+
+      var equalslabel = document.createElement("label")
+      equalslabel.htmlFor = equalsinput.id
+      equalslabel.classList.add("form-label")
+      equalslabel.innerHTML="Equals: " 
+
+      
+      configfrm.appendChild(equalslabel)
+      configfrm.appendChild(equalsinput)
+      
+
+
+      // Create time selectors
+      var dateinput = []
+      var timeinput = []
+      for (var [index, se] of ['Start', 'End'].entries()) {
+        // Get default start / end times
+        if (index == 0) {
+          var datevalue = this.values.start.split("T")[0]
+          var timevalue = this.values.start.split("T")[1]
+        } else {
+          var datevalue = this.values.end.split("T")[0]
+          var timevalue = this.values.end.split("T")[1]
+        }
+
+        // Date
+        dateinput[se] = document.createElement('input')
+        dateinput[se].type = "date"
+        dateinput[se].name = se + "dateinput"
+        dateinput[se].defaultValue = datevalue
+        dateinput[se].id = cell.id + "-" + se + "date"
+        dateinput[se].classList.add("form-input")
+        dateinput[se].setAttribute('form', configfrm.id)
+
+        const datelabel = document.createElement("label")
+        datelabel.htmlFor = dateinput.id
+        datelabel.classList.add("form-label")
+        datelabel.innerHTML= se + ": " 
+
+        // Time
+        timeinput[se] = document.createElement('input')
+        timeinput[se].type = "time"
+        timeinput[se].name = se + "timeinput"
+        timeinput[se].id = cell.id + "-" + se + "time"
+        timeinput[se].value = timevalue
+        timeinput[se].step = 1
+        timeinput[se].classList.add("form-input")
+        timeinput[se].setAttribute('form', configfrm.id)
+        
+        const timelabel = document.createElement("label")
+        timelabel.htmlFor = timeinput.id
+        timelabel.classList.add("form-label")
+        timelabel.innerHTML="" 
+
+        configfrm.appendChild(datelabel)
+        configfrm.appendChild(dateinput[se])
+        configfrm.appendChild(timelabel)
+        configfrm.appendChild(timeinput[se])
+      }
+      
+      
+      // Start / End date validation
+      dateinput['Start'].addEventListener('change', function() {
+        if (dateinput['Start'].value > dateinput['End'].value) {
+          dateinput['Start'].value = dateinput['End'].value
+        }
+        if (dateinput['Start'].value == dateinput['End'].value) {
+          // Trigger event at start
+          var event = new Event('change')
+
+          timeinput['Start'].dispatchEvent(event)
+          timeinput['End'].dispatchEvent(event)
+        }
+      });
+
+      dateinput['End'].addEventListener('change', function() {
+        if (dateinput['End'].value &lt; dateinput['Start'].value) {
+          dateinput['End'].value = dateinput['Start'].value
+        }
+        if (dateinput['End'].value == dateinput['Start'].value) {
+          // Trigger event at start
+          var event = new Event('change')
+
+          timeinput['End'].dispatchEvent(event)
+          timeinput['Start'].dispatchEvent(event)
+        }
+      });
+
+
+      // Start / End time validation
+      timeinput['Start'].addEventListener('change', function() {
+        if (dateinput['Start'].value == dateinput['End'].value) {
+          if (timeinput['Start'].value > timeinput['End'].value) {
+            timeinput['Start'].value = timeinput['End'].value
+          }
+        }
+      });
+
+      timeinput['End'].addEventListener('change', function() {
+        if (dateinput['End'].value == dateinput['Start'].value) {
+          if (timeinput['End'].value &lt; timeinput['Start'].value) {
+            timeinput['End'].value = timeinput['Start'].value
+          }
+        }
+      });
+
+
+
+      // Create type input
+      const typeinput = document.createElement('select')
+      typeinput.id = id + "-typeinput"
+      typeinput.name = "graph_type"
+      typeinput.classList.add("form-input")
+      typeinput.setAttribute('form', configfrm.id)
+
+      const typelabel = document.createElement("label")
+      typelabel.htmlFor = typeinput.id
+      typelabel.classList.add("form-label")
+      typelabel.innerHTML="Type: " 
+      
+      for (var value in this.types) {
+        // Add options
+        var opt = document.createElement('option')
+        opt.value = value
+        opt.innerHTML = value
+
+        typeinput.appendChild(opt)
+      }
+
+      // Set selected type
+      typeinput.value = this.values.type.name
+
+      configfrm.appendChild(typelabel)
+      configfrm.appendChild(typeinput)
+
+
+      // Create submit button
+
+      var input = document.createElement('input')
+      input.type = "submit"
+      input.value = "Submit" 
+      input.classList.add("form-input")
+      input.setAttribute('onclick', "graphs[" + "'" + cell.id + "'" + "].toggleForm()")
+      input.setAttribute('form', configfrm.id)
+
+      configfrm.append(input)
+      // &lt;td>&lt;input type="submit" form="probe-config-2" value="Submit">&lt;/td>
+
+
+      // Append config form to cell
+      this.configfrm = configfrm
+      cell.append(configfrm)
+
+
+      // Create config button
+      const configbtn = document.createElement('button')
+      configbtn.classList.add("config-button")
+      configbtn.textContent = "Configure "
+      configbtn.setAttribute('onclick', "graphs[" + "'" + cell.id + "'" + "].toggleForm()")
+      
+      this.configbtn = configbtn
+      cell.append(configbtn)
+      // &lt;button type="submit" class="btn cancel" onclick="closeForm()">Close&lt;/button>
+
+
+      // Create add to homepage button
+      var homebtn = document.createElement('button')
+      homebtn.classList.add("home-button")
+      homebtn.textContent = "Add to homepage"
+      homebtn.setAttribute('onclick', "graphs[" + "'" + cell.id + "'" + "].formSubmit(false, true)")
+      configfrm.append(homebtn)
+    }
+
+    // Create remove cell button
+    var removebtn = document.createElement('div')
+    removebtn.classList.add("remove-button")
+    removebtn.innerHTML = "&lt;img src='images/bin.svg' alt='remove-button'>"
+    removebtn.addEventListener('click', () => {
+      this.formSubmit(false, false, true)
+      this.cell.remove()
+    })
+    cell.append(removebtn)
+
+    // Add draggable code
+    cell.addEventListener('dragstart', () => {
+      // When dragging starts
+      cell.classList.add('dragging')
+    })
+
+    cell.addEventListener('dragend', () => {
+      // When dragging ends, check if cell is over another cell
+      // Get currently dragged cell and store a copy (for switching)
+      const celldragging = document.querySelector('.dragging')
+      
+      // Create copy of data for transferring
+      const dataHolder = celldragging.data
+
+      // Get cell being dragged over (unless it's dragging over itself)
+      const celldraggingover = document.querySelector('.dragging-over:not(.dragging)')
+
+      // Switch cell plots
+      // Need to re-plot graphs for proper functioning
+      if (celldraggingover) {
+        // Remove dragging classes
+        celldraggingover.classList.remove('dragging-over')
+        celldragging.classList.remove('dragging')
+
+        // Swap cell positions
+        const parent = celldragging.parentNode
+        const celldragging_sibling = celldragging.nextSibling
+        
+        parent.insertBefore(celldragging, celldraggingover)
+        parent.insertBefore(celldraggingover, celldragging_sibling)
+
+        // Fix object cell references
+        this.fixRefs()
+        graphs[celldraggingover.id].fixRefs()
+
+        // Need to add paramater check to plotdata
+        // Re-plot data
+        this.plotData(this.cell, celldraggingover.data)
+        this.plotData(graphs[celldraggingover.id].getCell, dataHolder)
+
+        // Submit form to keep index values on reload
+        // this.formSubmit(false)
+        // graphs[celldraggingover.id].formSubmit(false)
+      }
+      this.cell.classList.remove('dragging')
+  })
+
+  cell.addEventListener('dragover', e => {
+    if (cell.classList.contains("dragging") == false){
+        // Prevent default here to remove cannot be dragged here symbol
+        e.preventDefault()
+
+        // When something is being dragged over this cell
+        cell.classList.add('dragging-over')
+    }
+  })
+
+  cell.addEventListener('dragleave', () => {
+      // When something is no longer being dragged over this cell
+      setTimeout(() => {
+        cell.classList.remove('dragging-over')
+      }, 1)
+      // Have to wait here otherwise dragleave executes before dragend can find dragover element
+  })
+
+    return cell
+  }
+
+  /**
+   * Fetch data from API &amp; return after response (stops response being a JS 'Promise')
+  */
+  async fetchData() {
+    var url = "http://127.0.0.1:8084/dbapi/" + this.values.table + "?" 
+    + this.values.y + "_col=true&amp;start=" 
+    + this.values.start + "Z&amp;end=" + this.values.end + "Z&amp;"
+    + this.values.where + this.values.equals
+
+    // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
+    // Function to fetch data from url
+    const waitresponse = async () => {
+        const data = await fetch(url)
+                          .then(response => response.json())
+                          .catch(error => console.error(error))
+        return data
+    }
+  
+    // Wait for response from function to assign response
+    const response = await waitresponse()
+
+    if (response) {
+      // Set object response
+      this.response = response
+
+      // return response once it has been assigned
+      return response; 
+    } else {
+      console.error("API fetch failed: No data avaliable for this timeframe?")
+    }
+     
+  }
+
+  /**
+   * Plot some data into a cell, can add parameters like layout, config etc
+   * @param {number} cell Container ID
+   * @param {*} data Data information form database
+   */
+  plotData(cell = this.cell, data = this.data) {
+    // Graph layout options
+    // See " https://plotly.com/javascript/reference/ " for individual plot type layout options
+    var layout = { 
+        margin: {
+            l: 40,
+            r: 10,
+            b: 30,
+            t: 10
+          },
+        showlegend: false,
+        xaxis: {automargin: true},
+        yaxis: {automargin: true,
+                title: this.values.y}
+        
+    }
+    
+    // Graph configuration options
+    // See " https://plotly.com/javascript/configuration-options/ " for options
+    var config = {
+      responsive: true
+    }
+
+    Plotly.newPlot(cell, data, layout, config)
+  }
+
+  /**
+   * Re-link object references with HTML DOM elements
+   */
+  fixRefs() {
+    this.configfrm = document.getElementById(this.configfrm.id)
+    this.cell = document.getElementById(this.cell.id)
+  }
+
+  /**
+   * Toggle configuration form on / off
+   */
+  toggleForm() {
+    if (this.configfrm.classList.contains("hide")) {
+      this.configfrm.classList.remove("hide")
+      // Move button to right of cell
+      this.configbtn.style.left = '70%'
+      this.configbtn.textContent = "Close"
+    } else {
+      this.configfrm.classList.add("hide")
+      // Move button to left of cell
+      this.configbtn.style.left = "0"
+      this.configbtn.textContent = "Configure"
+    }
+    
+  }
+  
+
+  /**
+   * Update graph after new form submit
+   * @param {Boolean} replot Update graph
+   * @param {Boolean} homepg Update graph in homepage
+   * @param {Boolean} remove Remove graph container
+   */
+  async formSubmit(replot = true, homepg = false, remove=false) {
+    // Allow no replot for manual plotting
+    // Get data from api with below values
+    // Plot data returned
+    console.log(this.configfrm)
+    // Update object values
+    this.values.y = this.configfrm.y_value.value
+    this.values.table = this.configfrm.y_value.options[this.configfrm.y_value.selectedIndex].attributes.table.value
+    this.values.type = this.types[this.configfrm.graph_type.value]
+    this.values.start = this.configfrm.Startdateinput.value + "T" + this.configfrm.Starttimeinput.value
+    this.values.end = this.configfrm.Enddateinput.value + "T" + this.configfrm.Endtimeinput.value
+    this.values.where = this.configfrm.whereinput.value
+    this.values.equals = this.configfrm.equalsinput.value
+
+    // Get data from API and update graph
+    const getdata = async () => {
+      // Get response from url, wait for response before continuing
+      await this.fetchData()
+      
+      // Format response data
+      this.formatResponse()
+
+      // Plot the graph
+      this.plotData()
+    }
+    if (replot) {
+      console.log('test')
+      getdata()
+    }
+
+    // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
+
+    // Get form data
+    var frmdata = new FormData(this.configfrm)
+ 
+    // Format form values for send
+    var range_start = frmdata.get('Startdateinput') + "T" + frmdata.get('Starttimeinput') + "Z"
+    var range_finish = frmdata.get('Enddateinput') + "T" + frmdata.get('Endtimeinput') + "Z"
+    var where_id = frmdata.get('whereinput') + frmdata.get('equalsinput')
+
+    // Remove old values
+    for (var input of ['Startdateinput', 'Starttimeinput', 'Enddateinput', 'Endtimeinput', 'whereinput', 'equalsinput']) {
+      frmdata.delete(input)
+    }
+
+    // Append formatted values
+    frmdata.append('range_start', range_start)
+    frmdata.append('range_finish', range_finish)
+    frmdata.append('where_id', where_id)
+    
+    // Constant here to allow adding to home page
+    // Awaits response from get_view_config to count number of graphs on home page
+    // This is so I can set the container index to the correct value (+1 of graph count)
+    const gethome = async () => {
+      if (homepg) {
+        // if appending to homepage, viewtab is 0 and container index is graphs count + 1
+        frmdata.append('view_tab', 0)
+        const getconfig = async () => {
+          // Function to fetch data from url
+          
+          // Get graphs from get_view_config function
+          const data = await fetch("http://127.0.0.1:8084/get_view_config")
+                            .then(response => response.json())
+                            .catch(error => console.error(error))
+          
+          var count = 0
+          // Get all data belonging to the current view
+          for (var item of data) {
+            if (item.view_tab == 0) {
+              count += 1
+            }
+          }
+          frmdata.append('container_index', count)
+          return true
+        }
+        return await getconfig()
+      } else if (remove) {
+        frmdata.append('view_tab', -1)
+        frmdata.append('container_index', 0) // Index of cell in parent
+        return true
+      } else {
+        frmdata.append('view_tab', document.getElementsByClassName('selected-tab')[0].attributes.value.value)
+        frmdata.append('container_index', Array.from(this.cell.parentNode.children).indexOf(this.cell)) // Index of cell in parent
+        return true
+      }
+    }
+    await gethome()
+    // FormData not picking up y_input? Manually append for now
+    frmdata.append('y_value', this.values.y)
+
+
+    // Convert Form Data to URLSearchParam so it's in the right type for main.rs
+    var frmurl = new URLSearchParams(frmdata).toString()
+    console.log(frmurl)
+    // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
+    // Function to fetch data from url
+    const waitresponse = async () => {
+        var send = fetch("http://127.0.0.1:8084/view_config", {
+                                      method: "POST", 
+                                      body: frmurl,
+                                      headers: {
+                                          'Content-Type': 'application/x-www-form-urlencoded'
+                                        }
+                                    })
+        .catch(error => console.error(error))
+    }
+    // Wait for response from function to assign response
+    waitresponse()
+
+  }
+
+  /**
+   * Read response from API
+   */
+  formatResponse() {
+    // Function that takes response &amp; x/y values
+
+    // Handle if same X and Y (stop from being chosen)
+    // Handle different tables
+    
+    const x = []
+    const y = []
+
+    for (var value of this.response.values) {
+      const seconds = value[0]
+      const d = new Date(0)
+      d.setUTCSeconds(seconds)
+      x.push(d)
+      
+      y.push(value[1])
+    }
+
+    // Create trace
+    const data = {
+          name: "temp",
+          x: x,
+          y: y,
+          type: this.values.type.type
+    }
+
+    if (this.values.type.mode) {
+      data['mode'] = this.values.type.mode
+    } if (this.values.type.markers){
+      data['marker'] = this.values.type.markers
+    }
+
+    // Set graph object data
+    this.data = [data]
+  }
+
+  // Return graph info
+  get getCell() {
+    return this.cell
+  }
+
+  get getData() {
+    return this.data
+  }
+
+}
+
+
+
+
+
+
+
+// mac_address MACADDR PRIMARY KEY,
+// request_interval INT NOT NULL,
+
+// https://github.com/M30819-2020/cw-code-t1/blob/main/postgres_script.txt
+
+// Row object for each probe option
+/**
+ * Manage probe configurations
+ */
+class ProbeOption {
+  /**
+   * Initialize graph details with paramaters
+   * @param {number} probeID Probe ID 
+   * @param {number} probeInterval Request interval
+   */
+  constructor(probeID, probeInterval) {
+      /**
+       * Set Probe ID
+       */
+      this.id = probeID
+
+      /**
+       * Set request interval
+       */
+      this.data = {
+        notifcations: !!probeInterval, // If probe interval 0: false, greater than 0: true
+        frequency: probeInterval
+      }
+
+      // Create empty row
+      this.row = this.createRow()
+  }
+
+  /**
+   * Create container to display probe settings information
+   */
+  createRow() {
+      // Create empty row
+      const row = document.createElement('div')
+      row.classList.add("div-table-row")
+      row.name = this.id
+      row.id = this.id
+
+
+      // Create form
+      const formCell = document.createElement('div')
+      formCell.classList.add("div-table-cell")
+      formCell.id = this.id + "-form-cell"
+
+      const form = document.createElement('form')
+      form.id = this.id + "-form"
+
+      var input = document.createElement('input')
+      input.type = "hidden"
+      input.name = "id"
+      input.value = this.id
+
+      form.append(input)
+      formCell.append(form)
+      // &lt;td>&lt;form id="probe-1">&lt;input type="hidden" name="id" value="probe-1">&lt;/form>&lt;/td>
+      
+
+      // Create name cell
+      const nameCell = document.createElement('div')
+      nameCell.classList.add("div-table-cell")
+      nameCell.id = this.id + "-name-cell"
+
+      const paragraph = document.createElement("p")
+      paragraph.textContent = this.id
+
+      nameCell.append(paragraph)
+      nameCell.append(paragraph)
+      // &lt;td>&lt;p>Probe 2&lt;/p>&lt;/td>
+
+
+      // Create frequency cell
+      // Have to create frequency cell before data cell because data cell references frequency cell
+      const freqCell = document.createElement('div')
+      freqCell.classList.add("div-table-cell")
+      freqCell.id = this.id + "-freq-cell"
+
+      var input = document.createElement('input')
+      input.type = "number"
+      input.value = this.data.frequency
+      input.setAttribute('form', this.id + "-form")
+      input.name = "frequency"
+
+      // Cannot go below 1 min or above 60 min
+      input.min = 1
+      input.max = 60
+      
+
+      this.freq = freqCell
+      freqCell.append(input)
+      // &lt;td>&lt;input id="frequency-2" type="number" form="probe-config-2" name="frequency" value="0">&lt;/td>
+
+
+      // Create data cell
+      const dataCell = document.createElement('div')
+      dataCell.classList.add("div-table-cell")
+      dataCell.id = this.id + "-data-cell"
+
+      var input = document.createElement('input')
+      input.type = "checkbox"
+      input.checked = this.data.notifcations
+      input.setAttribute('form', this.id + "-form")
+      input.name = "data"
+      input.setAttribute('onchange', "rows[this.parentNode.parentNode.id].toggleFrequency(this.checked)")
+      this.toggleFrequency(input.checked)
+
+      dataCell.append(input)
+      // &lt;td>&lt;input type="checkbox" form="probe-config-2" name="data" onchange="toggleDisabled(this.checked)">&lt;/td>
+
+
+      // Create submit cell
+      const submitCell = document.createElement('div')
+      submitCell.classList.add("div-table-cell")
+
+      var input = document.createElement('input')
+      input.type = "submit"
+      input.value = "Submit"
+      input.setAttribute('form', this.id + "-form")
+      // When submit, call function
+      input.addEventListener('submit', (e) => {
+        e.preventDefault()
+        this.submitProbe()
+      })
+
+      submitCell.append(input)
+      // &lt;td>&lt;input type="submit" form="probe-config-2" value="Submit">&lt;/td>
+
+      // Append cells to row
+      row.append(formCell)
+      row.append(nameCell)
+      row.append(dataCell)
+      row.append(freqCell)
+      row.append(submitCell)
+
+      // Return filled in row
+      return(row)
+  }
+
+  /**
+   * Submit new  probe configuration 
+   */
+  submitProbe() {
+    // Get form data
+    var frmdata = new FormData(this.row.formCell.form)
+
+    // Convert Form Data to URLSearchParam so it's in the right type for main.rs
+    var frmurl = new URLSearchParams(frmdata).toString()
+    console.log(frmurl)
+    // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
+    // Function to fetch data from url
+    const waitresponse = async () => {
+        var send = fetch("http://127.0.0.1:8084/setprobes", {
+                                      method: "POST", 
+                                      body: frmurl,
+                                      headers: {
+                                          'Content-Type': 'application/x-www-form-urlencoded'
+                                        }
+                                    })
+        .catch(error => console.error(error))
+    }
+    // Wait for response from function to assign response
+    waitresponse()
+    // Probe form expected
+    // probe_name: String,
+    // data: String,
+    // frequency: i32
+  }
+  
+  /**
+   * Toogle cell frequency
+   * @param {Boolean} checked Switch on/off
+   */
+  toggleFrequency(checked) {
+      if (checked) {
+          this.freq.children[0].disabled = false
+      } else {
+          this.freq.children[0].disabled = true
+      }
+  }
+
+  /**
+   * Returns row of data
+   */
+  get getRow() {
+      return this.row
+  }
+
+  /**
+   * Returns form ID
+   */
+  get formCell() {
+      return(this.row.children[0].children[0].id)
+  }
+
+  /**
+   * Returns component name
+   */
+  get nameCell() {
+      return(this.row.children[1].children[0].textContent)
+  }
+
+  /**
+   * Returns if data is checked
+   */
+  get dataCell() {
+      return(this.row.children[2].children[0].checked)
+  }
+
+  /**
+   * Returns frequency
+   */
+  get freqCell() {
+      return(this.row.children[3].children[0].value)
+  }
+}
+
+
+// Have event listener to check which tab is selected with css
+// When selected, call the dbapi to set the page to the correct config
+
+// Tab buttons
+/**
+ * Manage the tab selected
+ */
+class TabButton {
+  /**
+   * Inizialate tab information
+   * @param {number} tabID ID number
+   * @param {string} tabName Tab name
+   */
+  constructor(tabID, tabName) {
+    this.id = tabID
+    this.name = tabName
+
+    /**
+     * Set all possible graph values, to help format response from get_view_config
+     */
+    this.yvalues = {
+      'cell': ['cell_voltage', 'balance_current'],
+      'battery': ['battery_current', 'state_charge', 'charge_perc', 'batt_temperature'],
+      'inverter': ['sol_inv_voltage', 'sol_inv_power', 'sol_inv_frequency'],
+      'grid_power': ['grid_power'],
+      'house_power': ['house_power'],
+    }
+
+    /**
+     * Set all passible table tags
+     */
+    this.tags = {
+      'cell': ['cell_id', 'probe_id'],
+      'battery': ['probe_id'],
+      'inverter': ['solar_id', 'probe_id'],
+      'grid_power': ['probe_id'],
+      'house_power': ['probe_id'],
+    }
+
+    /**
+     * Create full list of variables for where clause
+     */
+    this.allvalues = {}
+    Object.entries(this.yvalues).forEach(([key, value]) => {
+      this.allvalues[key] = this.tags[key].concat(value)
+    })
+
+    this.createTab()
+  }
+
+  /**
+   * Create new tab button and set values
+   */
+  createTab() {
+    // Create new tab button and set some values
+    var tab = document.createElement("a")
+    tab.classList.add("tab")
+    tab.innerHTML = this.name
+    tab.setAttribute('value', this.id)
+
+    // Add event listener to set current tab to selected tab when pressed
+    tab.addEventListener('click', () => {
+      var selected = document.getElementsByClassName('selected-tab')
+      selected[0].classList.remove('selected-tab')
+
+      this.setSelected()
+    })
+
+    this.tab = tab
+  }
+
+  /**
+   * Get view configuration from database to show correct graphs in the tab visualised
+   */
+  getGraphs() {
+    const getconfig = async () => {
+      // Function to fetch data from url
+      
+      // Get graphs from get_view_config function
+      const data = await fetch("http://127.0.0.1:8084/get_view_config")
+                        .then(response => response.json())
+                        .catch(error => console.error(error))
+      
+      // Get all data belonging to the current view
+      var viewgraphs = []
+      for (var item of data) {
+        var table = ""
+        var where = ""
+        var equals = ""
+        if (item.view_tab == this.id) {
+          for (var key in this.yvalues) {
+            if (this.yvalues[key].includes(item.y_value)) {
+              table = key
+            }
+            for (var value of this.allvalues[key]) {
+              var splititem = item.where_id.split(value)
+              if (splititem.length > 1) {
+                where = value
+                equals = splititem[1]
+              }
+            }
+          }
+          if (item.view_tab == 0) {
+            var form = false
+          } else {
+            var form = true
+          }
+          viewgraphs['container' + item.container_index] = new Graph(('container' + item.container_index), item.y_value, table,
+            item.range_start, item.range_finish, item.graph_type, where, equals, form=form)
+        }
+      }
+      graphs = viewgraphs
+      this.graphs = viewgraphs
+
+      this.configurePage()
+    }
+    getconfig()
+  }
+
+  /**
+   * Clear and select correct graphs to be shown
+   */
+  configurePage() {
+    // Clear out any current graphs from container
+    var container = document.getElementById('content-container')
+    while (container.firstChild) {
+      if (container.firstChild.classList.contains('container-cell')) {
+        container.firstChild.remove()
+      } else {
+        break
+      }
+    }
+
+    // Try and fill in new graphs
+    try {
+      for (var graph in this.graphs) {
+        insertDOM('content-container', graphs[graph].getCell, 'last-element')
+      }
+    } catch(e) {
+      // Don't need to handle here, if no graphs returned just leave page empty
+      return
+    }
+    
+  }
+
+  /**
+   * Set graph in correct tab
+   */
+  setSelected() {
+    this.tab.classList.add('selected-tab')
+    this.getGraphs()
+  }
+
+}
+
+
+
+// Insert HTML DOM into a parent element (can specify element to be inserted before by id)
+/**
+ * Insert HTML DOM into a parent element
+ * @param {*} parent 
+ * @param {*} DOM 
+ * @param {*} before 
+ */
+function insertDOM(parent, DOM, before = null) {
+
+  // Get parent container
+  var parent = document.getElementById(parent)
+  
+  // Append empty cell to parent
+    const lastElement = parent.lastElementChild
+    // If last element exists &amp; needs to go before an element
+    if (lastElement &amp;&amp; before) {
+      // If the last element of parent is a 'last-element', insert before it
+        if (lastElement.classList.contains(before)) {
+          parent.insertBefore(DOM, lastElement)
+        } else {
+          // Otherwise append
+          parent.appendChild(DOM)
+        }
+    } else {
+      // Otherwise append
+      parent.appendChild(DOM)
+    }
+
+}
+
+
+
+// If on home page
+if (window.location.pathname === '/home.html') {
+  // Graph list
+  var graphs = []
+    
+  // Create tab object with index 0 (home page index)
+  tab = new TabButton(0, "Tab-" + 0)
+
+  // Set first view as default selected
+  tab.setSelected()
+
+}
+
+
+// If on visualisation page
+if (window.location.pathname === '/visualisations.html') {
+  // Graph list
+  var graphs = []
+  
+  // Create tabs
+  var tabs = []
+  for (var i = 1;i &lt;= 10;i++) {
+    tabs[i] = new TabButton(i, "Tab-" + i)
+    insertDOM("tab-bar", tabs[i].tab, "add-tab")
+  }
+
+  // Set first view as default selected
+  tabs[1].setSelected()
+
+  // Create add new graph button
+  var newgraphbtn = document.createElement("a")
+  newgraphbtn.classList.add('last-element')
+  newgraphbtn.id = 'add-container-cell'
+  // When cell is clicked
+  newgraphbtn.addEventListener('click',() => {
+    // Create new graph   
+    graphs['container' + Object.keys(graphs).length] = new Graph(('container' + Object.keys(graphs).length), 'cell_voltage', 'cell', 
+                                                                  '2021-03-01T00:00:00', '2021-04-01T00:00:00', 
+                                                                  'line', 'cell_id', '=1')
+      
+    insertDOM('content-container', graphs['container' + (Object.keys(graphs).length - 1)].getCell, 'last-element')
+    graphs['container' + (Object.keys(graphs).length - 1)].formSubmit()
+  })
+  // Insert add button image to svg
+  newgraphbtn.innerHTML = "&lt;img src='images/add.svg' id='add-button'>"
+  // Append to container
+  insertDOM("content-container", newgraphbtn)
+
+
+  // Create add new tab button
+  var newtabbtn = document.createElement("a")
+  newtabbtn.classList.add('add-tab')
+  newtabbtn.id = 'add-tab'
+  newtabbtn.style.width = '3vh'
+  // When cell is clicked
+  newtabbtn.addEventListener('click',() => { 
+      // Create new tab will choose default values
+      let tab = document.createElement("a");
+      tab.href = "";
+      tab.classList.add("tab");
+      tab.innerHTML = "New Tab";
+      insertDOM("tab-bar", tab, "add-tab")
+  })
+  // Insert add button image to svg
+  newtabbtn.innerHTML = "&lt;img src='images/add.svg'>"
+  // Append to container
+  insertDOM("tab-bar", newtabbtn)
+
+}
+
+
+// Have JS generate table row here with columns: probe_id, recieve notifcation checkbox, notifcation frequency input / number box
+
+// If on configuration page
+if (window.location.pathname === '/config.html') {
+
+  var rows = []
+
+  const getProbe = async () => {
+    // Function to fetch data from url
+    
+    // Get probes from getprobe function
+    const data = await fetch("http://127.0.0.1:8084/getprobes")
+                      .then(response => response.json())
+                      .catch(error => console.error(error))
+    
+    for (probe of data) {
+      rows[probe.mac_address] = new ProbeOption(probe.mac_address, probe.request_interval)
+
+      // Insert graph into content container before last-element (if it exists)
+      insertDOM('probe-table', rows[probe.mac_address].getRow)
+    }
+  }
+  getProbe()
+
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">JS doc PEGASSAS</a></h2><h3>Classes</h3><ul><li><a href="Graph.html">Graph</a></li><li><a href="ProbeOption.html">ProbeOption</a></li><li><a href="TabButton.html">TabButton</a></li></ul><h3>Global</h3><ul><li><a href="global.html#insertDOM">insertDOM</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Tue Mar 30 2021 19:12:08 GMT+0100 (British Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
