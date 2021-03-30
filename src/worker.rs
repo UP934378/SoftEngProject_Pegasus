@@ -5,6 +5,8 @@ use std::ops::Deref;
 use std::sync::{Arc, Mutex};
 use tokio::runtime::Runtime;
 use crate::parser::{Data, parse_data};
+use crate::request::{get_data_url, make_request};
+use log::{debug, error, warn, log_enabled, info, Level};
 
 /**
  * Worker structure that handles connecting to a data probe
@@ -48,60 +50,12 @@ impl ProbeWorker {
         }
     }
 
-    /// Read data url from ssdp client response
-    fn get_data_url(&self, response: ssdp_client::SearchResponse) -> Option<String> {
-        let http_client = reqwest::Client::new();
-        // Request schema from probe
-        let schema_tree = match reqwest::Url::parse(response.location()) {
-            Ok(schema_url) => {
-                match self.rt.block_on(http_client.get(schema_url).send()) {
-                    Ok(a) => {
-                        match self.rt.block_on(a.text()) {
-                            Ok(schema_text) => {
-                                match xmltree::Element::parse(schema_text.as_bytes()){
-                                    Ok(xml) => Some(xml),
-                                    // TODO: Add error handling
-                                    Err(e) => None
-                                }
-                            },
-                            // TODO: Add error handling
-                            Err(e) => None
-                        }
-                    },
-                    // TODO: Add error handling
-                    Err(e) => None
-                }
-            },
-            // TODO: Add error handling
-            Err(e) => None
-        };
-
-        match schema_tree {
-            Some(ref st) => ProbeWorker::parse_presentation_url(st),
-            None => None
-        }
-    }
-
-    /// Extract data url from XML tree
-    fn parse_presentation_url(schema: &xmltree::Element) -> Option<String> {
-        match schema.get_child("device") {
-            Some(device) => {
-                match device.get_child("presentationURL") {
-                    Some(presentation_url) => match presentation_url.get_text() {
-                        Some(url) => Some(url.into_owned()),
-                        None => None
-                    },
-                    None => None
-                }
-            },
-            None => None
-        }
-    }
+    
     
     /// Update Worker informations
     pub fn update(&self, response: ssdp_client::SearchResponse) {
         match self.url.lock() {
-            Ok(mut url) => *url = match self.get_data_url(response){
+            Ok(mut url) => *url = match get_data_url(&self.rt, &response){
                 Some(s) => s,
                 None => return
             },
@@ -112,6 +66,7 @@ impl ProbeWorker {
             Err(e) => ()
         }
     }
+    
     
 
     pub fn run(&self) {
@@ -128,43 +83,10 @@ impl ProbeWorker {
                 }
             };
             println!("{:?}", url);
-            let http_client = reqwest::Client::new();
-            let request_url = reqwest::Url::parse(url.as_str());
-            let request_url = match request_url {
-                Ok(r) => Some(r),
-                Err(_) => {
-                    println!("error parsing url: {}", url);
-                    None
-                }
-            };
-            let response = match request_url {
-                Some(r) => Some(self.rt.block_on(http_client.get(r).send())),
-                None => None
-            };
-            // TODO: add logging for possible error that includes details of the error
-            let response = match response {
-                Some(Ok(r)) => Some(r),
-                _ => {
-                    println!("error making request");
-                    None
-                }
-            };
-
-            let json_string = match response {
-                Some(r) => match self.rt.block_on(r.text()) {
-                    Ok(r) => Some(r),
-                    Err(e) => None
-                }
-                None => None
-            };
             
-            let json_stream = match json_string {
-                Some(ref s) => Some(Deserializer::from_str(s.as_str())),
-                None => None
-            };
-
+            let json_stream = make_request(&url, &self.rt);
             match json_stream {
-                Some(stream) => {
+                Ok(stream) => {
                     let stream_iter = stream.into_iter::<Data>();
                     for data in stream_iter {
                         match data {
@@ -177,35 +99,19 @@ impl ProbeWorker {
                         }
                     }
                 },
-                None => ()
+                Err(_) => ()
             }
             // Wait for discovery interval to expire
             match self.request_interval.checked_sub(loop_start_instant.elapsed()){
                 Some(wait_duration) => {
                     std::thread::sleep(wait_duration);
                 },
-                None => ()
+                None => {
+                    warn!("worker for probe usn: {} falling behind request interval: {:?}", self.usn, self.request_interval);
+                }
             };
         }
     }
 
     
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-    #[test]
-    fn test_parse_presentation_url() -> Result<(), xmltree::ParseError> {
-        let case1 = xmltree::Element::parse("<root></root>".as_bytes())?;
-        let case2 = xmltree::Element::parse("<root><notdevice><child1></child1><presentationURL>sometext</presentationURL></notdevice></root>".as_bytes())?;
-        let case3 = xmltree::Element::parse("<root><device><child1></child1><child2>sometext</child2></device></root>".as_bytes())?;
-        let case4 = xmltree::Element::parse("<root><device><child1></child1><presentationURL>sometext</presentationURL></device></root>".as_bytes())?;
-        let text: Option<String> = Some("sometext".to_string());
-        assert_eq!(None, ProbeWorker::parse_presentation_url(&case1));
-        assert_eq!(None, ProbeWorker::parse_presentation_url(&case2));
-        assert_eq!(None, ProbeWorker::parse_presentation_url(&case3));
-        assert_eq!(text, ProbeWorker::parse_presentation_url(&case4));
-        Ok(())
-    }
 }
