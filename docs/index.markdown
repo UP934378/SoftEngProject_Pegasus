@@ -4,7 +4,7 @@ title: "Home Page"
 
 # Pegassas Energy Management System
 
-![Pegasssas Logo](../docs/images/pegasus_image.jpg)
+![Pegasssas Logo](/images/pegasus_image.jpg)
 
 The Pegassas EMS is a standalone system designed to enable the management of solar based home energy system through the use of an intuitive web application.
 

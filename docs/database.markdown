@@ -16,8 +16,8 @@ The system data storage is supported from two separate databases.
 
 ### Influx DB ERD
 
-![Influx ERD](/docs/images/influx_ERD.png)
+![Influx ERD](/images/influx_ERD.png)
 
 ### Postgres ERD
 
-![Postgres ERD](/docs/images/postgres_ERD.png)
+![Postgres ERD](/images/postgres_ERD.png)
