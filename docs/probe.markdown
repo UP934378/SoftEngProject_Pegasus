@@ -3,7 +3,7 @@ title: "Data probe discovery"
 permalink: /Probe
 ---
 
-# Data probe discovery
+# Pegassas Energy Management System
 
 [Home](https://m30819-2020.github.io/cw-code-t1)
 
