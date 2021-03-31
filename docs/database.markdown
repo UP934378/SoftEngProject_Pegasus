@@ -13,3 +13,11 @@ The system data storage is supported from two separate databases.
 
 - Time series are stored into a InfluxDB.
 - Configurations, users informations and static information are stored into a Postgres database.
+
+### Influx DB ERD
+
+![Influx ERD](/docs/images/influx_ERD.png)
+
+### Postgres ERD
+
+![Postgres ERD](/docs/images/postgres_ERD.png)
