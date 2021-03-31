@@ -13,4 +13,4 @@ permalink: /WebAppC
 - All functions, structure and other JavaScript objects have been labelled and explained within.
 - Any issues found please inform your local admin ASAP.
 
-[WebApp Javascript Documentation](/cw-code-t1/code_docs/doc/JSdoc/index.html)
+[WebApp Javascript Documentation](/cw-code-t1/docs/JSdoc/index.html)
