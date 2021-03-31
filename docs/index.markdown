@@ -16,6 +16,8 @@ The Pegassas EMS is a standalone system designed to enable the management of sol
 
 [Aggregator](https://m30819-2020.github.io/cw-code-t1/Aggregator)
 
+[Database](https://m30819-2020.github.io/cw-code-t1/Database)
+
 [Probe](https://m30819-2020.github.io/cw-code-t1/Probe)
 
 [Web Application - Client](https://m30819-2020.github.io/cw-code-t1/WebAppC)
