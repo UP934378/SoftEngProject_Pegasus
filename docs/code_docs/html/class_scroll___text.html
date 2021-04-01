@@ -71,11 +71,15 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Class to scroll text accross OLED display if text is too long.  
+ <a href="class_scroll___text.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad0dcf13451c4ecc89e25819801b8c0ad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scroll___text.html#ad0dcf13451c4ecc89e25819801b8c0ad">Scroll_Text</a> (SSD1306Wire *<a class="el" href="class_scroll___text.html#a466b3b90370d76c41595388f5a57be0f">display</a>, const char *<a class="el" href="class_scroll___text.html#a3b769b956ad93d669fa5accfda03f168">str</a>, int16_t <a class="el" href="class_scroll___text.html#a3f64cf76a924412610f82e4875327d45">x</a>, int16_t <a class="el" href="class_scroll___text.html#a1a0562b207e616e0f5021a26e4f0b1a7">y</a>)</td></tr>
+<tr class="memdesc:ad0dcf13451c4ecc89e25819801b8c0ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_scroll___text.html" title="Class to scroll text accross OLED display if text is too long.">Scroll_Text</a> object.  <a href="class_scroll___text.html#ad0dcf13451c4ecc89e25819801b8c0ad">More...</a><br /></td></tr>
 <tr class="separator:ad0dcf13451c4ecc89e25819801b8c0ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ae0cd899c53d959dddecc910b3fbd82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scroll___text.html#a3ae0cd899c53d959dddecc910b3fbd82">draw</a> ()</td></tr>
 <tr class="separator:a3ae0cd899c53d959dddecc910b3fbd82"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -83,23 +87,31 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a3b769b956ad93d669fa5accfda03f168"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scroll___text.html#a3b769b956ad93d669fa5accfda03f168">str</a></td></tr>
+<tr class="memdesc:a3b769b956ad93d669fa5accfda03f168"><td class="mdescLeft">&#160;</td><td class="mdescRight">String to display.  <a href="class_scroll___text.html#a3b769b956ad93d669fa5accfda03f168">More...</a><br /></td></tr>
 <tr class="separator:a3b769b956ad93d669fa5accfda03f168"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f64cf76a924412610f82e4875327d45"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scroll___text.html#a3f64cf76a924412610f82e4875327d45">x</a></td></tr>
+<tr class="memdesc:a3f64cf76a924412610f82e4875327d45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Width of display.  <a href="class_scroll___text.html#a3f64cf76a924412610f82e4875327d45">More...</a><br /></td></tr>
 <tr class="separator:a3f64cf76a924412610f82e4875327d45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a0562b207e616e0f5021a26e4f0b1a7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scroll___text.html#a1a0562b207e616e0f5021a26e4f0b1a7">y</a></td></tr>
+<tr class="memdesc:a1a0562b207e616e0f5021a26e4f0b1a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of display.  <a href="class_scroll___text.html#a1a0562b207e616e0f5021a26e4f0b1a7">More...</a><br /></td></tr>
 <tr class="separator:a1a0562b207e616e0f5021a26e4f0b1a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a902ee80dfbc437c399c1a9aea302ed96"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scroll___text.html#a902ee80dfbc437c399c1a9aea302ed96">text_width</a></td></tr>
+<tr class="memdesc:a902ee80dfbc437c399c1a9aea302ed96"><td class="mdescLeft">&#160;</td><td class="mdescRight">width of text  <a href="class_scroll___text.html#a902ee80dfbc437c399c1a9aea302ed96">More...</a><br /></td></tr>
 <tr class="separator:a902ee80dfbc437c399c1a9aea302ed96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7cfe355ad115687b68841d52bc5372d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scroll___text.html#ab7cfe355ad115687b68841d52bc5372d">offset</a></td></tr>
+<tr class="memdesc:ab7cfe355ad115687b68841d52bc5372d"><td class="mdescLeft">&#160;</td><td class="mdescRight">amount to offset text  <a href="class_scroll___text.html#ab7cfe355ad115687b68841d52bc5372d">More...</a><br /></td></tr>
 <tr class="separator:ab7cfe355ad115687b68841d52bc5372d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbbaeac54faea943cd5d4e2b65607230"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scroll___text.html#adbbaeac54faea943cd5d4e2b65607230">wait</a> = 4</td></tr>
+<tr class="memdesc:adbbaeac54faea943cd5d4e2b65607230"><td class="mdescLeft">&#160;</td><td class="mdescRight">time to wait  <a href="class_scroll___text.html#adbbaeac54faea943cd5d4e2b65607230">More...</a><br /></td></tr>
 <tr class="separator:adbbaeac54faea943cd5d4e2b65607230"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a466b3b90370d76c41595388f5a57be0f"><td class="memItemLeft" align="right" valign="top">SSD1306Wire *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scroll___text.html#a466b3b90370d76c41595388f5a57be0f">display</a></td></tr>
+<tr class="memdesc:a466b3b90370d76c41595388f5a57be0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to display  <a href="class_scroll___text.html#a466b3b90370d76c41595388f5a57be0f">More...</a><br /></td></tr>
 <tr class="separator:a466b3b90370d76c41595388f5a57be0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00007">7</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
+<div class="textblock"><p>Class to scroll text accross OLED display if text is too long. </p>
+
+<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00010">10</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad0dcf13451c4ecc89e25819801b8c0ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0dcf13451c4ecc89e25819801b8c0ad">&#9670;&nbsp;</a></span>Scroll_Text()</h2>
@@ -139,6 +151,17 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Construct a new <a class="el" href="class_scroll___text.html" title="Class to scroll text accross OLED display if text is too long.">Scroll_Text</a> object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">display</td><td></td></tr>
+    <tr><td class="paramname">str</td><td></td></tr>
+    <tr><td class="paramname">x</td><td></td></tr>
+    <tr><td class="paramname">y</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p class="definition">Definition at line <a class="el" href="scroll__text_8cpp_source.html#l00003">3</a> of file <a class="el" href="scroll__text_8cpp_source.html">scroll_text.cpp</a>.</p>
 
 </div>
@@ -158,6 +181,7 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Draw object to display </p>
 
 <p class="definition">Definition at line <a class="el" href="scroll__text_8cpp_source.html#l00011">11</a> of file <a class="el" href="scroll__text_8cpp_source.html">scroll_text.cpp</a>.</p>
 
@@ -184,7 +208,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00011">11</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
+<p>pointer to display </p>
+
+<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00024">24</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
 
 </div>
 </div>
@@ -208,7 +234,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00009">9</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
+<p>amount to offset text </p>
+
+<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00020">20</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
 
 </div>
 </div>
@@ -232,7 +260,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00008">8</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
+<p>String to display. </p>
+
+<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00012">12</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
 
 </div>
 </div>
@@ -256,7 +286,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00009">9</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
+<p>width of text </p>
+
+<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00018">18</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
 
 </div>
 </div>
@@ -280,7 +312,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00010">10</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
+<p>time to wait </p>
+
+<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00022">22</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
 
 </div>
 </div>
@@ -304,7 +338,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00009">9</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
+<p>Width of display. </p>
+
+<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00014">14</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
 
 </div>
 </div>
@@ -328,7 +364,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00009">9</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
+<p>Length of display. </p>
+
+<p class="definition">Definition at line <a class="el" href="scroll__text_8hpp_source.html#l00016">16</a> of file <a class="el" href="scroll__text_8hpp_source.html">scroll_text.hpp</a>.</p>
 
 </div>
 </div>
