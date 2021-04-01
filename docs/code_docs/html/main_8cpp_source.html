@@ -90,36 +90,29 @@ $(function() {
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;SPIFFS.h&gt;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;ArduinoOTA.h&gt;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">using namespace </span>httpsserver;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="main_8cpp.html#ad988f365399a2da739e8b8be979e6c16">   21</a></span>&#160;HTTPSServer *<a class="code" href="main_8cpp.html#ad988f365399a2da739e8b8be979e6c16">secServer</a>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">   22</a></span>&#160;HTTPServer *<a class="code" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">   23</a></span>&#160;SSD1306Wire <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>(0x3c, SDA, SCL, GEOMETRY_128_32);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//WebServer HTTP(80);</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="main_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">   26</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup</a>()</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  Serial.begin(115200);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.init();</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.flipScreenVertically();</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.setFont(ArialMT_Plain_10);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.drawString(0, 0, <span class="stringliteral">&quot;Hello world&quot;</span>);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.display();</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="main_8cpp.html#ad988f365399a2da739e8b8be979e6c16">   22</a></span>&#160;HTTPSServer *<a class="code" href="main_8cpp.html#ad988f365399a2da739e8b8be979e6c16">secServer</a>;  </div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">   24</a></span>&#160;HTTPServer *<a class="code" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">   26</a></span>&#160;SSD1306Wire <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>(0x3c, SDA, SCL, GEOMETRY_128_32);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="main_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">   32</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup</a>()</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="comment">// Try to mount SPIFFS without formatting on failure</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keywordflow">if</span> (!SPIFFS.begin(<span class="keyword">false</span>))</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// If SPIFFS does not work, we wait for serial connection...</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">while</span> (!Serial)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      ;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    delay(1000);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  Serial.begin(115200);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.init();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.flipScreenVertically();</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.setFont(ArialMT_Plain_10);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.drawString(0, 0, <span class="stringliteral">&quot;Hello world&quot;</span>);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.display();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">// Ask to format SPIFFS using serial interface</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    Serial.print(<span class="stringliteral">&quot;Mounting SPIFFS failed. Try formatting? (y/n): &quot;</span>);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">while</span> (!Serial.available())</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      ;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    Serial.println();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> (!SPIFFS.begin(<span class="keyword">false</span>))</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// Ask to format SPIFFS using serial interface</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    Serial.print(<span class="stringliteral">&quot;Mounting SPIFFS failed. Retrying... &quot;</span>);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// If the user did not accept to try formatting SPIFFS or formatting failed:</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">if</span> (Serial.read() != <span class="charliteral">&#39;y&#39;</span> || !SPIFFS.begin(<span class="keyword">true</span>))</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">if</span> (!SPIFFS.begin(<span class="keyword">true</span>))</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    {</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      Serial.println(<span class="stringliteral">&quot;SPIFFS not available. Stop.&quot;</span>);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
@@ -185,19 +178,19 @@ $(function() {
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
 <div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="main_8cpp.html#afe461d27b9c48d5921c00d521181f12f">  114</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#afe461d27b9c48d5921c00d521181f12f">loop</a>()</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;{</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <a class="code" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a>-&gt;loop();</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  ArduinoOTA.handle();</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="comment">// HTTP.handleClient();</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
-<div class="ttc" id="amain_8cpp_html_a4fc01d736fe50cf5b977f755b675f11d"><div class="ttname"><a href="main_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup</a></div><div class="ttdeci">void setup()</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00026">main.cpp:26</a></div></div>
-<div class="ttc" id="amain_8cpp_html_a69dae90c6a50b7a9e3479e5427340682"><div class="ttname"><a href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a></div><div class="ttdeci">SSD1306Wire display(0x3c, SDA, SCL, GEOMETRY_128_32)</div></div>
-<div class="ttc" id="amain_8cpp_html_acaf5c8d54079ebd2d33cfa8b90e7f1e9"><div class="ttname"><a href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a></div><div class="ttdeci">HTTPServer * insecServer</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00022">main.cpp:22</a></div></div>
-<div class="ttc" id="amain_8cpp_html_ad988f365399a2da739e8b8be979e6c16"><div class="ttname"><a href="main_8cpp.html#ad988f365399a2da739e8b8be979e6c16">secServer</a></div><div class="ttdeci">HTTPSServer * secServer</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00021">main.cpp:21</a></div></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <a class="code" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a>-&gt;loop();</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  ArduinoOTA.handle();</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="comment">// HTTP.handleClient();</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
+<div class="ttc" id="amain_8cpp_html_a4fc01d736fe50cf5b977f755b675f11d"><div class="ttname"><a href="main_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup</a></div><div class="ttdeci">void setup()</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00032">main.cpp:32</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a69dae90c6a50b7a9e3479e5427340682"><div class="ttname"><a href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a></div><div class="ttdeci">SSD1306Wire display(0x3c, SDA, SCL, GEOMETRY_128_32)</div><div class="ttdoc">Set up OLED display.</div></div>
+<div class="ttc" id="amain_8cpp_html_acaf5c8d54079ebd2d33cfa8b90e7f1e9"><div class="ttname"><a href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a></div><div class="ttdeci">HTTPServer * insecServer</div><div class="ttdoc">Define insecure server that uses HTTP.</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00024">main.cpp:24</a></div></div>
+<div class="ttc" id="amain_8cpp_html_ad988f365399a2da739e8b8be979e6c16"><div class="ttname"><a href="main_8cpp.html#ad988f365399a2da739e8b8be979e6c16">secServer</a></div><div class="ttdeci">HTTPSServer * secServer</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00022">main.cpp:22</a></div></div>
 <div class="ttc" id="amain_8cpp_html_afe461d27b9c48d5921c00d521181f12f"><div class="ttname"><a href="main_8cpp.html#afe461d27b9c48d5921c00d521181f12f">loop</a></div><div class="ttdeci">void loop()</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00114">main.cpp:114</a></div></div>
-<div class="ttc" id="anetwork__discovery_8cpp_html_a13b3831063220596655a37519d95834f"><div class="ttname"><a href="network__discovery_8cpp.html#a13b3831063220596655a37519d95834f">setUpSSDP</a></div><div class="ttdeci">void setUpSSDP(SSD1306Wire *display, WiFi_creds creds)</div><div class="ttdef"><b>Definition:</b> <a href="network__discovery_8cpp_source.html#l00004">network_discovery.cpp:4</a></div></div>
+<div class="ttc" id="anetwork__discovery_8cpp_html_a13b3831063220596655a37519d95834f"><div class="ttname"><a href="network__discovery_8cpp.html#a13b3831063220596655a37519d95834f">setUpSSDP</a></div><div class="ttdeci">void setUpSSDP(SSD1306Wire *display, WiFi_creds creds)</div><div class="ttdoc">Connect to WiFi, display details on OLED then set up SSDP object.</div><div class="ttdef"><b>Definition:</b> <a href="network__discovery_8cpp_source.html#l00004">network_discovery.cpp:4</a></div></div>
 <div class="ttc" id="anetwork__discovery_8hpp_html"><div class="ttname"><a href="network__discovery_8hpp.html">network_discovery.hpp</a></div></div>
 <div class="ttc" id="ascroll__text_8hpp_html"><div class="ttname"><a href="scroll__text_8hpp.html">scroll_text.hpp</a></div></div>
-<div class="ttc" id="aserver_8cpp_html_af7c44f6b195668220441ae4a5a56e8ed"><div class="ttname"><a href="server_8cpp.html#af7c44f6b195668220441ae4a5a56e8ed">runInsecServer</a></div><div class="ttdeci">HTTPServer * runInsecServer()</div><div class="ttdef"><b>Definition:</b> <a href="server_8cpp_source.html#l00008">server.cpp:8</a></div></div>
+<div class="ttc" id="aserver_8cpp_html_af7c44f6b195668220441ae4a5a56e8ed"><div class="ttname"><a href="server_8cpp.html#af7c44f6b195668220441ae4a5a56e8ed">runInsecServer</a></div><div class="ttdeci">HTTPServer * runInsecServer()</div><div class="ttdoc">Define resource nodes when using HTTP.</div><div class="ttdef"><b>Definition:</b> <a href="server_8cpp_source.html#l00008">server.cpp:8</a></div></div>
 <div class="ttc" id="aserver_8hpp_html"><div class="ttname"><a href="server_8hpp.html">server.hpp</a></div></div>
 <div class="ttc" id="astruct_wi_fi__creds_html"><div class="ttname"><a href="struct_wi_fi__creds.html">WiFi_creds</a></div><div class="ttdef"><b>Definition:</b> <a href="wifi__creds_8hpp_source.html#l00007">wifi_creds.hpp:7</a></div></div>
 <div class="ttc" id="awifi__creds_8cpp_html_a3d55752d6b855a29a774d2113aa0508c"><div class="ttname"><a href="wifi__creds_8cpp.html#a3d55752d6b855a29a774d2113aa0508c">load_wifi_creds</a></div><div class="ttdeci">WiFi_creds load_wifi_creds()</div><div class="ttdef"><b>Definition:</b> <a href="wifi__creds_8cpp_source.html#l00124">wifi_creds.cpp:124</a></div></div>

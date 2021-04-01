@@ -80,14 +80,19 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a08a812e1d2be30d3d0a5268856b84b82"><td class="memItemLeft" align="right" valign="top">SSLCert *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8cpp.html#a08a812e1d2be30d3d0a5268856b84b82">getCertificate</a> ()</td></tr>
+<tr class="memdesc:a08a812e1d2be30d3d0a5268856b84b82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Certificate object from SPIFFS or generate self signed certificate.  <a href="server_8cpp.html#a08a812e1d2be30d3d0a5268856b84b82">More...</a><br /></td></tr>
 <tr class="separator:a08a812e1d2be30d3d0a5268856b84b82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad21e589335cb9549f63652f53d04abdb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8cpp.html#ad21e589335cb9549f63652f53d04abdb">handleGetData</a> (HTTPRequest *req, HTTPResponse *res)</td></tr>
+<tr class="memdesc:ad21e589335cb9549f63652f53d04abdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call the <a class="el" href="data_8cpp.html#adb62a42d008521a03a5a0ff020b0c8f1" title="Creates a Json object of the data the probe can pull from BMS using ArduinoJson library then parses i...">dataString()</a> function to return json data as HTTP response.  <a href="server_8cpp.html#ad21e589335cb9549f63652f53d04abdb">More...</a><br /></td></tr>
 <tr class="separator:ad21e589335cb9549f63652f53d04abdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a146a41384fabe9ff7466c4bce34f8e7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8cpp.html#a146a41384fabe9ff7466c4bce34f8e7a">handleSSDPXML</a> (HTTPRequest *req, HTTPResponse *res)</td></tr>
+<tr class="memdesc:a146a41384fabe9ff7466c4bce34f8e7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the SSDP schema as HTTP response.  <a href="server_8cpp.html#a146a41384fabe9ff7466c4bce34f8e7a">More...</a><br /></td></tr>
 <tr class="separator:a146a41384fabe9ff7466c4bce34f8e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7c44f6b195668220441ae4a5a56e8ed"><td class="memItemLeft" align="right" valign="top">HTTPServer *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8cpp.html#af7c44f6b195668220441ae4a5a56e8ed">runInsecServer</a> ()</td></tr>
+<tr class="memdesc:af7c44f6b195668220441ae4a5a56e8ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define resource nodes when using HTTP.  <a href="server_8cpp.html#af7c44f6b195668220441ae4a5a56e8ed">More...</a><br /></td></tr>
 <tr class="separator:af7c44f6b195668220441ae4a5a56e8ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba0da03401aa8c023af1bce50bc7caee"><td class="memItemLeft" align="right" valign="top">HTTPSServer *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8cpp.html#aba0da03401aa8c023af1bce50bc7caee">runServer</a> ()</td></tr>
+<tr class="memdesc:aba0da03401aa8c023af1bce50bc7caee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define resource nodes when using HTTPS and check if SSL certificate is available.  <a href="server_8cpp.html#aba0da03401aa8c023af1bce50bc7caee">More...</a><br /></td></tr>
 <tr class="separator:aba0da03401aa8c023af1bce50bc7caee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -106,7 +111,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00036">36</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
+<p>Get the Certificate object from SPIFFS or generate self signed certificate. </p>
+<dl class="section return"><dt>Returns</dt><dd>SSLCert* </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00038">38</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
 
 </div>
 </div>
@@ -136,7 +144,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00129">129</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
+<p>Call the <a class="el" href="data_8cpp.html#adb62a42d008521a03a5a0ff020b0c8f1" title="Creates a Json object of the data the probe can pull from BMS using ArduinoJson library then parses i...">dataString()</a> function to return json data as HTTP response. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">req</td><td></td></tr>
+    <tr><td class="paramname">res</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00136">136</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
 
 </div>
 </div>
@@ -166,7 +183,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00136">136</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
+<p>Returns the SSDP schema as HTTP response. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">req</td><td></td></tr>
+    <tr><td class="paramname">res</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00149">149</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
 
 </div>
 </div>
@@ -184,6 +210,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Define resource nodes when using HTTP. </p>
+<dl class="section return"><dt>Returns</dt><dd>HTTPServer* </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00008">8</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
 
@@ -203,6 +232,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Define resource nodes when using HTTPS and check if SSL certificate is available. </p>
+<dl class="section return"><dt>Returns</dt><dd>HTTPSServer* </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00018">18</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
 
