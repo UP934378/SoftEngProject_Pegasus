@@ -1,6 +1,6 @@
 use log::{debug, error, log_enabled, info, Level};
 use tokio::runtime::Runtime;
-
+/// Request data from probes
 
 /// Read data url from ssdp client response
 pub fn get_data_url(rt: &Runtime, response: &ssdp_client::SearchResponse) -> Option<String> {
@@ -71,6 +71,7 @@ fn parse_presentation_url(schema: &xmltree::Element) -> Option<String> {
     }
 }
 
+/// Make data request from URL
 pub fn make_request(url: &String, rt: &Runtime) -> Result<String, Box<dyn std::error::Error>> {
     let http_client = reqwest::Client::new();
     let request_url = match reqwest::Url::parse(url) {

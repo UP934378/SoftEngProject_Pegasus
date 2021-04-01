@@ -3,6 +3,7 @@
  */
 use ssdp_client::{URN, SearchTarget, search, Error, SearchResponse};
 use futures::{stream::StreamExt};
+/// Discover a new probe on a given network
 
 /// SSDP service domain
 const DOMAIN : &str = "pegassas";
