@@ -94,7 +94,6 @@ pub struct Frequency {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CellData {
     id : u16,
-    battery_id : u16,
     voltage : Voltage,
     balance_current : Option<Current>
 }
