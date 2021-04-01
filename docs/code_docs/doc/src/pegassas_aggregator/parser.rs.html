@@ -407,7 +407,6 @@
 <span id="404">404</span>
 <span id="405">405</span>
 <span id="406">406</span>
-<span id="407">407</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">/**
  * This section of code is used to translate the raw data given by the probes inserting it into the top level InfluxDB database.
@@ -505,7 +504,6 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CellData</span> {
     <span class="ident">id</span> : <span class="ident">u16</span>,
-    <span class="ident">battery_id</span> : <span class="ident">u16</span>,
     <span class="ident">voltage</span> : <span class="ident">Voltage</span>,
     <span class="ident">balance_current</span> : <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Current</span><span class="op">&gt;</span>
 }
