@@ -50,11 +50,18 @@ pub fn get_data_url(rt: &Runtime, response: &ssdp_client::SearchResponse) -> Opt
 
 /// Extract data url from XML tree
 fn parse_presentation_url(schema: &xmltree::Element) -> Option<String> {
+    let base_url = match schema.get_child("URLBase") {
+        Some(base) => match base.get_text() {
+            Some(url) => (*url).to_string(),
+            None => return None
+        },
+        None => return None
+    };
     match schema.get_child("device") {
         Some(device) => {
             match device.get_child("presentationURL") {
                 Some(presentation_url) => match presentation_url.get_text() {
-                    Some(url) => Some(url.into_owned()),
+                    Some(url) => Some(base_url + &*url),
                     None => None
                 },
                 None => None
