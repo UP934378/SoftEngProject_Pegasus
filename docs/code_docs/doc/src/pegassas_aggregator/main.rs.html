@@ -181,6 +181,7 @@
 <span id="178">178</span>
 <span id="179">179</span>
 <span id="180">180</span>
+<span id="181">181</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">discovery</span>;
 <span class="kw">mod</span> <span class="ident">worker</span>;
@@ -239,7 +240,8 @@
     <span class="kw">let</span> <span class="ident">host</span> <span class="op">=</span> <span class="string">&quot;localhost&quot;</span>;
     <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="string">&quot;aggregator&quot;</span>;
     <span class="kw">let</span> <span class="ident">dbname</span> <span class="op">=</span> <span class="string">&quot;pegassas&quot;</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">postgres_client</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">postgres</span>::<span class="ident">Client</span>::<span class="ident">connect</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;host={} user={} dbname={}&quot;</span>, <span class="ident">host</span>, <span class="ident">user</span>, <span class="ident">dbname</span>).<span class="ident">as_str</span>(), <span class="ident">postgres</span>::<span class="ident">NoTls</span>){
+    <span class="kw">let</span> <span class="ident">password</span> <span class="op">=</span> <span class="string">&quot;123&quot;</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">postgres_client</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">postgres</span>::<span class="ident">Client</span>::<span class="ident">connect</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;host={} user={} dbname={} password={}&quot;</span>, <span class="ident">host</span>, <span class="ident">user</span>, <span class="ident">dbname</span>, <span class="ident">password</span>).<span class="ident">as_str</span>(), <span class="ident">postgres</span>::<span class="ident">NoTls</span>){
         <span class="prelude-val">Ok</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Connection to postgres database successful. host: {}, user: {}, dbname: {}&quot;</span>, <span class="ident">host</span>, <span class="ident">user</span>, <span class="ident">dbname</span>);
             <span class="ident">c</span>
@@ -258,7 +260,7 @@
     <span class="kw">loop</span> {
         <span class="comment">// Refresh probe_configs from database</span>
         <span class="kw">if</span> <span class="ident">Instant</span>::<span class="ident">now</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">check_instant</span> {
-            <span class="kw">let</span> <span class="ident">probe_configs_vec</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">postgres_client</span>.<span class="ident">query</span>(<span class="string">&quot;SELECT probe_id, request_interval FROM probe_config;&quot;</span>, <span class="kw-2">&amp;</span>[]) {
+            <span class="kw">let</span> <span class="ident">probe_configs_vec</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">postgres_client</span>.<span class="ident">query</span>(<span class="string">&quot;SELECT mac_address, request_interval FROM probe_config;&quot;</span>, <span class="kw-2">&amp;</span>[]) {
                 <span class="prelude-val">Ok</span>(<span class="ident">rows</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">check_instant</span> <span class="op">=</span> <span class="ident">Instant</span>::<span class="ident">now</span>();
                     <span class="ident">rows</span>
@@ -269,10 +271,10 @@
                 }
             };
             <span class="kw">for</span> <span class="ident">config</span> <span class="kw">in</span> <span class="ident">probe_configs_vec</span> {
-                <span class="kw">let</span> <span class="ident">probe_id</span> : <span class="ident">MacAddress</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">try_get</span>(<span class="string">&quot;probe_id&quot;</span>) {
+                <span class="kw">let</span> <span class="ident">probe_id</span> : <span class="ident">MacAddress</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">try_get</span>(<span class="string">&quot;mac_address&quot;</span>) {
                     <span class="prelude-val">Ok</span>(<span class="ident">id</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">id</span>,
                     <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Failed to get probe_id from configuration response: {:?}&quot;</span>, <span class="ident">e</span>);
+                        <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Failed to get mac_address from configuration response: {:?}&quot;</span>, <span class="ident">e</span>);
                         <span class="kw">continue</span>;
                     }
                 };
