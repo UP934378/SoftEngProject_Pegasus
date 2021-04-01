@@ -12,6 +12,7 @@ use log::{debug, error, log_enabled, info, Level};
 use eui48::MacAddress;
 use regex::Regex;
 use serde_json::Deserializer;
+use std::convert::TryInto;
 
 
 struct ProbeConfig{
@@ -144,7 +145,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
                         },
                         None => {
                             // No worker for this probe already exists
-                            let worker = Arc::new(ProbeWorker::new(usn.clone(), rt.clone()));
+                            let request_interval : u64 = match config.frequency.try_into(){
+                                Ok(r) => r,
+                                Err(e) => {
+                                    error!("Request interval for probe: {} produced error: {}", macaddr, e);
+                                    continue;
+                                }
+                            };
+                            let worker = Arc::new(ProbeWorker::new(usn.clone(), rt.clone(), Duration::from_secs(request_interval)));
                             let w = worker.clone();
                             let worker_join = std::thread::spawn(move || {
                                     w.update(response);

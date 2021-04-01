@@ -25,12 +25,12 @@ pub struct ProbeWorker {
 impl ProbeWorker {
 
     /// Build a new Worker 
-    pub fn new(usn: String, rt: Arc<Runtime>) -> ProbeWorker {
+    pub fn new(usn: String, rt: Arc<Runtime>, request_interval: Duration) -> ProbeWorker {
         ProbeWorker {
             url: std::sync::Mutex::new("".to_string()),
             usn,
-            ttl: Mutex::new(Instant::now() + Duration::from_secs(60)),
-            request_interval: Duration::from_secs(30),
+            ttl: Mutex::new(Instant::now() + (request_interval * 3)),
+            request_interval,
             should_work: Mutex::new(true),
             rt
         }
