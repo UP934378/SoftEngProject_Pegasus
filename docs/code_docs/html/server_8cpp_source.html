@@ -204,8 +204,9 @@ $(function() {
 <div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="server_8cpp.html#a146a41384fabe9ff7466c4bce34f8e7a">  149</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="server_8cpp.html#a146a41384fabe9ff7466c4bce34f8e7a">handleSSDPXML</a>(HTTPRequest * req, HTTPResponse * res) {</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="comment">// Print to response</span></div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  res-&gt;setHeader(<span class="stringliteral">&quot;Content-Type&quot;</span>, <span class="stringliteral">&quot;application/xml&quot;</span>);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  res-&gt;print(SSDP.schema());</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="comment">// The &quot;+ 94&quot; removed the HTTP headers that are included as part of the SSDP schema template</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  res-&gt;print(SSDP.schema() + 94);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}</div>
 <div class="ttc" id="adata_8cpp_html_adb62a42d008521a03a5a0ff020b0c8f1"><div class="ttname"><a href="data_8cpp.html#adb62a42d008521a03a5a0ff020b0c8f1">dataString</a></div><div class="ttdeci">std::string dataString()</div><div class="ttdoc">Creates a Json object of the data the probe can pull from BMS using ArduinoJson library then parses i...</div><div class="ttdef"><b>Definition:</b> <a href="data_8cpp_source.html#l00022">data.cpp:22</a></div></div>
 <div class="ttc" id="adata_8hpp_html"><div class="ttname"><a href="data_8hpp.html">data.hpp</a></div></div>
 <div class="ttc" id="amain_8cpp_html_acaf5c8d54079ebd2d33cfa8b90e7f1e9"><div class="ttname"><a href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a></div><div class="ttdeci">HTTPServer * insecServer</div><div class="ttdoc">Define insecure server that uses HTTP.</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00024">main.cpp:24</a></div></div>
