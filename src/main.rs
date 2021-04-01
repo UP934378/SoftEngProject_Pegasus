@@ -55,7 +55,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     let host = "localhost";
     let user = "aggregator";
     let dbname = "pegassas";
-    let mut postgres_client = match postgres::Client::connect(format!("host={} user={} dbname={}", host, user, dbname).as_str(), postgres::NoTls){
+    let password = "123";
+    let mut postgres_client = match postgres::Client::connect(format!("host={} user={} dbname={} password={}", host, user, dbname, password).as_str(), postgres::NoTls){
         Ok(c) => {
             info!("Connection to postgres database successful. host: {}, user: {}, dbname: {}", host, user, dbname);
             c
@@ -74,7 +75,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     loop {
         // Refresh probe_configs from database
         if Instant::now() >= check_instant {
-            let probe_configs_vec = match postgres_client.query("SELECT probe_id, request_interval FROM probe_config;", &[]) {
+            let probe_configs_vec = match postgres_client.query("SELECT mac_address, request_interval FROM probe_config;", &[]) {
                 Ok(rows) => {
                     check_instant = Instant::now();
                     rows
@@ -85,10 +86,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
                 }
             };
             for config in probe_configs_vec {
-                let probe_id : MacAddress = match config.try_get("probe_id") {
+                let probe_id : MacAddress = match config.try_get("mac_address") {
                     Ok(id) => id,
                     Err(e) => {
-                        error!("Failed to get probe_id from configuration response: {:?}", e);
+                        error!("Failed to get mac_address from configuration response: {:?}", e);
                         continue;
                     }
                 };

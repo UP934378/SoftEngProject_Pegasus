@@ -39,14 +39,20 @@ impl ProbeWorker {
     fn check_should_work(&self) -> bool {
         match self.should_work.lock(){
             Ok(b) => *b,
-            Err(_) => false
+            Err(e) => {
+                error!("worker USN: {} could not lock should_work mutex, error: {}", self.usn, e);
+                false
+            }
         }
     }
 
     fn check_ttl(&self) -> bool {
         match self.ttl.lock(){
             Ok(ttl) => Instant::now() < *ttl,
-            Err(_) => false
+            Err(e) => {
+                error!("worker USN: {} could not lock ttl mutex, error: {}", self.usn, e);
+                false
+            }
         }
     }
 
@@ -59,7 +65,9 @@ impl ProbeWorker {
                 Some(s) => s,
                 None => return
             },
-            Err(e) => ()
+            Err(e) => {
+                error!("worker USN: {} could not lock url mutex, error: {}",self.usn, e);
+            }
         }
         match self.ttl.lock() {
             Ok(mut ttl) => *ttl = Instant::now() + Duration::from_secs(60),
