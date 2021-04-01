@@ -308,4 +308,62 @@ mod test {
 
 ### C++ - Probes
 
-## Implementation tests
+<details>
+<summary> Test 1 - Hardware display test </summary>
+<br>
+
+``` C++
+void test_display(){
+    display.init();
+    display.flipScreenVertically();
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0,0,"Hello!");
+    display.display();
+    delay(2000);
+    UNITY_TEST_ASSERT(true, 15, "fail");
+}
+```
+
+</details>
+
+<details>
+<summary> Test 2 - WiFi credential </summary>
+<br>
+
+``` C++
+void test_save_wifi_creds(){
+    UNITY_TEST_ASSERT(rc::check([](std::string SSID, std::string PSK){
+        // Don't test for strings that are too long to store in the EEPROM
+        RC_PRE((SSID.length() + PSK.length() + 3 <= 512));
+
+        WiFi_creds creds = {
+            SSID.c_str(),
+            PSK.c_str()
+        };
+        save_wifi_creds(creds);
+        // If SSID or PSK are invalid
+        if (SSID.length() == 0 || PSK.length() < 8){
+            // save_wifi_creds should set the first 3 bytes of EEPROM to 0 in the case of invalid SSID or PSK
+            for (int i = 0; i < 3; ++i){
+                if (EEPROM.read(i)){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        if (EEPROM.read(0) != 1){
+            return false;
+        }
+        if (!compare_EEPROM(SSID.c_str(), 1)){
+            return false;
+        }
+        if (!compare_EEPROM(PSK.c_str(), 2 + SSID.length())){
+            return false;
+        }
+        return true;
+    }), 69, "Rapidcheck test_save_wifi_creds fail");
+}
+```
+
+</details>
