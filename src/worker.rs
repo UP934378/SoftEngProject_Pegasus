@@ -16,7 +16,7 @@ pub struct ProbeWorker {
     pub url : std::sync::Mutex<String>,
     usn: String,
     pub ttl: Mutex<Instant>,
-    request_interval: Duration,
+    request_interval: Mutex<Duration>,
     pub should_work: Mutex<bool>,
     rt: Arc<Runtime>
 }
@@ -29,7 +29,7 @@ impl ProbeWorker {
             url: std::sync::Mutex::new("".to_string()),
             usn,
             ttl: Mutex::new(Instant::now() + (request_interval * 3)),
-            request_interval,
+            request_interval: Mutex::new(request_interval),
             should_work: Mutex::new(true),
             rt
         }
@@ -58,7 +58,7 @@ impl ProbeWorker {
     
     
     /// Update Worker informations
-    pub fn update(&self, response: ssdp_client::SearchResponse) {
+    pub fn update(&self, response: ssdp_client::SearchResponse, request_interval: Option<Duration>) {
         match self.url.lock() {
             Ok(mut url) => *url = match get_data_url(&self.rt, &response){
                 Some(s) => s,
@@ -66,10 +66,23 @@ impl ProbeWorker {
             },
             Err(e) => {
                 error!("worker USN: {} could not lock url mutex, error: {}",self.usn, e);
+                return
             }
         }
+        let r_i : Duration = match self.request_interval.lock() {
+            Ok(mut r_i) => {
+                if let Some(r_i_new) = request_interval{
+                    *r_i = r_i_new;
+                }
+                *r_i
+            },
+            Err(e) => {
+                error!("worker USN: {} could not lock request_interval mutex, error: {}",self.usn, e);
+                return
+            }
+        };
         match self.ttl.lock() {
-            Ok(mut ttl) => *ttl = Instant::now() + Duration::from_secs(60),
+            Ok(mut ttl) => *ttl = Instant::now() + r_i * 3,
             Err(e) => ()
         }
     }
@@ -120,14 +133,20 @@ impl ProbeWorker {
                 }
             }
             // Wait for discovery interval to expire
-            match self.request_interval.checked_sub(loop_start_instant.elapsed()){
-                Some(wait_duration) => {
-                    std::thread::sleep(wait_duration);
+            match self.request_interval.lock(){
+                Ok(request_interval) =>{
+                    match request_interval.checked_sub(loop_start_instant.elapsed()){
+                        Some(wait_duration) => {
+                            std::thread::sleep(wait_duration);
+                        },
+                        None => {
+                            warn!("worker for probe usn: {} falling behind request interval: {:?}", self.usn, self.request_interval);
+                        }
+                    };
                 },
-                None => {
-                    warn!("worker for probe usn: {} falling behind request interval: {:?}", self.usn, self.request_interval);
-                }
-            };
+                Err(e) => error!("Couldn't lock worker request_interval mutex, error: {}", e)
+            }
+            
         }
     }
 

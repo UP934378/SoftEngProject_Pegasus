@@ -137,25 +137,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
                 Some(ProbeConfig{frequency :0}) => (),
                 Some(config) => {
                     let usn = response.usn().to_string();
+                    let request_interval : u64 = match config.frequency.try_into(){
+                        Ok(r) => r,
+                        Err(e) => {
+                            error!("Request interval for probe: {} produced error: {}", macaddr, e);
+                            continue;
+                        }
+                    };
                     match workers.get(&usn) {
                         Some((worker, _)) => {
                             // A worker already exists so update it
                             let w = worker.clone();
-                            std::thread::spawn(move || w.update(response));
+                            std::thread::spawn(move || w.update(response, Some(Duration::from_secs(request_interval))));
                         },
                         None => {
                             // No worker for this probe already exists
-                            let request_interval : u64 = match config.frequency.try_into(){
-                                Ok(r) => r,
-                                Err(e) => {
-                                    error!("Request interval for probe: {} produced error: {}", macaddr, e);
-                                    continue;
-                                }
-                            };
+                            
                             let worker = Arc::new(ProbeWorker::new(usn.clone(), rt.clone(), Duration::from_secs(request_interval)));
                             let w = worker.clone();
                             let worker_join = std::thread::spawn(move || {
-                                    w.update(response);
+                                    w.update(response, None);
                                     w.run()
                             });
                             workers.insert(usn, (worker.clone(), worker_join));
