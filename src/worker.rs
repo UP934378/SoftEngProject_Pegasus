@@ -80,6 +80,7 @@ impl ProbeWorker {
     pub fn run(&self) {
         debug!("Worker USN: {} started", self.usn);
         while self.check_should_work() && self.check_ttl() {
+            debug!("Worker USN: {} top of loop", self.usn);
             let loop_start_instant = Instant::now();
             let url;
             match self.url.lock() {
@@ -91,7 +92,6 @@ impl ProbeWorker {
                     continue
                 }
             };
-            println!("{:?}", url);
             
             let json_string = make_request(&url, &self.rt);
             match json_string {
@@ -103,13 +103,22 @@ impl ProbeWorker {
                             Ok(d) => {
                                 let influx_client = influx_db_client::Client::new(reqwest::Url::parse("http://localhost:8086").unwrap(), "pegassas");
                                 let points = parse_data(d);
-                                self.rt.block_on(influx_client.write_points(points, Some(influx_db_client::Precision::Seconds), None));
+                                match self.rt.block_on(influx_client.write_points(points, Some(influx_db_client::Precision::Seconds), None)){
+                                    Ok(_) => (),
+                                    Err(e) => {
+                                        error!("Writing to influx db failed with error: {}", e);
+                                    }
+                                }
                             },
-                            Err(_) => ()
+                            Err(e) => {
+                                error!("Parsing json response into Data struct failed with error: {}", e);
+                            }
                         }
                     }
                 },
-                Err(_) => ()
+                Err(e) => {
+                    error!("Data request to URL: {} failed with error: {}", url, e);
+                }
             }
             // Wait for discovery interval to expire
             match self.request_interval.checked_sub(loop_start_instant.elapsed()){
