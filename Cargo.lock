@@ -730,6 +730,7 @@ dependencies = [
  "postgres",
  "proptest",
  "proptest-derive",
+ "regex",
  "reqwest",
  "rustls",
  "serde",

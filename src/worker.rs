@@ -70,6 +70,7 @@ impl ProbeWorker {
     
 
     pub fn run(&self) {
+        debug!("Worker USN: {} started", self.usn);
         while self.check_should_work() && self.check_ttl() {
             let loop_start_instant = Instant::now();
             let url;
@@ -84,9 +85,10 @@ impl ProbeWorker {
             };
             println!("{:?}", url);
             
-            let json_stream = make_request(&url, &self.rt);
-            match json_stream {
-                Ok(stream) => {
+            let json_string = make_request(&url, &self.rt);
+            match json_string {
+                Ok(json) => {
+                    let stream = Deserializer::from_str(&json);
                     let stream_iter = stream.into_iter::<Data>();
                     for data in stream_iter {
                         match data {

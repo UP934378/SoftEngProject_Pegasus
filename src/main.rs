@@ -10,7 +10,8 @@ use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 use log::{debug, error, log_enabled, info, Level};
 use eui48::MacAddress;
-
+use regex::Regex;
+use serde_json::Deserializer;
 
 
 struct ProbeConfig{
@@ -29,6 +30,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
             return Err(Box::new(e));
         }
     });
+    let mac_regex_string = r"-[\dA-F]{12}";
+    let mac_regex = match Regex::new(mac_regex_string) {
+        Ok(r) => r,
+        Err(e) => {
+            error!("Compiling mac_regex: {} failed with error: {}", mac_regex_string, e);
+            return Err(Box::new(e));
+        }
+    };
+
+    let ip_regex_string = r"(\d{1,3}\.){3}\d{1,3}";
+    let ip_regex = match Regex::new(ip_regex_string) {
+        Ok(r) => r,
+        Err(e) => {
+            error!("Compiling ip_regex: {} failed with error: {}", ip_regex_string, e);
+            return Err(Box::new(e));
+        }
+    };
     
     let mut workers : HashMap<String, (Arc<ProbeWorker>, std::thread::JoinHandle<()>)> = HashMap::new();
     let http_client = reqwest::Client::new();
@@ -94,49 +112,62 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
             Err(e) => error!("probe discovery failed with error: {:?}", e)
         };
         for response in responses {
-            match request::get_data_url(&rt, &response){
-                Some(url) => {
-                    match request::make_request(&url, &rt){
-                        Ok(stream) => {
-                            let mut stream_iter = stream.into_iter::<parser::Data>();
-                            match stream_iter.next(){
-                                Some(Ok(data)) => {
-                                    
-                                },
-                                Some(Err(e)) => {
+            let macaddr_string = match mac_regex.find(response.usn()) {
+                Some(mac_match) => {
+                    // mac_match includes leading "-" so it is sliced off
+                    String::from("0x") + &mac_match.as_str()[1..].to_string()
+                },
+                None => {
+                    error!("Probe SSDP response USN: {} not formatted correctly", response.usn());
+                    continue;
+                }
+            };
+            let macaddr = match MacAddress::parse_str(&macaddr_string) {
+                Ok(mac) => mac,
+                Err(e) => {
+                    error!("parsing MAC address from probe USN: {} yielded error: {}", response.usn(), e);
+                    continue;
+                }
+            };
 
-                                },
-                                None => {
-
-                                }
-                            }
+            match probe_configs.get(&macaddr){
+                // If the frequnecy is 0, don't make a worker for it
+                Some(ProbeConfig{frequency :0}) => (),
+                Some(config) => {
+                    let usn = response.usn().to_string();
+                    match workers.get(&usn) {
+                        Some((worker, _)) => {
+                            // A worker already exists so update it
+                            let w = worker.clone();
+                            std::thread::spawn(move || w.update(response));
                         },
-                        Err(e) => {
-
+                        None => {
+                            // No worker for this probe already exists
+                            let worker = Arc::new(ProbeWorker::new(usn.clone(), rt.clone()));
+                            let w = worker.clone();
+                            let worker_join = std::thread::spawn(move || {
+                                    w.update(response);
+                                    w.run()
+                            });
+                            workers.insert(usn, (worker.clone(), worker_join));
                         }
                     };
                 },
-                None => error!("")
-            }
-            let usn = response.usn().to_string();
-            
-            match workers.get(&usn) {
-                Some((worker, _)) => {
-                    // A worker already exists so update it
-                    let w = worker.clone();
-                    std::thread::spawn(move || w.update(response));
-                },
                 None => {
-                    // No worker for this probe already exists
-                    let worker = Arc::new(ProbeWorker::new(usn.clone(), rt.clone()));
-                    let w = worker.clone();
-                    let worker_join = std::thread::spawn(move || {
-                            w.update(response);
-                            w.run()
-                    });
-                    workers.insert(usn, (worker.clone(), worker_join));
+                    probe_configs.insert(macaddr, ProbeConfig{frequency: 0});
+                    let ip_address = match ip_regex.find(response.location()){
+                        Some(m) => m.as_str(),
+                        None => {
+                            error!("parsing IP address from porbe USN: {} location: {} failed", response.usn(), response.location());
+                            continue;
+                        }
+                    };
+                    postgres_client.execute(
+                        "INSERT INTO probe_config (mac_address, ip_address, request_interval) VALUES ($1, $2, $3);",
+                        &[&macaddr, &ip_address, &0]
+                    );
                 }
-            };
+            }
         }
         
         // Wait until next loop

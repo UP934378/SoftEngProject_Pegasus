@@ -1,6 +1,6 @@
 use log::{debug, error, log_enabled, info, Level};
 use tokio::runtime::Runtime;
-use serde_json::Deserializer;
+
 
 /// Read data url from ssdp client response
 pub fn get_data_url(rt: &Runtime, response: &ssdp_client::SearchResponse) -> Option<String> {
@@ -52,7 +52,7 @@ fn parse_presentation_url(schema: &xmltree::Element) -> Option<String> {
     }
 }
 
-pub fn make_request<'a>(url: &'a str, rt: &Runtime) -> Result<Deserializer<serde_json::de::StrRead<'a>>, Box<dyn std::error::Error>> {
+pub fn make_request(url: &String, rt: &Runtime) -> Result<String, Box<dyn std::error::Error>> {
     let http_client = reqwest::Client::new();
     let request_url = match reqwest::Url::parse(url) {
         Ok(r) => r,
@@ -77,7 +77,7 @@ pub fn make_request<'a>(url: &'a str, rt: &Runtime) -> Result<Deserializer<serde
         }
     };
 
-    return Ok(Deserializer::from_str(json_string.as_str()));
+    return Ok(json_string.clone());
 }
 
 
