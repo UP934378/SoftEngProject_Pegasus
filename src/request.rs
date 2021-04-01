@@ -15,19 +15,31 @@ pub fn get_data_url(rt: &Runtime, response: &ssdp_client::SearchResponse) -> Opt
                             match xmltree::Element::parse(schema_text.as_bytes()){
                                 Ok(xml) => Some(xml),
                                 // TODO: Add error handling
-                                Err(e) => None
+                                Err(e) => {
+                                    error!("{}", e);
+                                    None
+                                }
                             }
                         },
                         // TODO: Add error handling
-                        Err(e) => None
+                        Err(e) => {
+                            error!("{}", e);
+                            None
+                        }
                     }
                 },
                 // TODO: Add error handling
-                Err(e) => None
+                Err(e) => {
+                    error!("{}", e);
+                    None
+                }
             }
         },
         // TODO: Add error handling
-        Err(e) => None
+        Err(e) => {
+            error!("{}", e);
+            None
+        }
     };
 
     match schema_tree {
@@ -64,7 +76,7 @@ pub fn make_request(url: &String, rt: &Runtime) -> Result<String, Box<dyn std::e
     let response = match rt.block_on(http_client.get(request_url).send()){
         Ok(r) => r,
         Err(e) => {
-            error!("");
+            error!("{}", e);
             return Err(Box::new(e));
         }
     };
@@ -72,7 +84,7 @@ pub fn make_request(url: &String, rt: &Runtime) -> Result<String, Box<dyn std::e
     let json_string = match rt.block_on(response.text()) {
         Ok(r) => r,
         Err(e) => {
-            error!("");
+            error!("{}", e);
             return Err(Box::new(e));
         }
     };
