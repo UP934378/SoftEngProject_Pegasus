@@ -109,7 +109,7 @@ $(function() {
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        ballance_current[<span class="stringliteral">&quot;unit&quot;</span>] = <span class="stringliteral">&quot;mA&quot;</span>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        JsonObject cell_temp = cell.createNestedObject(<span class="stringliteral">&quot;cell_temp&quot;</span>);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        cell_temp[<span class="stringliteral">&quot;temp&quot;</span>] = 32;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        cell_temp[<span class="stringliteral">&quot;unit&quot;</span>] = <span class="stringliteral">&quot;c&quot;</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        cell_temp[<span class="stringliteral">&quot;unit&quot;</span>] = <span class="stringliteral">&quot;C&quot;</span>;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    JsonObject battery_data = doc[<span class="stringliteral">&quot;battery&quot;</span>].createNestedObject(<span class="stringliteral">&quot;data&quot;</span>);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    JsonObject battery_data_battery_current = battery_data.createNestedObject(<span class="stringliteral">&quot;battery_current&quot;</span>);</div>
@@ -120,10 +120,10 @@ $(function() {
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    battery_data_state_charge[<span class="stringliteral">&quot;unit&quot;</span>] = <span class="stringliteral">&quot;Wh&quot;</span>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    JsonObject battery_data_charge_perc = battery_data.createNestedObject(<span class="stringliteral">&quot;charge_perc&quot;</span>);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    battery_data_charge_perc[<span class="stringliteral">&quot;charge&quot;</span>] = random(1, 100);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    battery_data_charge_perc[<span class="stringliteral">&quot;unit&quot;</span>] = <span class="stringliteral">&quot;%&quot;</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    battery_data_charge_perc[<span class="stringliteral">&quot;unit&quot;</span>] = <span class="stringliteral">&quot;Percentage&quot;</span>;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    JsonObject battery_data_battery_temp = battery_data.createNestedObject(<span class="stringliteral">&quot;battery_temp&quot;</span>);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    battery_data_battery_temp[<span class="stringliteral">&quot;temp&quot;</span>] = random(25, 50);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    battery_data_battery_temp[<span class="stringliteral">&quot;unit&quot;</span>] = <span class="stringliteral">&quot;c&quot;</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    battery_data_battery_temp[<span class="stringliteral">&quot;unit&quot;</span>] = <span class="stringliteral">&quot;C&quot;</span>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    JsonObject inverter_data_0 = doc[<span class="stringliteral">&quot;solar&quot;</span>][<span class="stringliteral">&quot;data&quot;</span>].createNestedObject();</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    inverter_data_0[<span class="stringliteral">&quot;id&quot;</span>] = 0;</div>
