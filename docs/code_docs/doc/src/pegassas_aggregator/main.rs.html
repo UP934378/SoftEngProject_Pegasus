@@ -190,6 +190,7 @@
 <span id="187">187</span>
 <span id="188">188</span>
 <span id="189">189</span>
+<span id="190">190</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">discovery</span>;
 <span class="kw">mod</span> <span class="ident">worker</span>;
@@ -330,25 +331,26 @@
                 <span class="prelude-val">Some</span>(<span class="ident">ProbeConfig</span>{<span class="ident">frequency</span> :<span class="number">0</span>}) <span class="op">=</span><span class="op">&gt;</span> (),
                 <span class="prelude-val">Some</span>(<span class="ident">config</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">usn</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">usn</span>().<span class="ident">to_string</span>();
+                    <span class="kw">let</span> <span class="ident">request_interval</span> : <span class="ident">u64</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">frequency</span>.<span class="ident">try_into</span>(){
+                        <span class="prelude-val">Ok</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>,
+                        <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Request interval for probe: {} produced error: {}&quot;</span>, <span class="ident">macaddr</span>, <span class="ident">e</span>);
+                            <span class="kw">continue</span>;
+                        }
+                    };
                     <span class="kw">match</span> <span class="ident">workers</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">usn</span>) {
                         <span class="prelude-val">Some</span>((<span class="ident">worker</span>, <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="comment">// A worker already exists so update it</span>
                             <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> <span class="ident">worker</span>.<span class="ident">clone</span>();
-                            <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">w</span>.<span class="ident">update</span>(<span class="ident">response</span>));
+                            <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">w</span>.<span class="ident">update</span>(<span class="ident">response</span>, <span class="prelude-val">Some</span>(<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="ident">request_interval</span>))));
                         },
                         <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="comment">// No worker for this probe already exists</span>
-                            <span class="kw">let</span> <span class="ident">request_interval</span> : <span class="ident">u64</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">frequency</span>.<span class="ident">try_into</span>(){
-                                <span class="prelude-val">Ok</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>,
-                                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                                    <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Request interval for probe: {} produced error: {}&quot;</span>, <span class="ident">macaddr</span>, <span class="ident">e</span>);
-                                    <span class="kw">continue</span>;
-                                }
-                            };
+                            
                             <span class="kw">let</span> <span class="ident">worker</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">ProbeWorker</span>::<span class="ident">new</span>(<span class="ident">usn</span>.<span class="ident">clone</span>(), <span class="ident">rt</span>.<span class="ident">clone</span>(), <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="ident">request_interval</span>)));
                             <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> <span class="ident">worker</span>.<span class="ident">clone</span>();
                             <span class="kw">let</span> <span class="ident">worker_join</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-                                    <span class="ident">w</span>.<span class="ident">update</span>(<span class="ident">response</span>);
+                                    <span class="ident">w</span>.<span class="ident">update</span>(<span class="ident">response</span>, <span class="prelude-val">None</span>);
                                     <span class="ident">w</span>.<span class="ident">run</span>()
                             });
                             <span class="ident">workers</span>.<span class="ident">insert</span>(<span class="ident">usn</span>, (<span class="ident">worker</span>.<span class="ident">clone</span>(), <span class="ident">worker_join</span>));
