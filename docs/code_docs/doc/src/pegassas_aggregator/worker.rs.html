@@ -156,12 +156,12 @@
 <span class="kw">impl</span> <span class="ident">ProbeWorker</span> {
 
     <span class="doccomment">/// Build a new Worker </span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">usn</span>: <span class="ident">String</span>, <span class="ident">rt</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ProbeWorker</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">usn</span>: <span class="ident">String</span>, <span class="ident">rt</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>, <span class="ident">request_interval</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ProbeWorker</span> {
         <span class="ident">ProbeWorker</span> {
             <span class="ident">url</span>: <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()),
             <span class="ident">usn</span>,
-            <span class="ident">ttl</span>: <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">Instant</span>::<span class="ident">now</span>() <span class="op">+</span> <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">60</span>)),
-            <span class="ident">request_interval</span>: <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">30</span>),
+            <span class="ident">ttl</span>: <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">Instant</span>::<span class="ident">now</span>() <span class="op">+</span> (<span class="ident">request_interval</span> <span class="op">*</span> <span class="number">3</span>)),
+            <span class="ident">request_interval</span>,
             <span class="ident">should_work</span>: <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="bool-val">true</span>),
             <span class="ident">rt</span>
         }

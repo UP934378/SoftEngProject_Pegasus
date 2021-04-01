@@ -182,6 +182,14 @@
 <span id="179">179</span>
 <span id="180">180</span>
 <span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">discovery</span>;
 <span class="kw">mod</span> <span class="ident">worker</span>;
@@ -197,6 +205,7 @@
 <span class="kw">use</span> <span class="ident">eui48</span>::<span class="ident">MacAddress</span>;
 <span class="kw">use</span> <span class="ident">regex</span>::<span class="ident">Regex</span>;
 <span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">Deserializer</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryInto</span>;
 
 
 <span class="kw">struct</span> <span class="ident">ProbeConfig</span>{
@@ -329,7 +338,14 @@
                         },
                         <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="comment">// No worker for this probe already exists</span>
-                            <span class="kw">let</span> <span class="ident">worker</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">ProbeWorker</span>::<span class="ident">new</span>(<span class="ident">usn</span>.<span class="ident">clone</span>(), <span class="ident">rt</span>.<span class="ident">clone</span>()));
+                            <span class="kw">let</span> <span class="ident">request_interval</span> : <span class="ident">u64</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">frequency</span>.<span class="ident">try_into</span>(){
+                                <span class="prelude-val">Ok</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>,
+                                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                                    <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Request interval for probe: {} produced error: {}&quot;</span>, <span class="ident">macaddr</span>, <span class="ident">e</span>);
+                                    <span class="kw">continue</span>;
+                                }
+                            };
+                            <span class="kw">let</span> <span class="ident">worker</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">ProbeWorker</span>::<span class="ident">new</span>(<span class="ident">usn</span>.<span class="ident">clone</span>(), <span class="ident">rt</span>.<span class="ident">clone</span>(), <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="ident">request_interval</span>)));
                             <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> <span class="ident">worker</span>.<span class="ident">clone</span>();
                             <span class="kw">let</span> <span class="ident">worker_join</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                                     <span class="ident">w</span>.<span class="ident">update</span>(<span class="ident">response</span>);
