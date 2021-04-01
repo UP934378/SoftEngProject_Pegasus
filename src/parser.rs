@@ -1,6 +1,7 @@
-/**
- * This section of code is used to translate the raw data given by the probes inserting it into the top level InfluxDB database.
- */
+//!This section of code is used to translate the raw data
+//!  given by the probes inserting it into 
+//! the top level InfluxDB database.
+
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 

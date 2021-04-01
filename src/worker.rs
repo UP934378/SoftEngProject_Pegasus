@@ -1,3 +1,7 @@
+//!Worker structure that handles connecting to a data 
+//! probe and parsing the returned data and inserting 
+//! it into the database.
+
 use std::time::{Duration, Instant};
 use std::string::String;
 use serde_json::Deserializer;
@@ -8,11 +12,6 @@ use crate::parser::{Data, parse_data};
 use crate::request::{get_data_url, make_request};
 use log::{debug, error, warn, log_enabled, info, Level};
 
-/**
- * Worker structure that handles connecting to a data probe
- * and parsing the returned data and inserting it into the
- * database.
- */
 pub struct ProbeWorker {
     pub url : std::sync::Mutex<String>,
     usn: String,

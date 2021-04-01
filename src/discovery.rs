@@ -1,9 +1,7 @@
-/** 
- * This section of code is for discovery of new probes on a given network - see below for further details. 
- */
+//!Discovery of new probes on a given network 
+ 
 use ssdp_client::{URN, SearchTarget, search, Error, SearchResponse};
 use futures::{stream::StreamExt};
-/// Discover a new probe on a given network
 
 /// SSDP service domain
 const DOMAIN : &str = "pegassas";

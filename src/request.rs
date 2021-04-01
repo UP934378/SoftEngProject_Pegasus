@@ -1,6 +1,7 @@
+//! Request data information from data probe connected to the network
+
 use log::{debug, error, log_enabled, info, Level};
 use tokio::runtime::Runtime;
-/// Request data from probes
 
 /// Read data url from ssdp client response
 pub fn get_data_url(rt: &Runtime, response: &ssdp_client::SearchResponse) -> Option<String> {

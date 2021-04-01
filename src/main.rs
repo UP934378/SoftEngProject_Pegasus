@@ -14,7 +14,7 @@ use regex::Regex;
 use serde_json::Deserializer;
 use std::convert::TryInto;
 
-
+/// Frequency of the request
 struct ProbeConfig{
     frequency: i32,
 }
