@@ -1315,7 +1315,7 @@
     <span class="ident">HttpServer</span>::<span class="ident">new</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
         <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>()
         .<span class="ident">wrap</span>(<span class="ident">CookieSession</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span>[<span class="number">0</span>; <span class="number">32</span>]).<span class="ident">secure</span>(<span class="bool-val">true</span>))
-        .<span class="ident">app_data</span>(<span class="ident">config</span>.<span class="ident">clone</span>())
+        .<span class="ident">app_data</span>(<span class="ident">web</span>::<span class="ident">Data</span>::<span class="ident">new</span>(<span class="ident">config</span>.<span class="ident">clone</span>()))
         .<span class="ident">service</span>(
             <span class="ident">web</span>::<span class="ident">resource</span>(<span class="string">&quot;/login.html&quot;</span>)
                 .<span class="ident">route</span>(<span class="ident">web</span>::<span class="ident">post</span>().<span class="ident">to</span>(<span class="ident">login</span>))
