@@ -175,11 +175,7 @@
     const configfrm = document.createElement('form')
     configfrm.classList.add("config-form")
     configfrm.classList.add("hide")
-    configfrm.addEventListener('submit', () => {
-      this.formSubmit()
-    })
     configfrm.id = id + "-config-form"
-
 
     // When submit, call function
     configfrm.addEventListener('submit', (e) => {
@@ -459,7 +455,9 @@
     input.type = "submit"
     input.value = "Submit" 
     input.classList.add("form-input")
-    input.setAttribute('onclick', "graphs[" + "'" + cell.id + "'" + "].toggleForm()")
+    input.addEventListener('click', () => {
+      this.toggleForm()
+    })
     input.setAttribute('form', configfrm.id)
 
     configfrm.append(input)
@@ -554,11 +552,6 @@
         this.fixRefs()
         graphs[celldraggingover.id].fixRefs()
 
-        console.log(this.cell)
-        console.log(dataHolder)
-        console.log(graphs[celldraggingover.id].getCell)
-        console.log(overdataHolder)
-
         // Need to add paramater check to plotdata
         // Re-plot data
         this.plotData(this.cell, dataHolder)
@@ -600,7 +593,6 @@
     + this.values.y + "_col=true&amp;start=" 
     + this.values.start + "&amp;end=" + this.values.end + "&amp;"
     + this.values.where + this.values.equals
-    console.log(url)
 
     // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
     // Function to fetch data from url
@@ -632,8 +624,6 @@
    * @param {*} data Data information form database
    */
   plotData(cell = this.cell, data = this.data) {
-    console.log(cell)
-    console.log(data)
     // Graph layout options
     // See " https://plotly.com/javascript/reference/ " for individual plot type layout options
     var layout = { 
@@ -775,13 +765,23 @@
           .then(response => response.json())
           .catch(error => console.error(error))
 
+          var viewtabname = ""
           var viewtabs = []
           for (var item of data) {
             viewtabs.push(item.view_tab)
+            if (item.tab_name == document.getElementsByClassName('selected-tab')[0].innerText) {
+              viewtabname = item.view_tab
+            }
           }
-          var viewtabunique = [...new Set(viewtabs)]
+
+          if (viewtabname != "") {
+            frmdata.append('view_tab', viewtabname)
+          } else {
+            var viewtabunique = [...new Set(viewtabs)]
+            frmdata.append('view_tab', (Math.max(...viewtabunique) + 1))
+          }
           
-          frmdata.append('view_tab', (Math.max(...viewtabunique) + 1))
+
           frmdata.append('tab_name', document.getElementsByClassName('selected-tab')[0].innerText)
           frmdata.append('container_index', this.cell.id.replace("container", "")) // Index of cell in parent
         }
@@ -800,19 +800,29 @@
 
     // Convert Form Data to URLSearchParam so it's in the right type for main.rs
     var frmurl = new URLSearchParams(frmdata).toString()
-    console.log(frmurl)
     // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
     // Function to fetch data from url
     const waitresponse = async () => {
         fetch("/view_config", {
-                                      method: "POST", 
-                                      body: frmurl,
-                                      headers: {
-                                          'Content-Type': 'application/x-www-form-urlencoded'
-                                        }
-                                    })
-        .catch(error => console.error(error))
+                                method: "POST", 
+                                body: frmurl,
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                  }
+                              })
+        .then(function(response) {
+          if (response.ok) {
+            alert("Successfully updated configuration")
+          } else {
+            throw new Error('Update configuration failed')
+          }
+        })
+        .catch((error) => {
+          console.error(error) 
+          alert("Failed to update configuration")
+        })
     }
+
     // Wait for response from function to assign response
     waitresponse()
 
@@ -1034,18 +1044,27 @@ class ProbeOption {
 
     // Convert Form Data to URLSearchParam so it's in the right type for main.rs
     var probeurl = new URLSearchParams(probedata).toString()
-    console.log(probeurl)
     // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
     // Function to fetch data from url
     const waitresponse = async () => {
         fetch("/setprobes", {
-                                      method: "POST", 
-                                      body: probeurl,
-                                      headers: {
-                                          'Content-Type': 'application/x-www-form-urlencoded'
-                                        }
-                                    })
-        .catch(error => console.error(error))
+                              method: "POST", 
+                              body: probeurl,
+                              headers: {
+                                  'Content-Type': 'application/x-www-form-urlencoded'
+                                }
+                            })
+        .then(function(response) {
+          if (response.ok) {
+            alert("Successfully updated probe")
+          } else {
+            throw new Error('Update probe failed')
+          }
+        })
+        .catch((error) => {
+          console.error(error) 
+          alert("Failed to update probe")
+        })
     }
     // Wait for response from function to assign response
     waitresponse()
@@ -1256,7 +1275,7 @@ class TabButton {
     var uniqueName = true
     var alltabs = document.getElementsByClassName('tab')
     for (var tab of alltabs) {
-      if (this.tab.innerText == tab.innerText &amp;&amp; !tab.classList.contains('selected-tab')) {
+      if (this.tab.innerText == tab.innerText &amp;&amp; !tab.classList.contains('selected-tab') &amp;&amp; this.tab.innerText != 'Home') {
         uniqueName = false
       }
     }
@@ -1400,8 +1419,6 @@ class TabButton {
     }
 
     if (this.newtb == true) {
-      // REFERENCEAB
-      console.log(this)
       this.graphs['container0'].formSubmit()
     }
     
@@ -1477,7 +1494,7 @@ if (window.location.pathname === '/visualisations.html') {
 
     var viewtabs = []
     for (var item of data) {
-      if (item.tab_name != 'HOME') {
+      if (item.tab_name != 'Home') {
         viewtabs.push(item.tab_name)
       }
     }
@@ -1583,7 +1600,7 @@ if (window.location.pathname === '/config.html') {
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Fri Apr 02 2021 17:14:04 GMT+0000 (Coordinated Universal Time) using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Fri Apr 02 2021 18:08:14 GMT+0000 (Coordinated Universal Time) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
