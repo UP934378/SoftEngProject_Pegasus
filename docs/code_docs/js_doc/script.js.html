@@ -175,10 +175,10 @@
     const configfrm = document.createElement('form')
     configfrm.classList.add("config-form")
     configfrm.classList.add("hide")
-    configfrm.onsubmit="graphs[" + "'" + cell.id + "'" + "].formSubmit(this)"
+    configfrm.addEventListener('submit', () => {
+      this.formSubmit()
+    })
     configfrm.id = id + "-config-form"
-    // configfrm.action = "/view_config"
-    // configfrm.method = "POST"
 
 
     // When submit, call function
@@ -361,7 +361,7 @@
       timeinput[se].type = "time"
       timeinput[se].name = se + "timeinput"
       timeinput[se].id = cell.id + "-" + se + "time"
-      timeinput[se].value = timevalue
+      timeinput[se].value = timevalue.replace("Z", "")
       timeinput[se].step = 1
       timeinput[se].classList.add("form-input")
       timeinput[se].setAttribute('form', configfrm.id)
@@ -475,7 +475,9 @@
       const configbtn = document.createElement('button')
       configbtn.classList.add("config-button")
       configbtn.textContent = "Configure "
-      configbtn.setAttribute('onclick', "graphs[" + "'" + cell.id + "'" + "].toggleForm()")
+      configbtn.addEventListener('click', () => {
+        this.toggleForm()
+      })
       
       this.configbtn = configbtn
       cell.append(configbtn)
@@ -486,7 +488,9 @@
       var homebtn = document.createElement('button')
       homebtn.classList.add("home-button")
       homebtn.textContent = "Add to homepage"
-      homebtn.setAttribute('onclick', "graphs[" + "'" + cell.id + "'" + "].formSubmit(false, true)")
+      homebtn.addEventListener('click', () => {
+        this.formSubmit(false, true)
+      })
       configfrm.append(homebtn)
     }
 
@@ -495,8 +499,14 @@
     removebtn.classList.add("remove-button")
     removebtn.innerHTML = "&lt;img src='images/bin.svg' alt='remove-button'>"
     removebtn.addEventListener('click', () => {
-      this.formSubmit(false, false, true)
-      this.cell.remove()
+      var parent = document.getElementById('content-container')
+      if (parent.childElementCount > 2) {
+        this.formSubmit(false, false, true)
+        this.cell.remove()
+      } else {
+        alert("Must be a minimum of one graph per tab")
+      }
+
     })
     cell.append(removebtn)
 
@@ -586,10 +596,11 @@
    * Fetch data from API &amp; return after response (stops response being a JS 'Promise')
   */
   async fetchData() {
-    var url = "http://127.0.0.1:8089/dbapi/" + this.values.table + "?" 
+    var url = "/dbapi/" + this.values.table + "?" 
     + this.values.y + "_col=true&amp;start=" 
-    + this.values.start + "Z&amp;end=" + this.values.end + "Z&amp;"
+    + this.values.start + "&amp;end=" + this.values.end + "&amp;"
     + this.values.where + this.values.equals
+    console.log(url)
 
     // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
     // Function to fetch data from url
@@ -692,8 +703,8 @@
     this.values.y = this.configfrm.y_value.value
     this.values.table = this.configfrm.y_value.options[this.configfrm.y_value.selectedIndex].attributes.table.value
     this.values.type = this.types[this.configfrm.graph_type.value]
-    this.values.start = this.configfrm.Startdateinput.value + "T" + this.configfrm.Starttimeinput.value
-    this.values.end = this.configfrm.Enddateinput.value + "T" + this.configfrm.Endtimeinput.value
+    this.values.start = this.configfrm.Startdateinput.value + "T" + this.configfrm.Starttimeinput.value + "Z"
+    this.values.end = this.configfrm.Enddateinput.value + "T" + this.configfrm.Endtimeinput.value + "Z"
     this.values.where = this.configfrm.whereinput.value
     this.values.equals = this.configfrm.equalsinput.value
 
@@ -743,7 +754,7 @@
           // Function to fetch data from url
           
           // Get graphs from get_view_config function
-          const data = await fetch("http://127.0.0.1:8089/get_view_config")
+          const data = await fetch("/get_view_config")
                             .then(response => response.json())
                             .catch(error => console.error(error))
           
@@ -759,9 +770,22 @@
         }
         return await getconfig()
       } else {
-        frmdata.append('view_tab', document.getElementsByClassName('selected-tab')[0].attributes.value.value)
-        frmdata.append('container_index', Array.from(this.cell.parentNode.children).indexOf(this.cell)) // Index of cell in parent
-        return true
+        const getconfig = async () => {
+          const data = await fetch("/get_view_config")
+          .then(response => response.json())
+          .catch(error => console.error(error))
+
+          var viewtabs = []
+          for (var item of data) {
+            viewtabs.push(item.view_tab)
+          }
+          var viewtabunique = [...new Set(viewtabs)]
+          
+          frmdata.append('view_tab', (Math.max(...viewtabunique) + 1))
+          frmdata.append('tab_name', document.getElementsByClassName('selected-tab')[0].innerText)
+          frmdata.append('container_index', this.cell.id.replace("container", "")) // Index of cell in parent
+        }
+        return await getconfig()
       }
     }
     await gethome()
@@ -780,7 +804,7 @@
     // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
     // Function to fetch data from url
     const waitresponse = async () => {
-        fetch("http://127.0.0.1:8089/view_config", {
+        fetch("/view_config", {
                                       method: "POST", 
                                       body: frmurl,
                                       headers: {
@@ -1014,7 +1038,7 @@ class ProbeOption {
     // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
     // Function to fetch data from url
     const waitresponse = async () => {
-        fetch("http://127.0.0.1:8089/setprobes", {
+        fetch("/setprobes", {
                                       method: "POST", 
                                       body: probeurl,
                                       headers: {
@@ -1093,8 +1117,9 @@ class TabButton {
    * @param {number} tabID ID number
    * @param {string} tabName Tab name
    */
-  constructor(tabName) {
+  constructor(tabName, newtb) {
     this.name = tabName
+    this.newtb = newtb
 
     /**
      * Set all possible graph values, to help format response from get_view_config
@@ -1136,46 +1161,158 @@ class TabButton {
     // Create new tab button and set some values
     var tab = document.createElement("a")
     tab.classList.add("tab")
-    tab.innerHTML = this.name
-    tab.setAttribute('value', this.name)
+    tab.innerText = this.name
     // Make tab editable on double click
     tab.addEventListener('dblclick', () => {
       tab.contentEditable = true
     })
     tab.addEventListener('blur', () => {
-      tab.contentEditable = false
-      if (tab.value != this.name) {
-        this.name = tab.value
+      if (tab.innerText != this.name) {
         this.updateName()
       }
+      tab.contentEditable = false
     })
+
 
 
     // Add event listener to set current tab to selected tab when pressed
     tab.addEventListener('click', () => {
-      var selected = document.getElementsByClassName('selected-tab')
-      selected[0].classList.remove('selected-tab')
+      if (!this.tab.classList.contains('selected-tab')) {
+        var selected = document.getElementsByClassName('selected-tab')
+        selected[0].classList.remove('selected-tab')
 
-      this.setSelected()
+        this.setSelected()
+      }
     })
 
     // Create remove cell button
     var removebtn = document.createElement('div')
     removebtn.classList.add("tab-remove-button")
     removebtn.innerHTML = "&lt;img src='images/bin.svg' alt='remove-button'>"
+    removebtn.contentEditable = false
     removebtn.addEventListener('click', () => {
-      // this.formSubmit(false, false, true)
+      this.removeTab()
       this.tab.remove()
     })
     tab.append(removebtn)
 
     this.tab = tab
+
+    if (this.newtb == true) {
+      var event = new Event('click')
+      tab.dispatchEvent(event)
+    }
+  }
+
+  removeTab() {
+    const getconfig = async () => {
+      // Function to fetch data from url
+      
+      // Get rows from get_view_config function
+      const data = await fetch("/get_view_config")
+                        .then(response => response.json())
+                        .catch(error => console.error(error))
+      
+      // Get all data belonging to the current view
+      var rows = []
+      for (var item of data) {
+        if (item.tab_name == this.name) {
+          rows.push(item)
+        }
+      }
+      
+      for (var item of rows) {
+        // Remove old rows
+        item.y_value = 'DELETED'
+        var frmurl = new URLSearchParams(item).toString()
+        
+        await fetch("/view_config", {
+                                      method: "POST", 
+                                      body: frmurl,
+                                      headers: {
+                                          'Content-Type': 'application/x-www-form-urlencoded'
+                                        }
+                                    })
+        .catch(error => console.error(error))
+      }
+
+      // Trigger click event to change selected tab
+      var event = new Event('click')
+
+      var first = document.getElementsByClassName('tab')[0]
+      first.dispatchEvent(event)
+      
+    }
+    getconfig()
   }
 
   /**
    * Update tab name in database
    */
   updateName() {
+    var uniqueName = true
+    var alltabs = document.getElementsByClassName('tab')
+    for (var tab of alltabs) {
+      if (this.tab.innerText == tab.innerText &amp;&amp; !tab.classList.contains('selected-tab')) {
+        uniqueName = false
+      }
+    }
+    if (uniqueName) {
+      // First get all rows in database with this name
+      const getconfig = async () => {
+        // Function to fetch data from url
+        
+        // Get rows from get_view_config function
+        const data = await fetch("/get_view_config")
+                          .then(response => response.json())
+                          .catch(error => console.error(error))
+        
+        // Get all data belonging to the current view
+        var rows = []
+        for (var item of data) {
+          if (item.tab_name == this.name) {
+            rows.push(item)
+          }
+        }
+        
+        for (var item of rows) {
+          // Remove old rows
+          var copyitem = JSON.parse(JSON.stringify(item))
+          copyitem.y_value = 'DELETED'
+          var frmurl = new URLSearchParams(copyitem).toString()
+          
+          await fetch("/view_config", {
+                                        method: "POST", 
+                                        body: frmurl,
+                                        headers: {
+                                            'Content-Type': 'application/x-www-form-urlencoded'
+                                          }
+                                      })
+          .catch(error => console.error(error))
+
+          // Create new rows with updated name
+          item.tab_name = this.tab.innerText
+          var frmurl = new URLSearchParams(item).toString()
+          
+          await fetch("/view_config", {
+                                        method: "POST", 
+                                        body: frmurl,
+                                        headers: {
+                                            'Content-Type': 'application/x-www-form-urlencoded'
+                                          }
+                                      })
+          .catch(error => console.error(error))
+        }
+        
+
+        this.name = this.tab.innerText
+      }
+      getconfig()
+    } else {
+      this.tab.innerText = this.name
+      alert('Duplicate Tab Name')
+    }
+    
     // Request all data containing current tab name, then post back data with updated name
   }
 
@@ -1187,17 +1324,19 @@ class TabButton {
       // Function to fetch data from url
       
       // Get graphs from get_view_config function
-      const data = await fetch("http://127.0.0.1:8089/get_view_config")
+      const data = await fetch("/get_view_config")
                         .then(response => response.json())
                         .catch(error => console.error(error))
       
       // Get all data belonging to the current view
+      var empty = true
       var viewgraphs = []
       for (var item of data) {
         var table = ""
         var where = ""
         var equals = ""
-        if (item.view_tab == this.name) {
+        if (item.tab_name == this.name) {
+          empty = false
           for (var key in this.yvalues) {
             if (this.yvalues[key].includes(item.y_value)) {
               table = key
@@ -1210,7 +1349,7 @@ class TabButton {
               }
             }
           }
-          if (item.view_tab == 0) {
+          if (item.tab_name == 'Home') {
             var form = false
           } else {
             var form = true
@@ -1219,6 +1358,12 @@ class TabButton {
             item.range_start, item.range_finish, item.graph_type, where, equals, form=form)
         }
       }
+      if (empty) {
+        viewgraphs['container0'] = new Graph(('container0'), 'cell_voltage', 'cell', 
+        '2021-03-01T00:00:00Z', '2021-04-01T00:00:00Z', 
+        'line', 'cell_id', '=1', true)
+      }
+      
       graphs = viewgraphs
       this.graphs = viewgraphs
 
@@ -1249,6 +1394,12 @@ class TabButton {
     } catch(e) {
       // Don't need to handle here, if no graphs returned just leave page empty
       return
+    }
+
+    if (this.newtb == true) {
+      // REFERENCEAB
+      console.log(this)
+      this.graphs['container0'].formSubmit()
     }
     
   }
@@ -1303,7 +1454,7 @@ if (window.location.pathname === '/home.html') {
   var graphs = []
     
   // Create tab object with index 0 (home page index)
-  tab = new TabButton(0, "Tab-" + 0)
+  tab = new TabButton("Tab-" + 0)
 
   // Set first view as default selected
   tab.setSelected()
@@ -1317,13 +1468,15 @@ if (window.location.pathname === '/visualisations.html') {
     // Function to fetch data from url
     
     // Get graphs from get_view_config function
-    const data = await fetch("http://127.0.0.1:8089/get_view_config")
+    const data = await fetch("/get_view_config")
                       .then(response => response.json())
                       .catch(error => console.error(error))
 
     var viewtabs = []
     for (var item of data) {
-      viewtabs.push(item.view_tab)
+      if (item.tab_name != 'HOME') {
+        viewtabs.push(item.tab_name)
+      }
     }
     var tabnames = [...new Set(viewtabs)]
       
@@ -1332,13 +1485,16 @@ if (window.location.pathname === '/visualisations.html') {
     
     // Create tabs
     var tabs = []
-    for (var tab of tabnames) {
-      tabs[tab] = new TabButton(tab)
+    for (var [index, tab] of tabnames.entries()) {
+      tabs[tab] = new TabButton(tab, false)
       insertDOM("tab-bar", tabs[tab].tab, "add-tab")
+      
+      // Set first view as default selected
+      if (index == 0) {
+        tabs[tab].setSelected()
+      }
     }
 
-    // Set first view as default selected
-    tabs[1].setSelected()
 
     // Create add new graph button
     var newgraphbtn = document.createElement("a")
@@ -1346,13 +1502,14 @@ if (window.location.pathname === '/visualisations.html') {
     newgraphbtn.id = 'add-container-cell'
     // When cell is clicked
     newgraphbtn.addEventListener('click',() => {
-      // Create new graph   
-      graphs['container' + Object.keys(graphs).length] = new Graph(('container' + Object.keys(graphs).length), 'cell_voltage', 'cell', 
-                                                                    '2021-03-01T00:00:00', '2021-04-01T00:00:00', 
-                                                                    'line', 'cell_id', '=1')
-        
-      insertDOM('content-container', graphs['container' + (Object.keys(graphs).length - 1)].getCell, 'last-element')
-      graphs['container' + (Object.keys(graphs).length - 1)].formSubmit()
+      // Create new graph
+      var count = document.getElementById('content-container').childElementCount
+      graphs['container' + count] = new Graph(('container' + count), 'cell_voltage', 'cell', 
+                                                                    '2021-03-01T00:00:00Z', '2021-04-01T00:00:00Z', 
+                                                                    'line', 'cell_id', '=1', true)
+                                                                    // (cellid, y, table, start, end, type, where, equals, form=true)
+      insertDOM('content-container', graphs['container' + (count)].getCell, 'last-element')
+      graphs['container' + (count)].formSubmit()
     })
     // Insert add button image to svg
     newgraphbtn.innerHTML = "&lt;img src='images/add.svg' id='add-button'>"
@@ -1367,12 +1524,15 @@ if (window.location.pathname === '/visualisations.html') {
     newtabbtn.style.width = '3vh'
     // When cell is clicked
     newtabbtn.addEventListener('click',() => { 
-        // Create new tab will choose default values
-        let tab = document.createElement("a");
-        tab.href = "";
-        tab.classList.add("tab");
-        tab.innerHTML = "New Tab";
-        insertDOM("tab-bar", tab, "add-tab")
+      var count = 1
+      var tabname = "New Tab"
+      while (tabs[tabname] != null) {
+        tabname = "New Tab " + count
+        count += 1
+      }
+      // Create new tab will choose default values
+      tabs[tabname] = new TabButton(tabname, true)
+      insertDOM("tab-bar", tabs[tabname].tab, "add-tab")
     })
     // Insert add button image to svg
     newtabbtn.innerHTML = "&lt;img src='images/add.svg'>"
@@ -1395,7 +1555,7 @@ if (window.location.pathname === '/config.html') {
     // Function to fetch data from url
     
     // Get probes from getprobe function
-    const data = await fetch("http://127.0.0.1:8089/getprobes")
+    const data = await fetch("/getprobes")
                       .then(response => response.json())
                       .catch(error => console.error(error))
     
@@ -1420,7 +1580,7 @@ if (window.location.pathname === '/config.html') {
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Fri Apr 02 2021 15:56:21 GMT+0000 (Coordinated Universal Time) using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Fri Apr 02 2021 16:41:29 GMT+0000 (Coordinated Universal Time) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
