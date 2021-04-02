@@ -73,7 +73,7 @@ fn parse_presentation_url(schema: &xmltree::Element) -> Option<String> {
 }
 
 /// Make data request from URL
-pub fn make_request(url: &String, rt: &Runtime) -> Result<String, Box<dyn std::error::Error>> {
+pub fn make_request(url: &str, rt: &Runtime) -> Result<String, Box<dyn std::error::Error>> {
     let http_client = reqwest::Client::new();
     let request_url = match reqwest::Url::parse(url) {
         Ok(r) => r,
