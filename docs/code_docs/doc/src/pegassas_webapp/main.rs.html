@@ -702,7 +702,15 @@
 <span id="699">699</span>
 <span id="700">700</span>
 <span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="doccomment">//! Web server API rust documentation Pegassas System for Team 1</span>
+<span class="doccomment">//! For more details about the system follow this [link](https://m30819-2020.github.io/cw-code-t1/)</span>
+
 <span class="kw">mod</span> <span class="ident">dbapi</span>;
 
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">get</span>, <span class="ident">web</span>, <span class="ident">App</span>, <span class="ident">HttpRequest</span>, <span class="ident">HttpServer</span>, <span class="ident">Responder</span>, <span class="ident">web</span>::<span class="ident">Query</span>, <span class="ident">HttpResponse</span>, <span class="prelude-ty">Result</span>, <span class="ident">http</span>::<span class="ident">header</span>::{<span class="ident">CONTENT_TYPE</span>, <span class="ident">LOCATION</span>}, <span class="ident">http</span>::{<span class="ident">StatusCode</span>}};
@@ -720,6 +728,8 @@
 <span class="kw">use</span> <span class="ident">configparser</span>::<span class="ident">ini</span>::<span class="ident">Ini</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
+
+<span class="doccomment">/// Configuration settings</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Config</span> {
     <span class="ident">webapp</span>: <span class="ident">Ini</span>,
     <span class="ident">postgres</span>: <span class="ident">Ini</span>,
@@ -1196,7 +1206,7 @@
     }
 }
 
-
+<span class="doccomment">/// System main function</span>
 <span class="attribute">#[<span class="ident">actix_web</span>::<span class="ident">main</span>]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">setup_logger</span>();
