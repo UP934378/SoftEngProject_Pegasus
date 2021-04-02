@@ -9,9 +9,7 @@ permalink: /Dependenacies
 
 ## Consolidated list of Dependancies for this project
 
-<details>
-<summary> RUST </summary>
-<br>
+### RUST
 
 <details>
 <summary> Aggregator </summary>
@@ -117,8 +115,6 @@ async-log = "2.0.0"
 </summary>
 <br>
 
-</summary>
-<br>
 <details>
 <summary> Java </summary>
 <br>
