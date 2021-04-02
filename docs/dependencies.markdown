@@ -18,7 +18,6 @@ permalink: /Dependencies
 <br>
 
 ``` Rust
-
 [dependencies]
 tokio = {version ="1.2.0", features = ["full"]}
 futures = "0.3.13"
@@ -36,7 +35,6 @@ proptest = "1.0.0"
 log = "0.4.14"
 env_logger = "0.8.3"
 regex = "1.4.5"
-
 ```
 
 </details>
@@ -47,7 +45,6 @@ regex = "1.4.5"
 <br>
 
 ``` Rust
-
 [dependencies]
 tokio = {version ="1.2.0", features = ["full"]}
 futures-util = "0.3.13"
@@ -62,7 +59,6 @@ rustls = "0.19.0"
 lettre = "0.10.0-beta.2"
 mailin-embedded = "0.6.1"
 tokio-postgres = {version="0.5.5", features=["with-eui48-0_4", "with-serde_json-1"]}
-
 ```
 
 </details>
@@ -73,7 +69,6 @@ tokio-postgres = {version="0.5.5", features=["with-eui48-0_4", "with-serde_json-
 <br>
 
 ``` Rust
-
 [dependencies]
 actix-web = "3.3.2"
 actix-files = "0.5.0"
@@ -87,7 +82,6 @@ tokio-postgres = {version="0.5.5", features=["with-eui48-0_4", "with-serde_json-
 chrono = {version = "0.4.19", features = ["serde"]}
 serde_postgres = "0.2.0"
 eui48 = "0.4.6"
-
 ```
 
 </details>
@@ -98,10 +92,6 @@ eui48 = "0.4.6"
 <br>
 
 ``` Rust
-
-</summary>
-<br>
-
 [dependencies]
 actix-web = "3.3.2"
 actix-files = "0.5.0"
@@ -119,7 +109,6 @@ actix-rt = "2.1.0"
 log = "0.4.14"
 femme = "1.2.0"
 async-log = "2.0.0"
-
 ```
 
 </details>
