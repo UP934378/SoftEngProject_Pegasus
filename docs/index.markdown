@@ -8,6 +8,10 @@ title: "Home Page"
 
 The Pegassas EMS is a standalone system designed to enable the management of solar based home energy system through the use of an intuitive web application.
 
+## Installation
+
+[Download and Install](https://m30819-2020.github.io/cw-code-t1/Install-Download)
+
 ## Documentation
 
 - The below links lead to the information for any section of this project.
