@@ -367,3 +367,10 @@ void test_save_wifi_creds(){
 ```
 
 </details>
+
+
+## Implementation Test
+
+These tests are ready to be enacted once the program is in a stable state to test.
+
+Please follow this link to the live testing document: [Link](https://drive.google.com/file/d/1aGlPYDOr-tJViuTRGiJLQ6i6DBbPotXz/view?usp=sharing)
