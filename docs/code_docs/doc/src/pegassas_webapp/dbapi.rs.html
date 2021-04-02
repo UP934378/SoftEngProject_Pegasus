@@ -606,7 +606,10 @@
 <span id="603">603</span>
 <span id="604">604</span>
 <span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="doccomment">/// Manage communication between web front end and server</span>
 <span class="kw">use</span> <span class="ident">actix_session</span>::{<span class="ident">CookieSession</span>, <span class="ident">Session</span>};
 <span class="kw">use</span> <span class="ident">actix_web</span>::{
     <span class="ident">get</span>,
@@ -620,6 +623,7 @@
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">serde_json</span>;
 <span class="kw">use</span> <span class="ident">tokio_postgres</span>::{<span class="ident">Client</span>, <span class="ident">NoTls</span>};
+
 <span class="doccomment">/// Request data from database and return it in a Json format</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Parameters:</span>
