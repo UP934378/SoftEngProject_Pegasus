@@ -9,7 +9,9 @@ permalink: /Dependenacies
 
 ## Consolidated list of Dependancies for this project
 
-### RUST
+<details>
+<summary> RUST </summary>
+<br>
 
 <details>
 <summary> Aggregator </summary>
@@ -35,7 +37,7 @@ env_logger = "0.8.3"
 regex = "1.4.5"
 
 ```
-</summary>
+</detail>
 <br>
 
 <details>
@@ -60,7 +62,7 @@ mailin-embedded = "0.6.1"
 tokio-postgres = {version="0.5.5", features=["with-eui48-0_4", "with-serde_json-1"]}
 
 ```
-</summary>
+</detail>
 <br>
 
 <details>
@@ -84,7 +86,7 @@ eui48 = "0.4.6"
 
 ```
 
-<details>
+</detail>
 <summary>Web Database API </summary>
 <br>
 
@@ -112,18 +114,19 @@ async-log = "2.0.0"
 
 ```
 
-</summary>
+</detail>
 <br>
-
+</detail>
+<br>
 <details>
 <summary> Java </summary>
 <br>
 
-</summary>
+</detail>
 <br>
 <details>
 <summary> C++ </summary>
 <br>
 
-</summary>
+</detail>
 <br>
