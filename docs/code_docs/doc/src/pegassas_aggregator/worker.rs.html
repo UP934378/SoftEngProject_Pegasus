@@ -156,6 +156,10 @@
 <span id="153">153</span>
 <span id="154">154</span>
 <span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//!Worker structure that handles connecting to a data </span>
 <span class="doccomment">//! probe and parsing the returned data and inserting </span>
@@ -177,20 +181,24 @@
     <span class="kw">pub</span> <span class="ident">ttl</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Instant</span><span class="op">&gt;</span>,
     <span class="ident">request_interval</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">should_work</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
-    <span class="ident">rt</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>
+    <span class="ident">rt</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
+    <span class="ident">influx_host</span>: <span class="ident">String</span>,
+    <span class="ident">influx_dbname</span>: <span class="ident">String</span>
 }
 
 <span class="kw">impl</span> <span class="ident">ProbeWorker</span> {
 
     <span class="doccomment">/// Build a new Worker </span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">usn</span>: <span class="ident">String</span>, <span class="ident">rt</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>, <span class="ident">request_interval</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ProbeWorker</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">usn</span>: <span class="ident">String</span>, <span class="ident">rt</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>, <span class="ident">request_interval</span>: <span class="ident">Duration</span>, <span class="ident">influx_host</span>: <span class="ident">String</span>, <span class="ident">influx_dbname</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ProbeWorker</span> {
         <span class="ident">ProbeWorker</span> {
             <span class="ident">url</span>: <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()),
             <span class="ident">usn</span>,
             <span class="ident">ttl</span>: <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">Instant</span>::<span class="ident">now</span>() <span class="op">+</span> (<span class="ident">request_interval</span> <span class="op">*</span> <span class="number">3</span>)),
             <span class="ident">request_interval</span>: <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">request_interval</span>),
             <span class="ident">should_work</span>: <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="bool-val">true</span>),
-            <span class="ident">rt</span>
+            <span class="ident">rt</span>,
+            <span class="ident">influx_host</span>,
+            <span class="ident">influx_dbname</span>
         }
     }
 
@@ -250,6 +258,7 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Worker USN: {} started&quot;</span>, <span class="self">self</span>.<span class="ident">usn</span>);
+        <span class="kw">let</span> <span class="ident">influx_client</span> <span class="op">=</span> <span class="ident">influx_db_client</span>::<span class="ident">Client</span>::<span class="ident">new</span>(<span class="ident">reqwest</span>::<span class="ident">Url</span>::<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">influx_host</span>).<span class="ident">unwrap</span>(), <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">influx_dbname</span>);
         <span class="kw">while</span> <span class="self">self</span>.<span class="ident">check_should_work</span>() <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">check_ttl</span>() {
             <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Worker USN: {} top of loop&quot;</span>, <span class="self">self</span>.<span class="ident">usn</span>);
             <span class="kw">let</span> <span class="ident">loop_start_instant</span> <span class="op">=</span> <span class="ident">Instant</span>::<span class="ident">now</span>();
@@ -272,7 +281,6 @@
                     <span class="kw">for</span> <span class="ident">data</span> <span class="kw">in</span> <span class="ident">stream_iter</span> {
                         <span class="kw">match</span> <span class="ident">data</span> {
                             <span class="prelude-val">Ok</span>(<span class="ident">d</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                                <span class="kw">let</span> <span class="ident">influx_client</span> <span class="op">=</span> <span class="ident">influx_db_client</span>::<span class="ident">Client</span>::<span class="ident">new</span>(<span class="ident">reqwest</span>::<span class="ident">Url</span>::<span class="ident">parse</span>(<span class="string">&quot;http://localhost:8086&quot;</span>).<span class="ident">unwrap</span>(), <span class="string">&quot;pegassas&quot;</span>);
                                 <span class="kw">let</span> <span class="ident">points</span> <span class="op">=</span> <span class="ident">parse_data</span>(<span class="ident">d</span>);
                                 <span class="kw">match</span> <span class="self">self</span>.<span class="ident">rt</span>.<span class="ident">block_on</span>(<span class="ident">influx_client</span>.<span class="ident">write_points</span>(<span class="ident">points</span>, <span class="prelude-val">Some</span>(<span class="ident">influx_db_client</span>::<span class="ident">Precision</span>::<span class="ident">Seconds</span>), <span class="prelude-val">None</span>)){
                                     <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> (),
