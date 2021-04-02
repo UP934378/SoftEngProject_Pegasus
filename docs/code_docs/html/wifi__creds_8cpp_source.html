@@ -113,7 +113,7 @@ $(function() {
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordtype">char</span> buffer[32];</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.drawStringf(0, 0, buffer, <span class="stringliteral">&quot;SSID: %s&quot;</span>, SSID.c_str());</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.drawStringf(0, 10, buffer, <span class="stringliteral">&quot;PSK: %s&quot;</span>, key);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.drawString(0, 20, <span class="stringliteral">&quot;This is a very long string to test what happens&quot;</span>);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.drawString(0, 20, WiFi.softAPIP().toString());</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.display();</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">// register src/wifi_form.hml to be served by the web server</span></div>
