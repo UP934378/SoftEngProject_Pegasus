@@ -608,8 +608,53 @@
 <span id="605">605</span>
 <span id="606">606</span>
 <span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">/// Manage communication between web front end and server</span>
+<span class="doccomment">//!  Manage communication between web front end and server</span>
 <span class="kw">use</span> <span class="ident">actix_session</span>::{<span class="ident">CookieSession</span>, <span class="ident">Session</span>};
 <span class="kw">use</span> <span class="ident">actix_web</span>::{
     <span class="ident">get</span>,
@@ -673,8 +718,7 @@
     <span class="ident">end</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
-<span class="doccomment">/// Structure to specify which information are required from database</span>
-<span class="comment">// Cell table columns </span>
+<span class="doccomment">/// Structure to specify which cell information are required from database</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CellRequestQuery</span> {
     <span class="ident">probe_id_col</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
@@ -683,7 +727,7 @@
     <span class="ident">balance_current_col</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
 }
 
-<span class="comment">// Cell table condition columns</span>
+<span class="doccomment">/// Cell table condition</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CellConditionAttribute</span> {
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
@@ -696,7 +740,15 @@
 <span class="comment">// /dbapi/table?columns&amp;time&amp;where_clause</span>
 
 <span class="comment">// /dbapi/cell?cell_id_col=true&amp;probe_id_col=true&amp;cell_voltage&amp;start=2021-03-10T00:00:00Z&amp;cell_id=1</span>
+
 <span class="doccomment">/// Http request to server database based on boolean values in CellRequestQuery structure</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameters:</span>
+<span class="doccomment">/// - Request = Http request to server</span>
+<span class="doccomment">/// - Session = user active session</span>
+<span class="doccomment">/// - web:Query(bounds) = Extract typed information from the request&#39;s query</span>
+<span class="doccomment">/// - web::Query(columns) = Column selected</span>
+<span class="doccomment">/// - web::Query(condition_value) = Cell id and Probe id</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">request_cell</span>(
     <span class="ident">request</span>: <span class="ident">HttpRequest</span>,
     <span class="ident">session</span>: <span class="ident">Session</span>,
@@ -802,7 +854,7 @@
     .<span class="kw">await</span>
 }
 
-<span class="comment">// Battery table columns</span>
+<span class="doccomment">/// Structure to specify which battery information are required from database</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatteryRequestQuery</span> {
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
@@ -817,7 +869,7 @@
     <span class="ident">probe_id_col</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
 }
 
-<span class="comment">// Battery table condition columns</span>
+<span class="comment">// Battery table conditions</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatteryConditionAttribute</span> {
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
@@ -825,6 +877,15 @@
 }
 
 <span class="comment">// /dbapi/battery?probe_id_col=true&amp;state_charge_col=true&amp;charge_perc_col=true&amp;probe_id=1</span>
+
+<span class="doccomment">/// Http request to server database based on boolean values in BatteryRequestQuery structure</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameters:</span>
+<span class="doccomment">/// - Request = Http request to server</span>
+<span class="doccomment">/// - Session = user active session</span>
+<span class="doccomment">/// - web:Query(bounds) = Extract typed information from the request&#39;s query</span>
+<span class="doccomment">/// - web::Query(columns) = Column selected</span>
+<span class="doccomment">/// - web::Query(condition_value) = Probe id number</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">request_battery</span>(
     <span class="ident">request</span>: <span class="ident">HttpRequest</span>,
     <span class="ident">session</span>: <span class="ident">Session</span>,
@@ -918,7 +979,7 @@
     .<span class="kw">await</span>
 }
 
-<span class="comment">//Inverter table columns</span>
+<span class="doccomment">/// Structure to specify which inverter information are required from database</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InverterRequestQuery</span> {
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
@@ -933,7 +994,7 @@
     <span class="ident">probe_id_col</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
 }
 
-<span class="comment">//Inverter table condition columns</span>
+<span class="doccomment">/// Inverter table conditions</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InverterConditionAttribute</span> {
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
@@ -944,6 +1005,15 @@
 
 
 <span class="comment">// /dbapi/inverter?solar_id_col=true&amp;sol_inv_voltage_col=true&amp;sol_inv_power=true&amp;start=2021-03-10T00:00:00Z&amp;end=2021-03-22T00:00:00Z&amp;solar_id=1</span>
+
+<span class="doccomment">/// Http request to server database based on boolean values in InverterConditionAttribute structure</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameters:</span>
+<span class="doccomment">/// - Request = Http request to server</span>
+<span class="doccomment">/// - Session = user active session</span>
+<span class="doccomment">/// - web:Query(bounds) = Extract typed information from the request&#39;s query</span>
+<span class="doccomment">/// - web::Query(columns) = Column selected</span>
+<span class="doccomment">/// - web::Query(condition_value) = Probe id  and inverter id</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">request_inverter</span>(
     <span class="ident">request</span>: <span class="ident">HttpRequest</span>,
     <span class="ident">session</span>: <span class="ident">Session</span>,
@@ -1049,7 +1119,7 @@
     .<span class="kw">await</span>
 }
 
-<span class="comment">// Grid table columns</span>
+<span class="doccomment">/// Structure to specify which grid information are required from database</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GridRequestQuery</span> {
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
@@ -1058,7 +1128,7 @@
     <span class="ident">probe_id_col</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
 }
 
-<span class="comment">// Grid table condition columns</span>
+<span class="doccomment">/// Grid table conditions</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GridConditionAttribute</span> {
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
@@ -1066,6 +1136,15 @@
 }
 
 <span class="comment">// /dbapi/grid?probe_id_col=true&amp;grid_power_col=true&amp;start=2021-03-10T00:00:00Z&amp;end=2021-03-22T00:00:00Z&amp;probe_id=1</span>
+
+<span class="doccomment">/// Http request to server database based on boolean values in GridConditionAttribute structure</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameters:</span>
+<span class="doccomment">/// - Request = Http request to server</span>
+<span class="doccomment">/// - Session = user active session</span>
+<span class="doccomment">/// - web:Query(bounds) = Extract typed information from the request&#39;s query</span>
+<span class="doccomment">/// - web::Query(columns) = Column selected</span>
+<span class="doccomment">/// - web::Query(condition_value) = Probe id</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">request_grid</span>(
     <span class="ident">request</span>: <span class="ident">HttpRequest</span>,
     <span class="ident">session</span>: <span class="ident">Session</span>,
@@ -1120,14 +1199,14 @@
     .<span class="kw">await</span>
 }
 
-<span class="comment">// House_power table condition columns</span>
+<span class="doccomment">/// House_power table conditions</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HouseConditionAttribute</span> {
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
     <span class="ident">probe_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
 }
 
-<span class="comment">// House_power table  columns</span>
+<span class="doccomment">/// Structure to specify which House power information are required from database</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HouseRequestQuery</span> {
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
@@ -1137,6 +1216,15 @@
 }
 
 <span class="comment">// dbapi/house?probe_id_col=true&amp;start=2021-03-10T00:00:00Z</span>
+
+<span class="doccomment">/// Http request to server database based on boolean values in HouseConditionAttribute structure</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameters:</span>
+<span class="doccomment">/// - Request = Http request to server</span>
+<span class="doccomment">/// - Session = user active session</span>
+<span class="doccomment">/// - web:Query(bounds) = Extract typed information from the request&#39;s query</span>
+<span class="doccomment">/// - web::Query(columns) = Column selected</span>
+<span class="doccomment">/// - web::Query(condition_value) = Probe id</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">request_house</span>(
     <span class="ident">request</span>: <span class="ident">HttpRequest</span>,
     <span class="ident">session</span>: <span class="ident">Session</span>,
@@ -1190,6 +1278,7 @@
     .<span class="kw">await</span>
 }
 
+<span class="doccomment">/// Specify time bound for visualisation graph in webpage</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">time_bounds</span>(<span class="ident">bounds</span>: <span class="ident">TimeSeriesBounds</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>{
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">conditions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
     <span class="kw">match</span> <span class="ident">bounds</span> {
@@ -1208,10 +1297,11 @@
     <span class="kw">return</span> <span class="ident">conditions</span>;
 }
 
+<span class="doccomment">/// Specify time bound for visualisation graph in webpage</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">clause</span>(<span class="ident">conditions_vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
     <span class="kw">if</span> <span class="op">!</span><span class="ident">conditions_vec</span>.<span class="ident">is_empty</span>() {
-        <span class="kw">let</span> <span class="ident">condntion_string</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">conditions_vec</span>.<span class="ident">join</span>(<span class="string">&quot; AND &quot;</span>);
-        <span class="kw">return</span> <span class="ident">condntion_string</span>;
+        <span class="kw">let</span> <span class="ident">condition_string</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">conditions_vec</span>.<span class="ident">join</span>(<span class="string">&quot; AND &quot;</span>);
+        <span class="kw">return</span> <span class="ident">condition_string</span>;
     } <span class="kw">else</span> {
         <span class="kw">return</span> <span class="string">&quot;No clause&quot;</span>.<span class="ident">to_string</span>();
     }
