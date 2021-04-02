@@ -37,7 +37,7 @@ env_logger = "0.8.3"
 regex = "1.4.5"
 
 ```
-</detail>
+</details>
 <br>
 
 <details>
@@ -62,7 +62,7 @@ mailin-embedded = "0.6.1"
 tokio-postgres = {version="0.5.5", features=["with-eui48-0_4", "with-serde_json-1"]}
 
 ```
-</detail>
+</details>
 <br>
 
 <details>
@@ -86,7 +86,10 @@ eui48 = "0.4.6"
 
 ```
 
-</detail>
+</details>
+<br>
+
+<details>
 <summary>Web Database API </summary>
 <br>
 
@@ -114,19 +117,19 @@ async-log = "2.0.0"
 
 ```
 
-</detail>
+</details>
 <br>
-</detail>
+</details>
 <br>
 <details>
 <summary> Java </summary>
 <br>
 
-</detail>
+</details>
 <br>
 <details>
 <summary> C++ </summary>
 <br>
 
-</detail>
+</details>
 <br>
