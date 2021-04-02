@@ -283,20 +283,49 @@ mod test {
 <br>
 
 ``` Rust
-#[cfg(test)]
-mod test {
-    use super::*;
-    #[test]
-    fn test_pass_verify() -> Result<()>{
-        let db_pass = String::from("testpassword");
-        let hashed_pass = String::from("$2y$12$WXve5HUUGI19etxKGAh5q.DuMlgANQc13qTXbL/xG8041kTM/TovO");        
-        assert_eq!(false,pass_verify(db_pass,hashed_pass));
-        Ok(())
-    }
+#[test]
+fn test_pass_verify() -> Result<()>{
+    let db_pass = String::from("123");
+    let hashed_pass_wrong = String::from("$2y$12$WXve5HUUGI19etxKGAh5q.DuMlgANQc13qTXbL/xG8041kTM/TovO");
+    let hashed_pass_valid = String::from("$2b$11$DXK0GVJDeJCw7eUcB4LQ5eWSuQEImymvK62Lpp4S0uevi2LwtxUfi");        
+    assert_eq!(false,pass_verify(hashed_pass_wrong,db_pass.clone()));
+    assert_eq!(true,pass_verify(hashed_pass_valid,db_pass));
+    Ok(())
 }
 ```
 
 </details>
+
+<details>
+<summary> Test 2 - Test empty clause condition </summary>
+<br>
+
+``` Rust
+#[actix_rt::test]
+async fn test_clause_empty() {
+    let empty_cond = vec![];
+    let resp = String::from("No clause");
+    assert_eq!(resp,dbapi::clause(empty_cond).await);
+}
+```
+
+</details>
+
+<details>
+<summary> Test 3 - Test clause condition </summary>
+<br>
+
+``` Rust
+#[actix_rt::test]
+async fn test_clause() {
+    let cond = vec!["test".to_string(), "test".to_string(), "test".to_string()];
+    let resp = String::from("test AND test AND test");
+    assert_eq!(resp,dbapi::clause(cond).await);
+}
+```
+
+</details>
+
 
 ### C++ - Probes
 
