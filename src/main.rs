@@ -181,10 +181,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         }
         
         // Wait until next loop
-        match Duration::from_secs(20).checked_sub(start_discovery_instant.elapsed()) {
-            Some(wait_duration) => std::thread::sleep(wait_duration),
-            None => ()
-        };
+        if let Some(wait_duration) = Duration::from_secs(20).checked_sub(start_discovery_instant.elapsed()) { std::thread::sleep(wait_duration) }
+        // match Duration::from_secs(20).checked_sub(start_discovery_instant.elapsed()) {
+        //     Some(wait_duration) => std::thread::sleep(wait_duration),
+        //     None => ()
+        // };
     }
     
 }
