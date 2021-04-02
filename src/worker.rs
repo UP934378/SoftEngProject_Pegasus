@@ -100,7 +100,7 @@ impl ProbeWorker {
                     url = a.deref().clone();
                 },
                 Err(e) => {
-                    println!("Couldn't acquire url mutex: {:?}", e);
+                    error!("Couldn't acquire url mutex: {:?}", e);
                     continue
                 }
             };
@@ -133,20 +133,21 @@ impl ProbeWorker {
                 }
             }
             // Wait for discovery interval to expire
-            match self.request_interval.lock(){
-                Ok(request_interval) =>{
-                    match request_interval.checked_sub(loop_start_instant.elapsed()){
-                        Some(wait_duration) => {
-                            std::thread::sleep(wait_duration);
-                        },
-                        None => {
-                            warn!("worker for probe usn: {} falling behind request interval: {:?}", self.usn, self.request_interval);
-                        }
-                    };
+            let request_interval = match self.request_interval.lock(){
+                Ok(request_interval) => request_interval,
+                Err(e) => {
+                    error!("Couldn't lock worker request_interval mutex, error: {}", e);
+                    continue;
+                }
+            };
+            match request_interval.checked_sub(loop_start_instant.elapsed()){
+                Some(wait_duration) => {
+                    std::thread::sleep(wait_duration);
                 },
-                Err(e) => error!("Couldn't lock worker request_interval mutex, error: {}", e)
-            }
-            
+                None => {
+                    warn!("worker for probe usn: {} falling behind request interval: {:?}", self.usn, self.request_interval);
+                }
+            };
         }
     }
 
