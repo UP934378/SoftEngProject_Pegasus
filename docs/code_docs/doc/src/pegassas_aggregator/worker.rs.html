@@ -155,6 +155,7 @@
 <span id="152">152</span>
 <span id="153">153</span>
 <span id="154">154</span>
+<span id="155">155</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//!Worker structure that handles connecting to a data </span>
 <span class="doccomment">//! probe and parsing the returned data and inserting </span>
@@ -258,7 +259,7 @@
                     <span class="ident">url</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">deref</span>().<span class="ident">clone</span>();
                 },
                 <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Couldn&#39;t acquire url mutex: {:?}&quot;</span>, <span class="ident">e</span>);
+                    <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Couldn&#39;t acquire url mutex: {:?}&quot;</span>, <span class="ident">e</span>);
                     <span class="kw">continue</span>
                 }
             };
@@ -291,20 +292,21 @@
                 }
             }
             <span class="comment">// Wait for discovery interval to expire</span>
-            <span class="kw">match</span> <span class="self">self</span>.<span class="ident">request_interval</span>.<span class="ident">lock</span>(){
-                <span class="prelude-val">Ok</span>(<span class="ident">request_interval</span>) <span class="op">=</span><span class="op">&gt;</span>{
-                    <span class="kw">match</span> <span class="ident">request_interval</span>.<span class="ident">checked_sub</span>(<span class="ident">loop_start_instant</span>.<span class="ident">elapsed</span>()){
-                        <span class="prelude-val">Some</span>(<span class="ident">wait_duration</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                            <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">sleep</span>(<span class="ident">wait_duration</span>);
-                        },
-                        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                            <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;worker for probe usn: {} falling behind request interval: {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">usn</span>, <span class="self">self</span>.<span class="ident">request_interval</span>);
-                        }
-                    };
+            <span class="kw">let</span> <span class="ident">request_interval</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">request_interval</span>.<span class="ident">lock</span>(){
+                <span class="prelude-val">Ok</span>(<span class="ident">request_interval</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">request_interval</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Couldn&#39;t lock worker request_interval mutex, error: {}&quot;</span>, <span class="ident">e</span>);
+                    <span class="kw">continue</span>;
+                }
+            };
+            <span class="kw">match</span> <span class="ident">request_interval</span>.<span class="ident">checked_sub</span>(<span class="ident">loop_start_instant</span>.<span class="ident">elapsed</span>()){
+                <span class="prelude-val">Some</span>(<span class="ident">wait_duration</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">sleep</span>(<span class="ident">wait_duration</span>);
                 },
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Couldn&#39;t lock worker request_interval mutex, error: {}&quot;</span>, <span class="ident">e</span>)
-            }
-            
+                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;worker for probe usn: {} falling behind request interval: {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">usn</span>, <span class="self">self</span>.<span class="ident">request_interval</span>);
+                }
+            };
         }
     }
 
