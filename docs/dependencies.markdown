@@ -1,13 +1,13 @@
 ---
-title: "Dependenacies"
-permalink: /Dependenacies
+title: "Dependencies"
+permalink: /Dependencies
 ---
 
 # Pegassas Energy Management System
 
 [Home](https://m30819-2020.github.io/cw-code-t1)
 
-## Consolidated list of Dependancies for this project
+## Consolidated list of Dependencies for this project
 
 <details>
 <summary> RUST </summary>
