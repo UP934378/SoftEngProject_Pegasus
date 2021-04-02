@@ -2,22 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: script.js</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>script.js - Documentation</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Source: script.js</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Graph.html">Graph</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#createCell">createCell</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#fetchData">fetchData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#fixRefs">fixRefs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#formatResponse">formatResponse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#formSubmit">formSubmit</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#plotData">plotData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#toggleForm">toggleForm</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ProbeOption.html">ProbeOption</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ProbeOption.html#createRow">createRow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ProbeOption.html#submitProbe">submitProbe</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ProbeOption.html#toggleFrequency">toggleFrequency</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TabButton.html">TabButton</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TabButton.html#configurePage">configurePage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TabButton.html#createTab">createTab</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TabButton.html#getGraphs">getGraphs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TabButton.html#setSelected">setSelected</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#insertDOM">insertDOM</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">script.js</h1>
+    
 
     
 
@@ -37,7 +50,7 @@
 
 /**
  * @overview Javascript documentation for User front end of Pegassas
- * @author Max Beebe for Software Engineer project Team 1
+ * @author Max Beebee for Software Engineer project Team 1
  * @see &lt;a href="https://m30819-2020.github.io/cw-code-t1/">Pegassas system Documentation Homepage&lt;/a>
  */
 
@@ -83,7 +96,7 @@ class Graph {
     }
 
     /**
-     * Build list of variable for database query
+     * Create list of all possible values for database queries
      */
     this.allvalues = {}
     Object.entries(this.yvalues).forEach(([key, value]) => {
@@ -111,7 +124,7 @@ class Graph {
     }
     
     /**
-     * Request from for database query
+     * Initialize object values
      */
     this.values = {
       'y': y,
@@ -131,7 +144,7 @@ class Graph {
     this.cell = this.createCell(cellid)
 
     /**
-     * Get data information from API and update graph in the web page
+     * Get data from API using object variables and update graph in the web page
      */
     const getdata = async () => {
       // Get response from url, wait for response before continuing
@@ -174,291 +187,290 @@ class Graph {
       this.formSubmit()
     })
 
-    if (this.createForm) {
 
-      // Create form header
-      var header = document.createElement('h2')
-      header.textContent = cell.id
-      header.classList.add("form-header")
-      header.style.gridColumn = "span 2"
+    // Create form header
+    var header = document.createElement('h2')
+    header.textContent = cell.id
+    header.classList.add("form-header")
+    header.style.gridColumn = "span 2"
 
-      configfrm.appendChild(header)
-      // grid-column: col-start / span 12;
-      
-      const yinput = document.createElement('select')
-      yinput.id = id + "-yinput"
-      yinput.name = "y_value"
-      yinput.classList.add("form-input")
-      yinput.setAttribute('form', configfrm.id)
+    configfrm.appendChild(header)
+    // grid-column: col-start / span 12;
+    
+    const yinput = document.createElement('select')
+    yinput.id = id + "-yinput"
+    yinput.name = "y_value"
+    yinput.classList.add("form-input")
+    yinput.setAttribute('form', configfrm.id)
 
-      // Onchange listener to disable same option selection
-      yinput.addEventListener('change', () => {
-        this.yopt.disabled = false
-        this.yopt = yinput.options[yinput.selectedIndex]
-        this.yopt.disabled = true
-      })
-
-      const ylabel = document.createElement("label")
-      ylabel.htmlFor = yinput.id
-      ylabel.classList.add("form-label")
-      ylabel.innerHTML="Y value: " 
-      
-      // Add options to x &amp; y input boxes
-      for (var key in this.yvalues) {
-        
-        // Create breaks between options
-        if (key != Object.keys(this.yvalues)[0]) {
-          var opthead = document.createElement('optgroup')
-          opthead.label = ""
-
-          yinput.appendChild(opthead)
-        }
-
-        // Add option headers
-        var opthead = document.createElement('optgroup')
-        opthead.label = key
-        
-        yinput.appendChild(opthead)
-
-        for (var value of this.yvalues[key]) {
-          // Add options
-          var opt = document.createElement('option')
-          opt.value = value
-          opt.innerHTML = value
-          opt.setAttribute('table', key)
-
-          yinput.appendChild(opt)
-        }
-      }
-
-      // Set selected x/y values
-      yinput.value = this.values.y
-      // whereinput.value = 'cell_id'
-
-      // Initialize onchange event listener
+    // Onchange listener to disable same option selection
+    yinput.addEventListener('change', () => {
+      this.yopt.disabled = false
       this.yopt = yinput.options[yinput.selectedIndex]
+      this.yopt.disabled = true
+    })
+
+    const ylabel = document.createElement("label")
+    ylabel.htmlFor = yinput.id
+    ylabel.classList.add("form-label")
+    ylabel.innerHTML="Y value: " 
+    
+    // Add options to x &amp; y input boxes
+    for (var key in this.yvalues) {
       
-      // Trigger event at start
-      var event = new Event('change')
-
-      yinput.dispatchEvent(event)
-
-      // Append labels &amp; inputs to config form
-      configfrm.appendChild(ylabel)
-      configfrm.appendChild(yinput)
-
-
-      // Create where input
-
-      const whereinput = document.createElement('select')
-      whereinput.id = id + "-whereinput"
-      whereinput.name = "whereinput"
-      whereinput.classList.add("form-input")
-      whereinput.setAttribute('form', configfrm.id)
-
-      const wherelabel = document.createElement("label")
-      wherelabel.htmlFor = wherelabel.id
-      wherelabel.classList.add("form-label")
-      wherelabel.innerHTML="Where: " 
-
-      // Add options to x &amp; y input boxes
-      for (var key in this.allvalues) {
-        
-        // Create breaks between options
-        if (key != Object.keys(this.allvalues)[0]) {
-          var opthead = document.createElement('optgroup')
-          opthead.label = ""
-
-          whereinput.appendChild(opthead)
-        }
-
-        // Add option headers
+      // Create breaks between options
+      if (key != Object.keys(this.yvalues)[0]) {
         var opthead = document.createElement('optgroup')
-        opthead.label = key
-        
-        whereinput.appendChild(opthead)
+        opthead.label = ""
 
-        for (var value of this.allvalues[key]) {
-          // Add options
-          var opt = document.createElement('option')
-          opt.value = value
-          opt.innerHTML = value
-          opt.setAttribute('table', key)
-
-          whereinput.appendChild(opt)
-        }
+        yinput.appendChild(opthead)
       }
 
-      whereinput.value = this.values.where
-
-      configfrm.appendChild(wherelabel)
-      configfrm.appendChild(whereinput)
+      // Add option headers
+      var opthead = document.createElement('optgroup')
+      opthead.label = key
       
+      yinput.appendChild(opthead)
 
-      // Create Equals input
-
-      var equalsinput = document.createElement('input')
-      equalsinput.type = 'text'
-      equalsinput.placeholder = '>5 or =6'
-      equalsinput.value = this.values.equals
-      equalsinput.id = id + "-equalsinput"
-      equalsinput.name = "equalsinput"
-      equalsinput.classList.add("form-input")
-      equalsinput.setAttribute('form', configfrm.id)
-
-      var equalslabel = document.createElement("label")
-      equalslabel.htmlFor = equalsinput.id
-      equalslabel.classList.add("form-label")
-      equalslabel.innerHTML="Equals: " 
-
-      
-      configfrm.appendChild(equalslabel)
-      configfrm.appendChild(equalsinput)
-      
-
-
-      // Create time selectors
-      var dateinput = []
-      var timeinput = []
-      for (var [index, se] of ['Start', 'End'].entries()) {
-        // Get default start / end times
-        if (index == 0) {
-          var datevalue = this.values.start.split("T")[0]
-          var timevalue = this.values.start.split("T")[1]
-        } else {
-          var datevalue = this.values.end.split("T")[0]
-          var timevalue = this.values.end.split("T")[1]
-        }
-
-        // Date
-        dateinput[se] = document.createElement('input')
-        dateinput[se].type = "date"
-        dateinput[se].name = se + "dateinput"
-        dateinput[se].defaultValue = datevalue
-        dateinput[se].id = cell.id + "-" + se + "date"
-        dateinput[se].classList.add("form-input")
-        dateinput[se].setAttribute('form', configfrm.id)
-
-        const datelabel = document.createElement("label")
-        datelabel.htmlFor = dateinput.id
-        datelabel.classList.add("form-label")
-        datelabel.innerHTML= se + ": " 
-
-        // Time
-        timeinput[se] = document.createElement('input')
-        timeinput[se].type = "time"
-        timeinput[se].name = se + "timeinput"
-        timeinput[se].id = cell.id + "-" + se + "time"
-        timeinput[se].value = timevalue
-        timeinput[se].step = 1
-        timeinput[se].classList.add("form-input")
-        timeinput[se].setAttribute('form', configfrm.id)
-        
-        const timelabel = document.createElement("label")
-        timelabel.htmlFor = timeinput.id
-        timelabel.classList.add("form-label")
-        timelabel.innerHTML="" 
-
-        configfrm.appendChild(datelabel)
-        configfrm.appendChild(dateinput[se])
-        configfrm.appendChild(timelabel)
-        configfrm.appendChild(timeinput[se])
-      }
-      
-      
-      // Start / End date validation
-      dateinput['Start'].addEventListener('change', function() {
-        if (dateinput['Start'].value > dateinput['End'].value) {
-          dateinput['Start'].value = dateinput['End'].value
-        }
-        if (dateinput['Start'].value == dateinput['End'].value) {
-          // Trigger event at start
-          var event = new Event('change')
-
-          timeinput['Start'].dispatchEvent(event)
-          timeinput['End'].dispatchEvent(event)
-        }
-      });
-
-      dateinput['End'].addEventListener('change', function() {
-        if (dateinput['End'].value &lt; dateinput['Start'].value) {
-          dateinput['End'].value = dateinput['Start'].value
-        }
-        if (dateinput['End'].value == dateinput['Start'].value) {
-          // Trigger event at start
-          var event = new Event('change')
-
-          timeinput['End'].dispatchEvent(event)
-          timeinput['Start'].dispatchEvent(event)
-        }
-      });
-
-
-      // Start / End time validation
-      timeinput['Start'].addEventListener('change', function() {
-        if (dateinput['Start'].value == dateinput['End'].value) {
-          if (timeinput['Start'].value > timeinput['End'].value) {
-            timeinput['Start'].value = timeinput['End'].value
-          }
-        }
-      });
-
-      timeinput['End'].addEventListener('change', function() {
-        if (dateinput['End'].value == dateinput['Start'].value) {
-          if (timeinput['End'].value &lt; timeinput['Start'].value) {
-            timeinput['End'].value = timeinput['Start'].value
-          }
-        }
-      });
-
-
-
-      // Create type input
-      const typeinput = document.createElement('select')
-      typeinput.id = id + "-typeinput"
-      typeinput.name = "graph_type"
-      typeinput.classList.add("form-input")
-      typeinput.setAttribute('form', configfrm.id)
-
-      const typelabel = document.createElement("label")
-      typelabel.htmlFor = typeinput.id
-      typelabel.classList.add("form-label")
-      typelabel.innerHTML="Type: " 
-      
-      for (var value in this.types) {
+      for (var value of this.yvalues[key]) {
         // Add options
         var opt = document.createElement('option')
         opt.value = value
         opt.innerHTML = value
+        opt.setAttribute('table', key)
 
-        typeinput.appendChild(opt)
+        yinput.appendChild(opt)
+      }
+    }
+
+    // Set selected x/y values
+    yinput.value = this.values.y
+    // whereinput.value = 'cell_id'
+
+    // Initialize onchange event listener
+    this.yopt = yinput.options[yinput.selectedIndex]
+    
+    // Trigger event at start
+    var event = new Event('change')
+
+    yinput.dispatchEvent(event)
+
+    // Append labels &amp; inputs to config form
+    configfrm.appendChild(ylabel)
+    configfrm.appendChild(yinput)
+
+
+    // Create where input
+
+    const whereinput = document.createElement('select')
+    whereinput.id = id + "-whereinput"
+    whereinput.name = "whereinput"
+    whereinput.classList.add("form-input")
+    whereinput.setAttribute('form', configfrm.id)
+
+    const wherelabel = document.createElement("label")
+    wherelabel.htmlFor = wherelabel.id
+    wherelabel.classList.add("form-label")
+    wherelabel.innerHTML="Where: " 
+
+    // Add options to x &amp; y input boxes
+    for (var key in this.allvalues) {
+      
+      // Create breaks between options
+      if (key != Object.keys(this.allvalues)[0]) {
+        var opthead = document.createElement('optgroup')
+        opthead.label = ""
+
+        whereinput.appendChild(opthead)
       }
 
-      // Set selected type
-      typeinput.value = this.values.type.name
+      // Add option headers
+      var opthead = document.createElement('optgroup')
+      opthead.label = key
+      
+      whereinput.appendChild(opthead)
 
-      configfrm.appendChild(typelabel)
-      configfrm.appendChild(typeinput)
+      for (var value of this.allvalues[key]) {
+        // Add options
+        var opt = document.createElement('option')
+        opt.value = value
+        opt.innerHTML = value
+        opt.setAttribute('table', key)
+
+        whereinput.appendChild(opt)
+      }
+    }
+
+    whereinput.value = this.values.where
+
+    configfrm.appendChild(wherelabel)
+    configfrm.appendChild(whereinput)
+    
+
+    // Create Equals input
+
+    var equalsinput = document.createElement('input')
+    equalsinput.type = 'text'
+    equalsinput.placeholder = '>5 or =6'
+    equalsinput.value = this.values.equals
+    equalsinput.id = id + "-equalsinput"
+    equalsinput.name = "equalsinput"
+    equalsinput.classList.add("form-input")
+    equalsinput.setAttribute('form', configfrm.id)
+
+    var equalslabel = document.createElement("label")
+    equalslabel.htmlFor = equalsinput.id
+    equalslabel.classList.add("form-label")
+    equalslabel.innerHTML="Equals: " 
+
+    
+    configfrm.appendChild(equalslabel)
+    configfrm.appendChild(equalsinput)
+    
 
 
-      // Create submit button
+    // Create time selectors
+    var dateinput = []
+    var timeinput = []
+    for (var [index, se] of ['Start', 'End'].entries()) {
+      // Get default start / end times
+      if (index == 0) {
+        var datevalue = this.values.start.split("T")[0]
+        var timevalue = this.values.start.split("T")[1]
+      } else {
+        var datevalue = this.values.end.split("T")[0]
+        var timevalue = this.values.end.split("T")[1]
+      }
 
-      var input = document.createElement('input')
-      input.type = "submit"
-      input.value = "Submit" 
-      input.classList.add("form-input")
-      input.setAttribute('onclick', "graphs[" + "'" + cell.id + "'" + "].toggleForm()")
-      input.setAttribute('form', configfrm.id)
+      // Date
+      dateinput[se] = document.createElement('input')
+      dateinput[se].type = "date"
+      dateinput[se].name = se + "dateinput"
+      dateinput[se].defaultValue = datevalue
+      dateinput[se].id = cell.id + "-" + se + "date"
+      dateinput[se].classList.add("form-input")
+      dateinput[se].setAttribute('form', configfrm.id)
 
-      configfrm.append(input)
-      // &lt;td>&lt;input type="submit" form="probe-config-2" value="Submit">&lt;/td>
+      const datelabel = document.createElement("label")
+      datelabel.htmlFor = dateinput.id
+      datelabel.classList.add("form-label")
+      datelabel.innerHTML= se + ": " 
+
+      // Time
+      timeinput[se] = document.createElement('input')
+      timeinput[se].type = "time"
+      timeinput[se].name = se + "timeinput"
+      timeinput[se].id = cell.id + "-" + se + "time"
+      timeinput[se].value = timevalue
+      timeinput[se].step = 1
+      timeinput[se].classList.add("form-input")
+      timeinput[se].setAttribute('form', configfrm.id)
+      
+      const timelabel = document.createElement("label")
+      timelabel.htmlFor = timeinput.id
+      timelabel.classList.add("form-label")
+      timelabel.innerHTML="" 
+
+      configfrm.appendChild(datelabel)
+      configfrm.appendChild(dateinput[se])
+      configfrm.appendChild(timelabel)
+      configfrm.appendChild(timeinput[se])
+    }
+    
+    
+    // Start / End date validation
+    dateinput['Start'].addEventListener('change', function() {
+      if (dateinput['Start'].value > dateinput['End'].value) {
+        dateinput['Start'].value = dateinput['End'].value
+      }
+      if (dateinput['Start'].value == dateinput['End'].value) {
+        // Trigger event at start
+        var event = new Event('change')
+
+        timeinput['Start'].dispatchEvent(event)
+        timeinput['End'].dispatchEvent(event)
+      }
+    });
+
+    dateinput['End'].addEventListener('change', function() {
+      if (dateinput['End'].value &lt; dateinput['Start'].value) {
+        dateinput['End'].value = dateinput['Start'].value
+      }
+      if (dateinput['End'].value == dateinput['Start'].value) {
+        // Trigger event at start
+        var event = new Event('change')
+
+        timeinput['End'].dispatchEvent(event)
+        timeinput['Start'].dispatchEvent(event)
+      }
+    });
 
 
-      // Append config form to cell
-      this.configfrm = configfrm
-      cell.append(configfrm)
+    // Start / End time validation
+    timeinput['Start'].addEventListener('change', function() {
+      if (dateinput['Start'].value == dateinput['End'].value) {
+        if (timeinput['Start'].value > timeinput['End'].value) {
+          timeinput['Start'].value = timeinput['End'].value
+        }
+      }
+    });
+
+    timeinput['End'].addEventListener('change', function() {
+      if (dateinput['End'].value == dateinput['Start'].value) {
+        if (timeinput['End'].value &lt; timeinput['Start'].value) {
+          timeinput['End'].value = timeinput['Start'].value
+        }
+      }
+    });
 
 
+
+    // Create type input
+    const typeinput = document.createElement('select')
+    typeinput.id = id + "-typeinput"
+    typeinput.name = "graph_type"
+    typeinput.classList.add("form-input")
+    typeinput.setAttribute('form', configfrm.id)
+
+    const typelabel = document.createElement("label")
+    typelabel.htmlFor = typeinput.id
+    typelabel.classList.add("form-label")
+    typelabel.innerHTML="Type: " 
+    
+    for (var value in this.types) {
+      // Add options
+      var opt = document.createElement('option')
+      opt.value = value
+      opt.innerHTML = value
+
+      typeinput.appendChild(opt)
+    }
+
+    // Set selected type
+    typeinput.value = this.values.type.name
+
+    configfrm.appendChild(typelabel)
+    configfrm.appendChild(typeinput)
+
+
+    // Create submit button
+
+    var input = document.createElement('input')
+    input.type = "submit"
+    input.value = "Submit" 
+    input.classList.add("form-input")
+    input.setAttribute('onclick', "graphs[" + "'" + cell.id + "'" + "].toggleForm()")
+    input.setAttribute('form', configfrm.id)
+
+    configfrm.append(input)
+    // &lt;td>&lt;input type="submit" form="probe-config-2" value="Submit">&lt;/td>
+
+
+    // Append config form to cell
+    this.configfrm = configfrm
+    cell.append(configfrm)
+
+    if (this.createForm) {
       // Create config button
       const configbtn = document.createElement('button')
       configbtn.classList.add("config-button")
@@ -508,6 +520,10 @@ class Graph {
       // Switch cell plots
       // Need to re-plot graphs for proper functioning
       if (celldraggingover) {
+
+        // Create copy of data for transferring
+        const overdataHolder = celldraggingover.data
+
         // Remove dragging classes
         celldraggingover.classList.remove('dragging-over')
         celldragging.classList.remove('dragging')
@@ -515,22 +531,32 @@ class Graph {
         // Swap cell positions
         const parent = celldragging.parentNode
         const celldragging_sibling = celldragging.nextSibling
-        
-        parent.insertBefore(celldragging, celldraggingover)
-        parent.insertBefore(celldraggingover, celldragging_sibling)
+
+        if (celldragging_sibling == celldraggingover) {
+          parent.insertBefore(celldraggingover, celldragging)
+        } else {
+          parent.insertBefore(celldragging, celldraggingover)
+          parent.insertBefore(celldraggingover, celldragging_sibling)
+        }
+       
 
         // Fix object cell references
         this.fixRefs()
         graphs[celldraggingover.id].fixRefs()
 
+        console.log(this.cell)
+        console.log(dataHolder)
+        console.log(graphs[celldraggingover.id].getCell)
+        console.log(overdataHolder)
+
         // Need to add paramater check to plotdata
         // Re-plot data
-        this.plotData(this.cell, celldraggingover.data)
-        this.plotData(graphs[celldraggingover.id].getCell, dataHolder)
+        this.plotData(this.cell, dataHolder)
+        this.plotData(graphs[celldraggingover.id].getCell, overdataHolder)
 
         // Submit form to keep index values on reload
-        // this.formSubmit(false)
-        // graphs[celldraggingover.id].formSubmit(false)
+        this.formSubmit(false)
+        graphs[celldraggingover.id].formSubmit(false)
       }
       this.cell.classList.remove('dragging')
   })
@@ -560,9 +586,9 @@ class Graph {
    * Fetch data from API &amp; return after response (stops response being a JS 'Promise')
   */
   async fetchData() {
-    var url = "http://127.0.0.1:8084/dbapi/" + this.values.table + "?" 
+    var url = "http://127.0.0.1:8089/dbapi/" + this.values.table + "?" 
     + this.values.y + "_col=true&amp;start=" 
-    + this.values.start + "Z&amp;end=" + this.values.end + "Z&amp;"
+    + this.values.start + "&amp;end=" + this.values.end + "&amp;"
     + this.values.where + this.values.equals
 
     // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
@@ -595,6 +621,8 @@ class Graph {
    * @param {*} data Data information form database
    */
   plotData(cell = this.cell, data = this.data) {
+    console.log(cell)
+    console.log(data)
     // Graph layout options
     // See " https://plotly.com/javascript/reference/ " for individual plot type layout options
     var layout = { 
@@ -624,7 +652,9 @@ class Graph {
    * Re-link object references with HTML DOM elements
    */
   fixRefs() {
-    this.configfrm = document.getElementById(this.configfrm.id)
+    if (this.configfrm != null) {
+      this.configfrm = document.getElementById(this.configfrm.id)
+    }
     this.cell = document.getElementById(this.cell.id)
   }
 
@@ -657,13 +687,13 @@ class Graph {
     // Allow no replot for manual plotting
     // Get data from api with below values
     // Plot data returned
-    console.log(this.configfrm)
+
     // Update object values
     this.values.y = this.configfrm.y_value.value
     this.values.table = this.configfrm.y_value.options[this.configfrm.y_value.selectedIndex].attributes.table.value
     this.values.type = this.types[this.configfrm.graph_type.value]
-    this.values.start = this.configfrm.Startdateinput.value + "T" + this.configfrm.Starttimeinput.value
-    this.values.end = this.configfrm.Enddateinput.value + "T" + this.configfrm.Endtimeinput.value
+    this.values.start = this.configfrm.Startdateinput.value + "T" + this.configfrm.Starttimeinput.value + "Z"
+    this.values.end = this.configfrm.Enddateinput.value + "T" + this.configfrm.Endtimeinput.value + "Z"
     this.values.where = this.configfrm.whereinput.value
     this.values.equals = this.configfrm.equalsinput.value
 
@@ -679,7 +709,6 @@ class Graph {
       this.plotData()
     }
     if (replot) {
-      console.log('test')
       getdata()
     }
 
@@ -714,7 +743,7 @@ class Graph {
           // Function to fetch data from url
           
           // Get graphs from get_view_config function
-          const data = await fetch("http://127.0.0.1:8084/get_view_config")
+          const data = await fetch("http://127.0.0.1:8089/get_view_config")
                             .then(response => response.json())
                             .catch(error => console.error(error))
           
@@ -729,10 +758,6 @@ class Graph {
           return true
         }
         return await getconfig()
-      } else if (remove) {
-        frmdata.append('view_tab', -1)
-        frmdata.append('container_index', 0) // Index of cell in parent
-        return true
       } else {
         frmdata.append('view_tab', document.getElementsByClassName('selected-tab')[0].attributes.value.value)
         frmdata.append('container_index', Array.from(this.cell.parentNode.children).indexOf(this.cell)) // Index of cell in parent
@@ -740,9 +765,14 @@ class Graph {
       }
     }
     await gethome()
-    // FormData not picking up y_input? Manually append for now
-    frmdata.append('y_value', this.values.y)
 
+    // If value is remove, append delete otherwise get form value
+    if (remove) {
+      frmdata.append('y_value', 'DELETED')
+    } else {
+      frmdata.append('y_value', this.values.y)
+    }
+    
 
     // Convert Form Data to URLSearchParam so it's in the right type for main.rs
     var frmurl = new URLSearchParams(frmdata).toString()
@@ -750,7 +780,7 @@ class Graph {
     // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
     // Function to fetch data from url
     const waitresponse = async () => {
-        var send = fetch("http://127.0.0.1:8084/view_config", {
+        fetch("http://127.0.0.1:8089/view_config", {
                                       method: "POST", 
                                       body: frmurl,
                                       headers: {
@@ -765,7 +795,7 @@ class Graph {
   }
 
   /**
-   * Read response from API
+   * Read &amp; format response from API
    */
   formatResponse() {
     // Function that takes response &amp; x/y values
@@ -871,10 +901,17 @@ class ProbeOption {
 
       const form = document.createElement('form')
       form.id = this.id + "-form"
+      // When submit, call function
+      form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        this.submitProbe()
+      })
+
+      this.form = form
 
       var input = document.createElement('input')
       input.type = "hidden"
-      input.name = "id"
+      input.name = "probe_name"
       input.value = this.id
 
       form.append(input)
@@ -942,11 +979,6 @@ class ProbeOption {
       input.type = "submit"
       input.value = "Submit"
       input.setAttribute('form', this.id + "-form")
-      // When submit, call function
-      input.addEventListener('submit', (e) => {
-        e.preventDefault()
-        this.submitProbe()
-      })
 
       submitCell.append(input)
       // &lt;td>&lt;input type="submit" form="probe-config-2" value="Submit">&lt;/td>
@@ -967,17 +999,24 @@ class ProbeOption {
    */
   submitProbe() {
     // Get form data
-    var frmdata = new FormData(this.row.formCell.form)
+    var probedata = new FormData(this.form)
+
+
+    // If probe has data turned off, append off values to form
+    if (probedata.get('data') == null) {
+      probedata.append('data', 'off')
+      probedata.append('frequency', 0)
+    }
 
     // Convert Form Data to URLSearchParam so it's in the right type for main.rs
-    var frmurl = new URLSearchParams(frmdata).toString()
-    console.log(frmurl)
+    var probeurl = new URLSearchParams(probedata).toString()
+    console.log(probeurl)
     // /dbapi/table?select_1_col=true&amp;select_2_col&amp;start=datetimeZ&amp;end=datetimeZ&amp;select_1=value
     // Function to fetch data from url
     const waitresponse = async () => {
-        var send = fetch("http://127.0.0.1:8084/setprobes", {
+        fetch("http://127.0.0.1:8089/setprobes", {
                                       method: "POST", 
-                                      body: frmurl,
+                                      body: probeurl,
                                       headers: {
                                           'Content-Type': 'application/x-www-form-urlencoded'
                                         }
@@ -993,7 +1032,7 @@ class ProbeOption {
   }
   
   /**
-   * Toogle cell frequency
+   * Toogle probe frequency cell (for when probe data is turned off)
    * @param {Boolean} checked Switch on/off
    */
   toggleFrequency(checked) {
@@ -1005,7 +1044,7 @@ class ProbeOption {
   }
 
   /**
-   * Returns row of data
+   * Returns row in table
    */
   get getRow() {
       return this.row
@@ -1081,7 +1120,7 @@ class TabButton {
     }
 
     /**
-     * Create full list of variables for where clause
+     * Create list of all possible values for where clause
      */
     this.allvalues = {}
     Object.entries(this.yvalues).forEach(([key, value]) => {
@@ -1120,7 +1159,7 @@ class TabButton {
       // Function to fetch data from url
       
       // Get graphs from get_view_config function
-      const data = await fetch("http://127.0.0.1:8084/get_view_config")
+      const data = await fetch("http://127.0.0.1:8089/get_view_config")
                         .then(response => response.json())
                         .catch(error => console.error(error))
       
@@ -1161,7 +1200,7 @@ class TabButton {
   }
 
   /**
-   * Clear and select correct graphs to be shown
+   * Clear page and select correct graphs to be shown
    */
   configurePage() {
     // Clear out any current graphs from container
@@ -1187,7 +1226,7 @@ class TabButton {
   }
 
   /**
-   * Set graph in correct tab
+   * Set this tab as the currently selected tab
    */
   setSelected() {
     this.tab.classList.add('selected-tab')
@@ -1198,12 +1237,12 @@ class TabButton {
 
 
 
-// Insert HTML DOM into a parent element (can specify element to be inserted before by id)
+// Insert HTML DOM into a parent element (can specify element to be inserted before by class)
 /**
- * Insert HTML DOM into a parent element
- * @param {*} parent 
- * @param {*} DOM 
- * @param {*} before 
+ * Insert a HTML DOM element into a parent element (by ID), can also specify if the HTML DOM element should be inserted before another HTML DOM element (by class)
+ * @param {number} parent Parent HTML DOM element
+ * @param {DOMobject} DOM Child HTML DOM element
+ * @param {string} before Sibling HTML DOM element
  */
 function insertDOM(parent, DOM, before = null) {
 
@@ -1312,7 +1351,7 @@ if (window.location.pathname === '/config.html') {
     // Function to fetch data from url
     
     // Get probes from getprobe function
-    const data = await fetch("http://127.0.0.1:8084/getprobes")
+    const data = await fetch("http://127.0.0.1:8089/getprobes")
                       .then(response => response.json())
                       .catch(error => console.error(error))
     
@@ -1334,17 +1373,13 @@ if (window.location.pathname === '/config.html') {
 
 </div>
 
-<nav>
-    <h2><a href="index.html">JS doc PEGASSAS</a></h2><h3>Classes</h3><ul><li><a href="Graph.html">Graph</a></li><li><a href="ProbeOption.html">ProbeOption</a></li><li><a href="TabButton.html">TabButton</a></li></ul><h3>Global</h3><ul><li><a href="global.html#insertDOM">insertDOM</a></li></ul>
-</nav>
-
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Tue Mar 30 2021 19:12:08 GMT+0100 (British Summer Time)
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Fri Apr 02 2021 09:06:21 GMT+0000 (Coordinated Universal Time) using the Minami theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
 </body>
 </html>

@@ -2,22 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Global</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Global - Documentation</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Graph.html">Graph</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#createCell">createCell</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#fetchData">fetchData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#fixRefs">fixRefs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#formatResponse">formatResponse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#formSubmit">formSubmit</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#plotData">plotData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Graph.html#toggleForm">toggleForm</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ProbeOption.html">ProbeOption</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ProbeOption.html#createRow">createRow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ProbeOption.html#submitProbe">submitProbe</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ProbeOption.html#toggleFrequency">toggleFrequency</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TabButton.html">TabButton</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TabButton.html#configurePage">configurePage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TabButton.html#createTab">createTab</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TabButton.html#getGraphs">getGraphs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TabButton.html#setSelected">setSelected</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#insertDOM">insertDOM</a></span></li>
+</nav>
+
+<div id="main">
+    
     <h1 class="page-title">Global</h1>
+    
 
     
 
@@ -28,7 +41,9 @@
 
 <header>
     
-        <h2></h2>
+        <h2>
+        
+        </h2>
         
     
 </header>
@@ -87,9 +102,7 @@
 
     
 
-    
-
-    
+     
 
     
 
@@ -100,20 +113,63 @@
 
         
             
+<div class="section-method">
 
     
 
-    
     <h4 class="name" id="insertDOM"><span class="type-signature"></span>insertDOM<span class="signature">(parent, DOM, before)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
 <div class="description">
-    <p>Insert HTML DOM into a parent element</p>
+    Insert a HTML DOM element into a parent element (by ID), can also specify if the HTML DOM element should be inserted before another HTML DOM element (by class)
 </div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="script.js.html">script.js</a>, <a href="script.js.html#line1206">line 1206</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
 
 
 
@@ -156,7 +212,7 @@
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type"><code>number</code></span>
 
 
             
@@ -170,7 +226,10 @@
                 </td>
             
 
-            <td class="description last"></td>
+            <td class="description last">
+                Parent HTML DOM element
+                
+            </td>
         </tr>
 
     
@@ -183,7 +242,7 @@
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type"><code>DOMobject</code></span>
 
 
             
@@ -197,7 +256,10 @@
                 </td>
             
 
-            <td class="description last"></td>
+            <td class="description last">
+                Child HTML DOM element
+                
+            </td>
         </tr>
 
     
@@ -210,7 +272,7 @@
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type"><code>string</code></span>
 
 
             
@@ -226,7 +288,10 @@
                 </td>
             
 
-            <td class="description last"></td>
+            <td class="description last">
+                Sibling HTML DOM element
+                
+            </td>
         </tr>
 
     
@@ -238,45 +303,6 @@
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="script.js.html">script.js</a>, <a href="script.js.html#line1180">line 1180</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -287,16 +313,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
+</div>
         
     
 
@@ -312,17 +329,13 @@
 
 </div>
 
-<nav>
-    <h2><a href="index.html">JS doc PEGASSAS</a></h2><h3>Classes</h3><ul><li><a href="Graph.html">Graph</a></li><li><a href="ProbeOption.html">ProbeOption</a></li><li><a href="TabButton.html">TabButton</a></li></ul><h3>Global</h3><ul><li><a href="global.html#insertDOM">insertDOM</a></li></ul>
-</nav>
-
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Tue Mar 30 2021 19:12:08 GMT+0100 (British Summer Time)
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Fri Apr 02 2021 09:06:21 GMT+0000 (Coordinated Universal Time) using the Minami theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
 </body>
 </html>
