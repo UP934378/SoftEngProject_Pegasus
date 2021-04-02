@@ -98,7 +98,7 @@ pub fn make_request(url: &String, rt: &Runtime) -> Result<String, Box<dyn std::e
         }
     };
 
-    return Ok(json_string.clone());
+    Ok(json_string.clone());
 }
 
 
