@@ -869,7 +869,7 @@
     <span class="ident">probe_id_col</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
 }
 
-<span class="comment">// Battery table conditions</span>
+<span class="doccomment">/// Battery table conditions</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatteryConditionAttribute</span> {
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>

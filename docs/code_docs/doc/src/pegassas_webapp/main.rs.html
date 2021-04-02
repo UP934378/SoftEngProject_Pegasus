@@ -555,6 +555,30 @@
 <span id="552">552</span>
 <span id="553">553</span>
 <span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">dbapi</span>;
 
@@ -608,6 +632,9 @@
 }
 
 <span class="doccomment">/// Register new user</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameters:</span>
+<span class="doccomment">///  - web::Form&lt;RegistrationForm&gt; = User registration form</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">registration</span>(<span class="ident">form</span>: <span class="ident">web</span>::<span class="ident">Form</span><span class="op">&lt;</span><span class="ident">RegistrationForm</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span>{
     <span class="kw">let</span> (<span class="ident">client</span>, <span class="ident">connection</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">tokio_postgres</span>::<span class="ident">connect</span>(<span class="string">&quot;host=localhost user=alikhan password=thisisapassword dbname=pegassas&quot;</span>, <span class="ident">NoTls</span>).<span class="kw">await</span>{
         <span class="prelude-val">Ok</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>,
@@ -666,6 +693,9 @@
 }
 
 <span class="doccomment">/// Check username against record in database</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameter:</span>
+<span class="doccomment">/// - username:&amp;String = Username</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">check_username</span>(<span class="ident">username</span>:<span class="kw-2">&amp;</span><span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">tokio_postgres</span>::<span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;</span>{
     <span class="kw">let</span> (<span class="ident">client</span>, <span class="ident">connection</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">tokio_postgres</span>::<span class="ident">connect</span>(<span class="string">&quot;host=localhost user=alikhan password=thisisapassword dbname=pegassas&quot;</span>, <span class="ident">NoTls</span>).<span class="kw">await</span>{
         <span class="prelude-val">Ok</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>,
@@ -695,6 +725,9 @@
 }
 
 <span class="doccomment">/// Request view setting configuration from database and return it in a Json Http response</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameters:</span>
+<span class="doccomment">/// - session:Session = User active session</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">view_config_request</span>(<span class="ident">session</span>:<span class="ident">Session</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span>{
     <span class="kw">let</span> (<span class="ident">client</span>, <span class="ident">connection</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">tokio_postgres</span>::<span class="ident">connect</span>(<span class="string">&quot;host=localhost user=alikhan password=thisisapassword dbname=pegassas&quot;</span>, <span class="ident">NoTls</span>).<span class="kw">await</span>{
         <span class="prelude-val">Ok</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>,
@@ -751,6 +784,10 @@
 } 
 
 <span class="doccomment">/// Update view configuration setting in database based on the web form submitted by user</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameters:</span>
+<span class="doccomment">/// - session:Session = User active session</span>
+<span class="doccomment">/// - web::Form&lt;ViewForm&gt; = User view configuration input</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">view_config</span>(<span class="ident">session</span>: <span class="ident">Session</span>, <span class="ident">form</span>: <span class="ident">web</span>::<span class="ident">Form</span><span class="op">&lt;</span><span class="ident">ViewForm</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span>{
     <span class="kw">let</span> (<span class="ident">client</span>, <span class="ident">connection</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">tokio_postgres</span>::<span class="ident">connect</span>(<span class="string">&quot;host=localhost user=alikhan password=thisisapassword dbname=pegassas&quot;</span>, <span class="ident">NoTls</span>).<span class="kw">await</span>{
         <span class="prelude-val">Ok</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>,
@@ -870,6 +907,9 @@
 }
 
 <span class="doccomment">/// Change request interval for a specific probe</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameter:</span>
+<span class="doccomment">/// - web::Form&lt;ProbeForm&gt; = User probe configuration input</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">probe_config</span>(<span class="kw-2">mut</span> <span class="ident">form</span>: <span class="ident">web</span>::<span class="ident">Form</span><span class="op">&lt;</span><span class="ident">ProbeForm</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span>{
     <span class="kw">let</span> (<span class="ident">client</span>, <span class="ident">connection</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">tokio_postgres</span>::<span class="ident">connect</span>(<span class="string">&quot;host=localhost user=alikhan password=thisisapassword dbname=pegassas&quot;</span>, <span class="ident">NoTls</span>).<span class="kw">await</span>{
         <span class="prelude-val">Ok</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>,
@@ -917,6 +957,10 @@
 
 
 <span class="doccomment">/// Check user login input against records present in database and if it match start a new user session</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameters:</span>
+<span class="doccomment">/// - Session = Active session</span>
+<span class="doccomment">/// - web::Form&lt;LoginForm&gt; = Login details from webpage</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">login</span>(<span class="ident">session</span> :<span class="ident">Session</span>, <span class="ident">form</span>: <span class="ident">web</span>::<span class="ident">Form</span><span class="op">&lt;</span><span class="ident">LoginForm</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span> {
     <span class="kw">let</span> (<span class="ident">client</span>, <span class="ident">connection</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">tokio_postgres</span>::<span class="ident">connect</span>(<span class="string">&quot;host=localhost user=alikhan password=thisisapassword dbname=pegassas&quot;</span>, <span class="ident">NoTls</span>).<span class="kw">await</span>{
         <span class="prelude-val">Ok</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>,
@@ -980,6 +1024,10 @@
 }
 
 <span class="doccomment">/// Verify password string input against the encrypted password held in database</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Parameters:</span>
+<span class="doccomment">/// - db_password :String = Encrypted password held in database </span>
+<span class="doccomment">/// - password: String = User password input</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pass_verify</span>(<span class="ident">db_password</span> :<span class="ident">String</span>, <span class="ident">password</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>{
         <span class="kw">match</span> <span class="ident">bcrypt</span>::<span class="ident">verify</span>(<span class="ident">password</span>, <span class="ident">db_password</span>.<span class="ident">as_str</span>()){
             <span class="prelude-val">Ok</span>(<span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">b</span>,
@@ -1090,8 +1138,8 @@
         <span class="kw">let</span> <span class="ident">db_pass</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;123&quot;</span>);
         <span class="kw">let</span> <span class="ident">hashed_pass_wrong</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;$2y$12$WXve5HUUGI19etxKGAh5q.DuMlgANQc13qTXbL/xG8041kTM/TovO&quot;</span>);
         <span class="kw">let</span> <span class="ident">hashed_pass_valid</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;$2b$11$DXK0GVJDeJCw7eUcB4LQ5eWSuQEImymvK62Lpp4S0uevi2LwtxUfi&quot;</span>);        
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="bool-val">false</span>,<span class="ident">pass_verify</span>(<span class="ident">db_pass</span>.<span class="ident">clone</span>(),<span class="ident">hashed_pass_wrong</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="bool-val">true</span>,<span class="ident">pass_verify</span>(<span class="ident">db_pass</span>,<span class="ident">hashed_pass_valid</span>));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="bool-val">false</span>,<span class="ident">pass_verify</span>(<span class="ident">hashed_pass_wrong</span>,<span class="ident">db_pass</span>.<span class="ident">clone</span>()));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="bool-val">true</span>,<span class="ident">pass_verify</span>(<span class="ident">hashed_pass_valid</span>,<span class="ident">db_pass</span>));
         <span class="prelude-val">Ok</span>(())
     }
 
