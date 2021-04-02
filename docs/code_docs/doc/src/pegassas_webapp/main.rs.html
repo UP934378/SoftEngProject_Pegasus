@@ -708,6 +708,7 @@
 <span id="705">705</span>
 <span id="706">706</span>
 <span id="707">707</span>
+<span id="708">708</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Web server API rust documentation Pegassas System for Team 1.</span>
 <span class="doccomment">//! </span>
@@ -1229,6 +1230,7 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">influx</span> <span class="op">=</span> <span class="ident">Ini</span>::<span class="ident">new</span>();
 
     <span class="kw">if</span> <span class="ident">is_dev</span>{
+        <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Running in dev mode&quot;</span>);
         <span class="kw">match</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var_os</span>(<span class="string">&quot;PWA_POSTGRES_HOST&quot;</span>){
             <span class="prelude-val">Some</span>(<span class="ident">host</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">postgres</span>.<span class="ident">set</span>(<span class="string">&quot;postgres&quot;</span>, <span class="string">&quot;host&quot;</span>, <span class="prelude-val">Some</span>(<span class="ident">String</span>::<span class="ident">from</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">host</span>.<span class="ident">to_string_lossy</span>()))),
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">postgres</span>.<span class="ident">set</span>(<span class="string">&quot;postgres&quot;</span>, <span class="string">&quot;host&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;localhost&quot;</span>.<span class="ident">to_string</span>()))
