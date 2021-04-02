@@ -57,7 +57,7 @@ permalink: /UserGuide
 
 1. Navigate to visualisation page.
 2. Select view where desired graph is included.
-3. Hoover on the graph container and click on configure.
+3. Hover on the graph container and click on configure.
 4. Select the desired options and submit the changes.
 5. Refresh page to update all the views
 
@@ -72,5 +72,5 @@ permalink: /UserGuide
 ### Remove graph from view or homepage
 
 1. Navigate to the page where graph needs to be removed.
-2. Hoover the graph container and click on the bin.
+2. Hover the graph container and click on the bin.
 3. Refresh page to update view.
