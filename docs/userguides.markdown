@@ -16,13 +16,61 @@ permalink: /UserGuide
 
 ### Graph visualisation
 
-- Every view configuration needs to be set from the visualisation tab.
 - User has the option to select the following graph type:
   - Scatter
   - Line graph
   - Bar chart
+- All the graph are time series.
+- Data point options:
+  - Cell voltage
+  - Balance current
+  - Battery current
+  - Charge state
+  - Charge percentage
+  - Battery temperature
+  - Solar inverter voltage
+  - Solar inverter power
+  - Solar inverter frequency
+  - Grid power
+  - House power
+- Every view configuration needs to be set from the visualisation tab.
 
-- In the visualisation page user is able to customise multiple view selecting specific graphs and time range.
-- In order to customise a visualisation, hover over the graph and click configure. User will be presented with all the possible settings available.
-- In the settings page, user can: configure probe, manage account settings.
-- For more details refer to code documentation or request admin support.
+### View configuration
+
+1. Navigate to visualisation page.
+2. Select view form the top menu or add a new view using the + button from the view tab.
+3. Add graph using the + button in the main page.
+4. Configure graph using the configure button within the graph container.
+5. Submit changes.
+6. Refresh page.
+
+### Add graph to homepage
+
+1. Navigate to visualisation page.
+2. Navigate to a view containing graph that need to be added to homepage.
+3. Click on configure.
+4. Check configuration.
+5. Click on 'Add to Homepage' button.
+6. Navigate to home page to view the new configurations.
+
+### Graph customisation
+
+1. Navigate to visualisation page.
+2. Select view where desired graph is included.
+3. Hoover on the graph container and click on configure.
+4. Select the desired options and submit the changes.
+5. Refresh page to update all the views
+
+### Probe configuration
+
+1. Navigate to setting webpage.
+2. Table shows all the active probe and their status.
+3. Tick/untick the box to activate/deactivate the selected probe.
+4. Select frequency request interval in second.
+5. Click on submit button and changes will be saved.
+
+### Remove graph from view or homepage
+
+1. Navigate to the page where graph needs to be removed.
+2. Hoover the graph container and click on the bin.
+3. Refresh page to update view.
