@@ -295,7 +295,7 @@ fn test_pass_verify() -> Result<()>{
 ```
 
 </details>
-
+<br>
 <details>
 <summary> Test 2 - Test empty clause condition </summary>
 <br>
@@ -310,7 +310,7 @@ async fn test_clause_empty() {
 ```
 
 </details>
-
+<br>
 <details>
 <summary> Test 3 - Test clause condition </summary>
 <br>
@@ -325,7 +325,7 @@ async fn test_clause() {
 ```
 
 </details>
-
+<br>
 
 ### C++ - Probes
 
@@ -347,7 +347,7 @@ void test_display()
 ```
 
 </details>
-
+<br>
 <details>
 <summary> Test 2 - WiFi credential </summary>
 <br>
@@ -368,7 +368,7 @@ void test_save_load_wifi_creds()
 ```
 
 </details>
-
+<br>
 <details>
 <summary> Test 3 - SPIFFS </summary>
 <br>
@@ -390,7 +390,7 @@ void test_SPIFFS()
 ```
 
 </details>
-
+<br>
 <details>
 <summary> Test 4 - Get Data </summary>
 <br>
