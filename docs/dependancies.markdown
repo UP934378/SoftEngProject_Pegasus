@@ -18,6 +18,7 @@ permalink: /Dependenacies
 <br>
 
 ``` Rust
+
 [dependencies]
 tokio = {version ="1.2.0", features = ["full"]}
 futures = "0.3.13"
@@ -37,6 +38,7 @@ env_logger = "0.8.3"
 regex = "1.4.5"
 
 ```
+
 </details>
 <br>
 
@@ -62,6 +64,7 @@ mailin-embedded = "0.6.1"
 tokio-postgres = {version="0.5.5", features=["with-eui48-0_4", "with-serde_json-1"]}
 
 ```
+
 </details>
 <br>
 
@@ -70,6 +73,7 @@ tokio-postgres = {version="0.5.5", features=["with-eui48-0_4", "with-serde_json-
 <br>
 
 ``` Rust
+
 [dependencies]
 actix-web = "3.3.2"
 actix-files = "0.5.0"
@@ -94,6 +98,7 @@ eui48 = "0.4.6"
 <br>
 
 ``` Rust
+
 </summary>
 <br>
 
@@ -119,6 +124,7 @@ async-log = "2.0.0"
 
 </details>
 <br>
+
 </details>
 <br>
 <details>
