@@ -291,8 +291,9 @@
 <span id="288">288</span>
 <span id="289">289</span>
 <span id="290">290</span>
+<span id="291">291</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! WAggregator rust documentation for Pegassas System for Team 1.</span>
+<span class="doccomment">//! Aggregator rust code documentation for Pegassas System for Team 1.</span>
 <span class="doccomment">//! </span>
 <span class="doccomment">//! For more details about the system follow this [link](https://m30819-2020.github.io/cw-code-t1/).</span>
 
@@ -313,7 +314,7 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryInto</span>;
 <span class="kw">use</span> <span class="ident">configparser</span>::<span class="ident">ini</span>::<span class="ident">Ini</span>;
 
-
+<span class="doccomment">/// Aggregator configuration structure</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Config</span> {
     <span class="ident">postgres</span>: <span class="ident">Ini</span>,
     <span class="ident">influx</span>: <span class="ident">Ini</span>,
@@ -327,6 +328,7 @@
     <span class="ident">frequency</span>: <span class="ident">i32</span>,
 }
 
+<span class="doccomment">/// main function</span>
 <span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>{
     <span class="comment">// Setup logging</span>
     <span class="ident">env_logger</span>::<span class="ident">init</span>();
