@@ -191,6 +191,7 @@
 <span id="188">188</span>
 <span id="189">189</span>
 <span id="190">190</span>
+<span id="191">191</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">discovery</span>;
 <span class="kw">mod</span> <span class="ident">worker</span>;
@@ -375,10 +376,11 @@
         }
         
         <span class="comment">// Wait until next loop</span>
-        <span class="kw">match</span> <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">20</span>).<span class="ident">checked_sub</span>(<span class="ident">start_discovery_instant</span>.<span class="ident">elapsed</span>()) {
-            <span class="prelude-val">Some</span>(<span class="ident">wait_duration</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">sleep</span>(<span class="ident">wait_duration</span>),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> ()
-        };
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">wait_duration</span>) <span class="op">=</span> <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">20</span>).<span class="ident">checked_sub</span>(<span class="ident">start_discovery_instant</span>.<span class="ident">elapsed</span>()) { <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">sleep</span>(<span class="ident">wait_duration</span>) }
+        <span class="comment">// match Duration::from_secs(20).checked_sub(start_discovery_instant.elapsed()) {</span>
+        <span class="comment">//     Some(wait_duration) =&gt; std::thread::sleep(wait_duration),</span>
+        <span class="comment">//     None =&gt; ()</span>
+        <span class="comment">// };</span>
     }
     
 }
