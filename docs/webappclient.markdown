@@ -9,8 +9,7 @@ permalink: /WebAppC
 
 ## Web Application Client Code Documents
 
-- The below links lead to the standard JsDoc webpages that have been constructed for the web application.
+- The below links lead to the javascript code documentation webpages that have been constructed for the web application.
 - Functions, structure and other JavaScript objects have been labelled and explained within.
-- Any issues found please inform your local admin ASAP.
 
 [WebApp Javascript Documentation](/cw-code-t1/code_docs/js_doc/index.html)

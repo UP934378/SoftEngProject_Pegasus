@@ -9,8 +9,7 @@ permalink: /Aggregator
 
 ## Aggregator Code Documents
 
-- The below links lead to the standard doc.rs webpages that have been constructed for the agregator.
-- All functions, structs and other rust objects have been labled and explained within.
-- Any issues found please inform your local admin ASAP.
+- The below links lead to the standard doc.rs webpages that have been constructed for the aggregator.
+- All functions, structures and other rust objects have been ladled and explained within.
 
 [Aggregator Rust Docs](/cw-code-t1/code_docs/doc/pegassas_aggregator/)

@@ -9,7 +9,7 @@ permalink: /Testing
 
 ## Unit Tests
 
-- The following tests have been implmented in the code.
+- The following tests have been implemented in the code.
 - Copies of the tests are listed below by section. This testing code is set to automatically run every time the base repo is updated.
 
 ### Rust - Aggregator
@@ -67,6 +67,7 @@ fn parser_test_cell() -> Result<(), Box<dyn std::error::Error>>{
 ```
 
 </details>
+
 <br>
 <details>
 <summary> Test 2 - Test Battery Parser </summary>
@@ -123,6 +124,7 @@ fn parser_test_battery() -> Result<(), Box<dyn std::error::Error>>{
 ```
 
 </details>
+
 <br>
 <details>
 <summary> Test 3 - Test Solar Parser </summary>
@@ -178,6 +180,7 @@ fn parser_test_solar() -> Result<(), Box<dyn std::error::Error>>{
 ```
 
 </details>
+
 <br>
 <details>
 <summary> Test 4 - Test Grid Power Parser </summary>
@@ -210,7 +213,9 @@ fn parser_test_grid_power() -> Result<(), Box<dyn std::error::Error>>{
 }
 
 ```
+
 </details>
+
 <br>
 <details>
 <summary> Test 5 - Test House power Parser </summary>
@@ -325,6 +330,7 @@ async fn test_clause() {
 ```
 
 </details>
+
 <br>
 
 ### C++ - Probes
@@ -347,6 +353,7 @@ void test_display()
 ```
 
 </details>
+
 <br>
 <details>
 <summary> Test 2 - WiFi credential </summary>
@@ -368,6 +375,7 @@ void test_save_load_wifi_creds()
 ```
 
 </details>
+
 <br>
 <details>
 <summary> Test 3 - SPIFFS </summary>
@@ -390,6 +398,7 @@ void test_SPIFFS()
 ```
 
 </details>
+
 <br>
 <details>
 <summary> Test 4 - Get Data </summary>

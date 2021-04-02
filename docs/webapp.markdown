@@ -9,8 +9,7 @@ permalink: /WebAppS
 
 ## Web Application Server Code Documents
 
-- The below links lead to the standard doc.rs webpages that have been constructed for the web application.
+- The below links lead to the standard rust code documentation webpages that have been constructed for the web application.
 - All functions, structure and other rust objects have been labelled and explained within.
-- Any issues found please inform your local admin ASAP.
 
 [WebApp Rust Docs](/cw-code-t1/code_docs/doc/pegassas_webapp/)
