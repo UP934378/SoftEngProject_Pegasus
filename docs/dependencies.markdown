@@ -131,11 +131,23 @@ async-log = "2.0.0"
 <summary> Java </summary>
 <br>
 
+- plotly
+
 </details>
 <br>
 <details>
 <summary> C++ </summary>
 <br>
 
+<br>
+<details>
+<summary> Probe </summary>
+<br>
+
+- thingpulse/ESP8266 and ESP32 OLED driver for SSD1306 displays@^4.2.0
+- luc-github/ESP32SSDP@^1.1.1, fhessel/esp32_https_server@^1.0.0
+- SPIFFS @ ^1.0, bblanchon/ArduinoJson@^6.17.3
+
 </details>
 <br>
+</details>
