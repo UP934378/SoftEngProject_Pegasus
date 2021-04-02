@@ -110,83 +110,84 @@ $(function() {
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// Ask to format SPIFFS using serial interface</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    Serial.print(<span class="stringliteral">&quot;Mounting SPIFFS failed. Retrying... &quot;</span>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// If the user did not accept to try formatting SPIFFS or formatting failed:</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">if</span> (!SPIFFS.begin(<span class="keyword">true</span>))</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      Serial.println(<span class="stringliteral">&quot;SPIFFS not available. Stop.&quot;</span>);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        ;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    Serial.println(<span class="stringliteral">&quot;SPIFFS has been formated.&quot;</span>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  Serial.println(<span class="stringliteral">&quot;SPIFFS has been mounted.&quot;</span>);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="comment">// put your setup code here, to run once:</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  File wifiCreds = SPIFFS.open(<span class="stringliteral">&quot;/creds.json&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">bool</span> hasWiFi = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">if</span> (wifiCreds &amp;&amp; wifiCreds.available())</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    hasWiFi = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">while</span> (!hasWiFi)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <a class="code" href="struct_wi_fi__creds.html">WiFi_creds</a> creds = <a class="code" href="wifi__creds_8cpp.html#a7a620bc3b42e0c93750cf139fadf31cb">get_wifi_creds</a>(<a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="wifi__creds_8cpp.html#ad979e649b5be07eac17e868d6de19292">save_wifi_creds</a>(creds);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    hasWiFi = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  wifiCreds.close();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="struct_wi_fi__creds.html">WiFi_creds</a> creds;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  creds = <a class="code" href="wifi__creds_8cpp.html#a3d55752d6b855a29a774d2113aa0508c">load_wifi_creds</a>();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <a class="code" href="network__discovery_8cpp.html#a13b3831063220596655a37519d95834f">setUpSSDP</a>(&amp;<a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>, creds);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">// secServer = runServer();</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">// secServer-&gt;start();</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <a class="code" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a> = <a class="code" href="server_8cpp.html#af7c44f6b195668220441ae4a5a56e8ed">runInsecServer</a>();</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <a class="code" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a>-&gt;start();</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  ArduinoOTA</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    .onStart([]() {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      String type;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="keywordflow">if</span> (ArduinoOTA.getCommand() == U_FLASH)</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        type = <span class="stringliteral">&quot;sketch&quot;</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        type = <span class="stringliteral">&quot;filesystem&quot;</span>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        Serial.println(<span class="stringliteral">&quot;Start updating &quot;</span> + type);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    })</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    .onEnd([]() {</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      Serial.println(<span class="stringliteral">&quot;\nEnd&quot;</span>);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    })</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    .onProgress([](<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> progress, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> total) {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      Serial.printf(<span class="stringliteral">&quot;Progress: %u%%\r&quot;</span>, (progress / (total / 100)));</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    })</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    .onError([](ota_error_t error) {</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      Serial.printf(<span class="stringliteral">&quot;Error[%u]: &quot;</span>, error);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      <span class="keywordflow">if</span> (error == OTA_AUTH_ERROR) Serial.println(<span class="stringliteral">&quot;Auth Failed&quot;</span>);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      <span class="keywordflow">else</span> if (error == OTA_BEGIN_ERROR) Serial.println(<span class="stringliteral">&quot;Begin Failed&quot;</span>);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="keywordflow">else</span> if (error == OTA_CONNECT_ERROR) Serial.println(<span class="stringliteral">&quot;Connect Failed&quot;</span>);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <span class="keywordflow">else</span> if (error == OTA_RECEIVE_ERROR) Serial.println(<span class="stringliteral">&quot;Receive Failed&quot;</span>);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <span class="keywordflow">else</span> if (error == OTA_END_ERROR) Serial.println(<span class="stringliteral">&quot;End Failed&quot;</span>);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    });</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  ArduinoOTA.begin();</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  Serial.println(<span class="stringliteral">&quot;server started&quot;</span>);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="main_8cpp.html#afe461d27b9c48d5921c00d521181f12f">  114</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#afe461d27b9c48d5921c00d521181f12f">loop</a>()</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;{</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <a class="code" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a>-&gt;loop();</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  ArduinoOTA.handle();</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="comment">// HTTP.handleClient();</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.drawString(0, 10, <span class="stringliteral">&quot;Mounting SPIFFS...&quot;</span>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>.display();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">// If the user did not accept to try formatting SPIFFS or formatting failed:</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">if</span> (!SPIFFS.begin(<span class="keyword">true</span>))</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      Serial.println(<span class="stringliteral">&quot;SPIFFS not available. Stop.&quot;</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        ;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    Serial.println(<span class="stringliteral">&quot;SPIFFS has been formated.&quot;</span>);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  Serial.println(<span class="stringliteral">&quot;SPIFFS has been mounted.&quot;</span>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="comment">// put your setup code here, to run once:</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  File wifiCreds = SPIFFS.open(<span class="stringliteral">&quot;/creds.json&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">bool</span> hasWiFi = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordflow">if</span> (wifiCreds &amp;&amp; wifiCreds.available())</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    hasWiFi = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">while</span> (!hasWiFi)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="struct_wi_fi__creds.html">WiFi_creds</a> creds = <a class="code" href="wifi__creds_8cpp.html#a7a620bc3b42e0c93750cf139fadf31cb">get_wifi_creds</a>(<a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="wifi__creds_8cpp.html#ad979e649b5be07eac17e868d6de19292">save_wifi_creds</a>(creds);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    hasWiFi = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  wifiCreds.close();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="struct_wi_fi__creds.html">WiFi_creds</a> creds;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  creds = <a class="code" href="wifi__creds_8cpp.html#a3d55752d6b855a29a774d2113aa0508c">load_wifi_creds</a>();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <a class="code" href="network__discovery_8cpp.html#a13b3831063220596655a37519d95834f">setUpSSDP</a>(&amp;<a class="code" href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a>, creds);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">// secServer = runServer();</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// secServer-&gt;start();</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <a class="code" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a> = <a class="code" href="server_8cpp.html#af7c44f6b195668220441ae4a5a56e8ed">runInsecServer</a>();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <a class="code" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a>-&gt;start();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  ArduinoOTA</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    .onStart([]() {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      String type;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="keywordflow">if</span> (ArduinoOTA.getCommand() == U_FLASH)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        type = <span class="stringliteral">&quot;sketch&quot;</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        type = <span class="stringliteral">&quot;filesystem&quot;</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        Serial.println(<span class="stringliteral">&quot;Start updating &quot;</span> + type);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    })</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    .onEnd([]() {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      Serial.println(<span class="stringliteral">&quot;\nEnd&quot;</span>);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    })</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    .onProgress([](<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> progress, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> total) {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      Serial.printf(<span class="stringliteral">&quot;Progress: %u%%\r&quot;</span>, (progress / (total / 100)));</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    })</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    .onError([](ota_error_t error) {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      Serial.printf(<span class="stringliteral">&quot;Error[%u]: &quot;</span>, error);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      <span class="keywordflow">if</span> (error == OTA_AUTH_ERROR) Serial.println(<span class="stringliteral">&quot;Auth Failed&quot;</span>);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="keywordflow">else</span> if (error == OTA_BEGIN_ERROR) Serial.println(<span class="stringliteral">&quot;Begin Failed&quot;</span>);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <span class="keywordflow">else</span> if (error == OTA_CONNECT_ERROR) Serial.println(<span class="stringliteral">&quot;Connect Failed&quot;</span>);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <span class="keywordflow">else</span> if (error == OTA_RECEIVE_ERROR) Serial.println(<span class="stringliteral">&quot;Receive Failed&quot;</span>);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      <span class="keywordflow">else</span> if (error == OTA_END_ERROR) Serial.println(<span class="stringliteral">&quot;End Failed&quot;</span>);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    });</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  ArduinoOTA.begin();</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  Serial.println(<span class="stringliteral">&quot;server started&quot;</span>);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="main_8cpp.html#afe461d27b9c48d5921c00d521181f12f">  115</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#afe461d27b9c48d5921c00d521181f12f">loop</a>()</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;{</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <a class="code" href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a>-&gt;loop();</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  ArduinoOTA.handle();</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="comment">// HTTP.handleClient();</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}</div>
 <div class="ttc" id="amain_8cpp_html_a4fc01d736fe50cf5b977f755b675f11d"><div class="ttname"><a href="main_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup</a></div><div class="ttdeci">void setup()</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00032">main.cpp:32</a></div></div>
 <div class="ttc" id="amain_8cpp_html_a69dae90c6a50b7a9e3479e5427340682"><div class="ttname"><a href="main_8cpp.html#a69dae90c6a50b7a9e3479e5427340682">display</a></div><div class="ttdeci">SSD1306Wire display(0x3c, SDA, SCL, GEOMETRY_128_32)</div><div class="ttdoc">Set up OLED display.</div></div>
 <div class="ttc" id="amain_8cpp_html_acaf5c8d54079ebd2d33cfa8b90e7f1e9"><div class="ttname"><a href="main_8cpp.html#acaf5c8d54079ebd2d33cfa8b90e7f1e9">insecServer</a></div><div class="ttdeci">HTTPServer * insecServer</div><div class="ttdoc">Define insecure server that uses HTTP.</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00024">main.cpp:24</a></div></div>
 <div class="ttc" id="amain_8cpp_html_ad988f365399a2da739e8b8be979e6c16"><div class="ttname"><a href="main_8cpp.html#ad988f365399a2da739e8b8be979e6c16">secServer</a></div><div class="ttdeci">HTTPSServer * secServer</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00022">main.cpp:22</a></div></div>
-<div class="ttc" id="amain_8cpp_html_afe461d27b9c48d5921c00d521181f12f"><div class="ttname"><a href="main_8cpp.html#afe461d27b9c48d5921c00d521181f12f">loop</a></div><div class="ttdeci">void loop()</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00114">main.cpp:114</a></div></div>
+<div class="ttc" id="amain_8cpp_html_afe461d27b9c48d5921c00d521181f12f"><div class="ttname"><a href="main_8cpp.html#afe461d27b9c48d5921c00d521181f12f">loop</a></div><div class="ttdeci">void loop()</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00115">main.cpp:115</a></div></div>
 <div class="ttc" id="anetwork__discovery_8cpp_html_a13b3831063220596655a37519d95834f"><div class="ttname"><a href="network__discovery_8cpp.html#a13b3831063220596655a37519d95834f">setUpSSDP</a></div><div class="ttdeci">void setUpSSDP(SSD1306Wire *display, WiFi_creds creds)</div><div class="ttdoc">Connect to WiFi, display details on OLED then set up SSDP object.</div><div class="ttdef"><b>Definition:</b> <a href="network__discovery_8cpp_source.html#l00004">network_discovery.cpp:4</a></div></div>
 <div class="ttc" id="anetwork__discovery_8hpp_html"><div class="ttname"><a href="network__discovery_8hpp.html">network_discovery.hpp</a></div></div>
 <div class="ttc" id="ascroll__text_8hpp_html"><div class="ttname"><a href="scroll__text_8hpp.html">scroll_text.hpp</a></div></div>
