@@ -1,0 +1,74 @@
+@startuml ERD
+hide circle
+left to right direction
+skinparam ClassBackgroundColor white
+skinparam ClassBorderColor black
+
+title Postgres ERD
+
+entity User_account {
+    user_id : SERIAL
+    --
+    {field} username : VARCHAR(20)
+    {field} password_hash : VARCHAR(60)
+    {field} email : VARCHAR(100)
+}
+
+entity Sys_Group {
+    group_id : SERIAL
+    --
+    {field} group_name : VARCHAR(20)
+}
+
+entity User_Group {
+    user_id : INT
+    group_id : INT
+}
+
+entity Probe_config {
+    mac_address : MACADDR
+    --
+    tls_certificate : BYTEA
+    request_interval : INT
+    probe_cat : TEXT
+    {field} firmware_v : VARCHAR(10)
+    {field} ip_address : VARCHAR (20)
+}
+
+entity notification_rule {
+    rule_id : SERIAL
+    --
+    component : MEASUREMENT
+    metric : TEXT
+    threshold_min : INT
+    threshold_max : INT
+}
+
+entity notify_user {
+    rule_id : INT
+    user_id : INT
+    destination : TEXT
+}
+
+entity view_configuration {
+    view_tab : INT,
+    container_index : INT,
+    user_id : INT ,
+    --
+    y_value : TEXT,
+    range_start : TIMESTAMP,
+    range_finish : TIMESTAMP,
+    where_id : VARCHAR(20),
+    graph_type : TEXT
+}
+
+
+notification_rule "1" -up- "1..M" notify_user
+notify_user "1" -up- "0..M" User_account
+
+User_account "1" -down- "0..M" User_Group
+Sys_Group "1" -up- "0..M" User_Group
+
+User_account "1" -down- "0..M" view_configuration
+
+@enduml

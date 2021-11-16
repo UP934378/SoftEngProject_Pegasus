@@ -1,0 +1,85 @@
+/* Postgres database for Pegassas */
+
+DROP DATABASE IF EXISTS pegassas;
+
+CREATE DATABASE pegassas;
+
+\c pegassas;
+
+/* probe table */
+
+CREATE TABLE probe_config(
+		mac_address MACADDR PRIMARY KEY,
+		tls_certificate BYTEA,
+		request_interval INT NOT NULL,
+		probe_cat TEXT,
+		firmware_v VARCHAR(10),
+		ip_address VARCHAR(20) NOT NULL,
+		CHECK (probe_cat IN ('BMS', 'BALANCER', 'SOLAR_INVERTER'))
+		);
+
+/* user table, as user is a reserved word I have extended the name of the table */
+
+CREATE TABLE user_account(
+		user_id SERIAL PRIMARY KEY,
+		username VARCHAR(20) NOT NULL,
+		password_hash VARCHAR(60) NOT NULL,
+		email VARCHAR(100) NOT NULL
+		);
+
+/* group table, as group is a reserved word I uses a different name for the table */
+
+CREATE TABLE sys_group(
+		group_id SERIAL PRIMARY KEY,
+		group_name VARCHAR(20) NOT NULL
+		);
+	
+/* joining table between user and group */
+
+CREATE TABLE user_group(
+		user_id INT REFERENCES user_account(user_id),
+		group_id  INT REFERENCES sys_group(group_id)
+		);
+
+/* notification rule table */
+
+CREATE TABLE notification_rule(
+		rule_id SERIAL PRIMARY KEY,
+		component TEXT NOT NULL,
+		metric TEXT NOT NULL,
+		threshold_min INT,
+		threshold_max INT,
+		CHECK (metric IN ('cell_voltage', 'balance_current', 'battery_current', 'state_charge',
+							'charge_perc', 'batt_temperature', 'sol_inv_voltage', 'sol_inv_power',
+							'sol_inv_frequency', 'grid_power', 'house_power')),
+		CHECK (component IN ('cell', 'battery', 'inverter', 'grid_power', 'house_power'))
+		);
+
+/* table to list all user interest on notification rule, for each */
+
+CREATE TABLE notify_user(
+		rule_id INT REFERENCES notification_rule(rule_id),
+		user_id INT REFERENCES user_account(user_id),
+		destination TEXT,
+		CHECK (destination IN ('EMAIL', 'PUSH'))
+		);
+
+/* table to store user view configuration settings */
+
+CREATE TABLE view_configuration(
+		view_tab INT,
+		container_index INT,
+		user_id INT REFERENCES user_account(user_id),
+		y_value TEXT NOT NULL,
+		range_start TIMESTAMP WITH TIME ZONE NOT NULL,
+		range_finish TIMESTAMP WITH TIME ZONE NOT NULL,
+		where_id VARCHAR(20) NOT NULL,
+		graph_type TEXT NOT NULL,
+		tab_name VARCHAR(20),
+		PRIMARY KEY(view_tab, container_index, user_id),
+		CHECK (y_value IN ('cell_voltage', 'balance_current', 'battery_current', 'state_charge',
+							'charge_perc', 'batt_temperature', 'sol_inv_voltage', 'sol_inv_power',
+							'sol_inv_frequency', 'grid_power', 'house_power')),
+		CHECK (graph_type IN ('scatter', 'line', 'bar')),
+		CONSTRAINT unique_tab_name UNIQUE (container_index, user_id, tab_name)
+	);

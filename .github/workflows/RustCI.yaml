@@ -1,0 +1,46 @@
+name: Rust CI
+
+on:
+  push:
+    branches:
+      - aggregator-release
+      - aggregator-dev
+  pull_request:
+    branches:
+      - aggregator-release
+      - aggregator-dev
+
+jobs:
+  lint:
+    name: Rust Clippy Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Install Clippy
+        run: rustup component add clippy
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ./target
+            !./target/doc
+          key: ${{ runner.os }}-agg-lint-${{ hashFiles('./Cargo.lock', './Cargo.toml') }}
+      - name: Run Clippy
+        run: cargo clippy --package pegassas_aggregator -- -D "clippy::style"
+  test:
+    name: Rust Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ./target
+            !./target/doc
+          key: ${{ runner.os }}-agg-test-${{ hashFiles('./Cargo.lock', './Cargo.toml') }}
+      - run: cargo test

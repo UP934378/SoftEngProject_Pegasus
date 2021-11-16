@@ -1,0 +1,7 @@
+language: rust
+rust:
+  - stable
+jobs:
+  allow_failures:
+  fast_finish: true
+cache: cargo

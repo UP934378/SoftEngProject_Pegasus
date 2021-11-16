@@ -1,0 +1,57 @@
+@startuml ERD
+hide circle
+left to right direction
+skinparam ClassBackgroundColor white
+skinparam ClassBorderColor black
+
+title "InfluxDB ERD"
+
+entity Cell {
+    PK timestamp
+    --
+    TAG cell_id
+    TAG probe_id
+    --
+    FIELD cell_voltage : int64
+    FIELD balance_current : int64
+}
+
+entity Battery {
+    PK timestamp
+    --
+    TAG probe_id
+    --
+    FIELD battery_current : int64
+    FIELD state_charge : int64
+    FIELD charge_perc : int64
+    FIELD batt_temp : int64
+}
+
+entity Inverter {
+    PK timestamp
+    --
+    TAG solar_id
+    TAG probe_id
+    --
+    FIELD sol_inv_voltage : int64
+    FIELD sol_inv_power : int64
+    FIELD sol_inv_frequency : int64    
+}
+
+entity Grid_power {
+    PK timestamp
+    --
+    TAG probe_id
+    --
+    FIELD grid_power : int64
+}
+
+entity House_power {
+    PK timestamp
+    --
+    TAG probe_id
+    --
+    FIELD house_power : int64   
+}
+
+@enduml

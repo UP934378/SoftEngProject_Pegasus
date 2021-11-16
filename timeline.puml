@@ -1,0 +1,52 @@
+@startuml timeline
+Project starts 2021-02-26
+
+2021-03-01 to 2021-03-07 are named [Sprint 1]
+2021-03-01 to 2021-03-07 are colored in LightBlue
+
+2021-03-08 to 2021-03-14 are named [Sprint 2]
+2021-03-08 to 2021-03-14 are colored in LightGreen
+
+2021-03-15 to 2021-03-21 are named [Sprint 3]
+2021-03-15 to 2021-03-21 are colored in Yellow
+
+2021-03-22 to 2021-03-28 are named [Sprint 4]
+2021-03-22 to 2021-03-28 are colored in F0B060
+
+2021-03-29 to 2021-04-02 are named [Sprint 5]
+2021-03-29 to 2021-04-02 are colored in FF8080
+
+[Sprint 1 Meeting] happens 2021-03-01
+[Sprint 2 Meeting] happens 2021-03-08
+[Sprint 3 Meeting] happens 2021-03-15
+[Sprint 4 Meeting] happens 2021-03-22
+[Sprint 5 Meeting] happens 2021-03-29
+
+[Sprint 2 Meeting] displays on same row as [Sprint 1 Meeting]
+[Sprint 3 Meeting] displays on same row as [Sprint 1 Meeting]
+[Sprint 4 Meeting] displays on same row as [Sprint 1 Meeting]
+[Sprint 5 Meeting] displays on same row as [Sprint 1 Meeting]
+
+' Simple probe will just have network discovery and data request features
+[Simple probe] starts with [Sprint 1]'s start and lasts 7 days
+' InFluxDB measurements to hold generated data
+[Time-series db] starts with [Sprint 1]'s start and lasts 7 days
+' Simple aggregator will find all probes and request data at a fixed rate
+' to be inserted into the database
+[Simple aggregator] starts with [Sprint 1]'s start and lasts 7 days
+' Web App will need some kind of API to request data, and should serve a
+' page with a chart and some JS that uses that API to populate the chart
+[Simple visualisation] starts with [Sprint 1]'s start and lasts 7 days
+
+' Add probe config tables to database
+[Probe Config db] starts with [Sprint 2]'s start and lasts 7 days
+' Aggregator should read from database to determine which probes and
+' how often to pull data
+[Config aggregator] starts with [Sprint 2]'s start and lasts 7 days
+' Web App should have a page that allows users to reconfigure probe settings
+[Config Dashboard] starts with [Sprint 2]'s start and lasts 7 days
+' Home page mockup should be implemented
+[Home Page] starts with [Sprint 2]'s start and lasts 7 days
+
+[Deadline] happens 2021-04-02
+@enduml

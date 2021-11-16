@@ -1,0 +1,9 @@
+CREATE TABLE cell_id_map (
+    probe_id int,
+    local_cell_id int,
+    global_cell_id int UNIQUE
+
+);
+
+
+SELECT global_cell_id FROM cell_id_map WHERE probe_id = {} and local_cell_id = {};

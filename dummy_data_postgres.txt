@@ -1,0 +1,15 @@
+
+/* user_account data */
+
+insert into user_account values(1,'alikhan', '$2b$11$DXK0GVJDeJCw7eUcB4LQ5eWSuQEImymvK62Lpp4S0uevi2LwtxUfi', 'test@test.com');
+
+/* view_configuration data */
+
+insert into view_configuration values(1,2,1,'batt_temperature', '2020-06-22 19:10:25-07','2021-06-22 19:10:25-07', 'probe_id=1','scatter');
+
+/* probe_config data */
+
+insert into probe_config VALUES('00:1B:44:11:3A:B7', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 5,'BMS', 'XXX-001','123.123. 12.1');
+insert into probe_config VALUES('00:1B:44:11:3A:A5', decode('444d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 7,'SOLAR_INVERTER', 'XXX-002','123.123. 12.1');
+insert into probe_config VALUES('00:1B:44:11:3A:C4', decode('999d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 7,'BALANCER', 'XXX-003','123.123. 12.1');
+

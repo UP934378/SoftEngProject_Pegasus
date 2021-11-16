@@ -1,0 +1,39 @@
+CREATE DATABASE pegassas
+USE pegassas
+
+-- to create table I will manually generate dummy data
+
+INSERT cell,cell_id=1,probe_id=1 cell_voltage=20,balance_current=30
+INSERT cell,cell_id=2,probe_id=2 cell_voltage=30,balance_current=30
+INSERT cell,cell_id=3,probe_id=1 cell_voltage=8,balance_current=30
+INSERT cell,cell_id=1,probe_id=1 cell_voltage=40,balance_current=30
+INSERT cell,cell_id=2,probe_id=2 cell_voltage=45,balance_current=30
+INSERT cell,cell_id=3,probe_id=2 cell_voltage=25,balance_current=30
+INSERT battery,probe_id=1 battery_current=90,state_charge=20,charge_perc=20,battery_temp=30
+INSERT battery,probe_id=2 battery_current=80,state_charge=20,charge_perc=30,battery_temp=30
+INSERT battery,probe_id=1 battery_current=75,state_charge=20,charge_perc=5,battery_temp=30
+INSERT battery,probe_id=2 battery_current=90,state_charge=30,charge_perc=30,battery_temp=30
+INSERT battery,probe_id=1 battery_current=95,state_charge=40,charge_perc=8,battery_temp=30
+INSERT battery,probe_id=2 battery_current=85,state_charge=60,charge_perc=30,battery_temp=30
+INSERT inverter,solar_id=1,probe_id=1 sol_inv_voltage=20,sol_inv_power=50,sol_inv_frequency=50
+INSERT inverter,solar_id=2,probe_id=2 sol_inv_voltage=30,sol_inv_power=30,sol_inv_frequency=60
+INSERT inverter,solar_id=1,probe_id=1 sol_inv_voltage=25,sol_inv_power=50,sol_inv_frequency=50
+INSERT inverter,solar_id=2,probe_id=2 sol_inv_voltage=22,sol_inv_power=30,sol_inv_frequency=40
+INSERT inverter,solar_id=1,probe_id=1 sol_inv_voltage=24,sol_inv_power=25,sol_inv_frequency=30
+INSERT inverter,solar_id=2,probe_id=2 sol_inv_voltage=40,sol_inv_power=50,sol_inv_frequency=50
+INSERT grid_power,probe_id=1 grid_power=50
+INSERT grid_power,probe_id=1 grid_power=56
+INSERT grid_power,probe_id=1 grid_power=80
+INSERT grid_power,probe_id=1 grid_power=60
+INSERT house_power,probe_id=1 house_power=70
+INSERT house_power,probe_id=1 house_power=70
+INSERT house_power,probe_id=1 house_power=70
+INSERT house_power,probe_id=1 house_power=70
+
+-- query example, uncomment to test it
+-- reference for queries https://docs.influxdata.com/influxdb/vprobe_id.8/query_language/explore-data/
+
+-- SELECT * FROM cell WHERE probe_id='probe_id'
+-- SELECT cell_id, cell_voltage FROM cell GROUP BY probe_id
+-- SELECT * FROM battery WHERE charge_perc>=20
+-- SELECT * FROM inverter

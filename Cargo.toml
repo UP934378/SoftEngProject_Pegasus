@@ -1,0 +1,25 @@
+[package]
+name = "pegassas_aggregator"
+version = "0.1.0"
+authors = ["ZacJW <11651573+ZacJW@users.noreply.github.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = {version ="1.2.0", features = ["full"]}
+futures = "0.3.13"
+ssdp-client = "1.0.0"
+reqwest = {version = "0.11.1", features = ["json"]}
+serde_json = "1.0.64"
+influx_db_client = "0.5.0"
+serde = {version = "1.0.123", features = ["derive"]}
+xmltree = "0.10.2"
+postgres = {version = "0.19.0", features = ["with-eui48-0_4"]}
+eui48 = "0.4.6"
+rustls = "0.19.0"
+proptest-derive = "0.2.0"
+proptest = "1.0.0"
+log = "0.4.14"
+env_logger = "0.8.3"
+regex = "1.4.5"

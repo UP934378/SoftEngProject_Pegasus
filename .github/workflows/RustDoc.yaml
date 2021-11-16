@@ -1,0 +1,42 @@
+name: Rust Doc
+
+on:
+  push:
+    branches:
+      - aggregator-dev
+
+jobs:
+  test:
+    name: Rust Doc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ./target
+            !./target/doc
+          key: ${{ runner.os }}-agg-doc-${{ hashFiles('./Cargo.lock', './Cargo.toml') }}
+      - run: cargo doc --no-deps
+      - run: mkdir -p /tmp/pegassas_aggregator_docs/
+      - run: cp -r ./target/doc/ /tmp/pegassas_aggregator_docs/
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          clean: false
+      - run: mkdir -p ./docs/code_docs/
+      - run: cp -r /tmp/pegassas_aggregator_docs/doc/ ./docs/code_docs/
+      - uses: EndBug/add-and-commit@v5
+        with:
+          add: ./docs/
+          message: Regenerated aggregator-docs
+          branch: gh-pages
+      - name: Clean-up temporary files
+        run: rm -rf /tmp/pegassas_aggregator_docs/
+      - uses: actions/checkout@v2
+        with:
+          ref: aggregator-dev
+          clean: false
