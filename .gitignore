@@ -127,3 +127,14 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+#LEgacy Code
+.Ossonts/SHALogger.sh
+.Ossonts/Trigger.md
+ProgressReports/
+docs/dependancies.markdown
+sprint 1.md
+sprint 2.md
+sprint 3.md
+sprint 4.md
